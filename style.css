@@ -1,0 +1,224 @@
+/* ---------------------------------
+   Tokens
+--------------------------------- */
+:root {
+  --bg-base: #0b1614;
+  --bg-deep: #060b0a;
+  --text-primary: #edf3f0;
+  --text-muted: #9fb3ac;
+  --stone: #1e2f2b;
+  --stone-line: #263a35;
+  --aurora-1: #6ee7b7;
+  --aurora-2: #a78bfa;
+  --aurora-3: #60a5fa;
+  --focus: #7fd9b0;
+
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* ---------------------------------
+   Reset / base
+--------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 100%);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Visible, high-contrast focus for any future interactive elements */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------
+   Aurora (signature element)
+--------------------------------- */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  filter: blur(70px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
+  transition: transform 0.4s ease-out;
+}
+
+.aurora__layer {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.aurora__layer--1 {
+  width: 70vmax;
+  height: 70vmax;
+  top: -25%;
+  left: 5%;
+  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 60%);
+  animation: drift1 26s ease-in-out infinite alternate;
+}
+
+.aurora__layer--2 {
+  width: 60vmax;
+  height: 60vmax;
+  top: -15%;
+  right: 0%;
+  background: radial-gradient(circle at 70% 40%, var(--aurora-2), transparent 60%);
+  animation: drift2 32s ease-in-out infinite alternate;
+}
+
+.aurora__layer--3 {
+  width: 50vmax;
+  height: 50vmax;
+  top: 5%;
+  left: 30%;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-3), transparent 65%);
+  animation: drift3 20s ease-in-out infinite alternate;
+}
+
+@keyframes drift1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(4%, 6%) scale(1.08); }
+}
+@keyframes drift2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-5%, 4%) scale(1.05); }
+}
+@keyframes drift3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(3%, -5%) scale(1.1); }
+}
+
+/* ---------------------------------
+   Main content
+--------------------------------- */
+.page {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 12rem;
+  gap: 0.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aurora-1);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.tagline {
+  margin: 0.5rem 0 0;
+  max-width: 34ch;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.status {
+  margin: 1.5rem 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.url {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---------------------------------
+   Horizon / stones
+--------------------------------- */
+.horizon {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  max-height: 22vh;
+  opacity: 0.9;
+}
+
+.horizon__line {
+  stroke: var(--stone-line);
+  stroke-width: 1;
+  fill: none;
+}
+
+.horizon__stones rect {
+  fill: var(--stone);
+}
+
+/* ---------------------------------
+   Footer
+--------------------------------- */
+.site-footer {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  z-index: 2;
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 0.75rem;
+  }
+}
+
+/* ---------------------------------
+   Motion preferences
+--------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .aurora__layer {
+    animation: none !important;
+  }
+  .aurora {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Respect The Referee&trade; Random Decision Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch: #0b3d2e;
+    --pitch-dark: #072a20;
+    --chalk: #f0ead6;
+    --red-card: #c81e3a;
+    --yellow-card: #f4c430;
+    --chrome: #b8bec4;
+    --cabinet: #1a1a1a;
+    --cabinet-light: #262626;
+    --led: #7dffb0;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    font-family: 'Oswald', sans-serif;
+    background:
+      radial-gradient(ellipse at 50% -10%, #123f30 0%, var(--pitch) 45%, var(--pitch-dark) 100%);
+    color: var(--chalk);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 80px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* faint pitch markings behind everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(240,234,214,0.035) 0 2px, transparent 2px 140px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; width: 100%; max-width: 460px; }
+
+  .page-title {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 3px;
+    color: rgba(240,234,214,0.55);
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .marquee {
+    text-align: center;
+    font-weight: 700;
+    font-size: clamp(24px, 6vw, 34px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+    color: var(--chalk);
+    text-shadow: 0 0 12px rgba(244,196,48,0.35);
+  }
+  .marquee span { color: var(--yellow-card); }
+
+  /* ---------- CABINET ---------- */
+  .cabinet {
+    background: linear-gradient(180deg, var(--cabinet-light), var(--cabinet) 60%);
+    border-radius: 22px;
+    padding: 22px 22px 30px;
+    box-shadow:
+      0 30px 60px -20px rgba(0,0,0,0.7),
+      inset 0 0 0 2px rgba(184,190,196,0.15),
+      inset 0 2px 0 rgba(255,255,255,0.05);
+    border: 1px solid #000;
+    position: relative;
+  }
+
+  .cabinet-top {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .stud {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #e2e6e8, #7d8388);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  }
+
+  /* ---------- SCREEN (VAR readout) ---------- */
+  .screen-frame {
+    background: #000;
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: inset 0 0 0 3px #333, inset 0 0 18px rgba(0,0,0,0.9);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .screen-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px
+    );
+    pointer-events: none;
+  }
+  .screen-label {
+    position: absolute;
+    top: 4px; left: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(125,255,176,0.5);
+  }
+  #resultScreen {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--led);
+    font-size: 17px;
+    line-height: 1.35;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(125,255,176,0.6);
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateY(4px);
+    padding-top: 6px;
+  }
+  #resultScreen.show {
+    animation: flicker-in 0.5s steps(6, end) forwards;
+  }
+  @keyframes flicker-in {
+    0%   { opacity: 0; }
+    20%  { opacity: 0.8; }
+    35%  { opacity: 0.1; }
+    50%  { opacity: 1; }
+    65%  { opacity: 0.3; }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- LEVER ---------- */
+  .lever-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .lever-plate {
+    background: linear-gradient(180deg, #3a3a3a, #202020);
+    border-radius: 12px;
+    padding: 10px 22px;
+    box-shadow: inset 0 0 0 1px rgba(184,190,196,0.15);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(240,234,214,0.6);
+    text-align: center;
+  }
+  .lever-housing {
+    position: relative;
+    width: 46px;
+    height: 150px;
+  }
+  .lever-track {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    bottom: 8px;
+    width: 10px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #0d0d0d, #333, #0d0d0d);
+    border-radius: 6px;
+  }
+  .lever {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 78px;
+    transform-origin: top center;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.18s cubic-bezier(.45,0,.55,1);
+    cursor: pointer;
+  }
+  .lever-shaft {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #8b1626, var(--red-card) 40%, #8b1626);
+    border-radius: 4px;
+  }
+  .lever-ball {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #ff5b71, var(--red-card) 55%, #7c0f22);
+    position: absolute;
+    left: 50%;
+    bottom: -30px;
+    transform: translateX(-50%);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3);
+  }
+  .lever.pulled { transform: translateX(-50%) rotate(38deg); }
+  .lever-base {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 16px;
+    background: linear-gradient(180deg, #4a4a4a, #222);
+    border-radius: 8px 8px 4px 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  }
+
+  .hint {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: rgba(240,234,214,0.4);
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+
+  [hidden] { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lever,
+    #resultScreen.show { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="page-title">Match Officials Dept. &mdash; Est. Whenever</div>
+  <h1 class="marquee">The Respect The Referee&trade; <span>Random</span> Decision Machine</h1>
+
+  <div class="cabinet">
+    <div class="cabinet-top">
+      <div class="stud"></div><div class="stud"></div><div class="stud"></div>
+      <div class="stud"></div><div class="stud"></div>
+    </div>
+
+    <div class="screen-frame">
+      <span class="screen-label">OFFICIAL REVIEW</span>
+      <div id="resultScreen">PULL THE LEVER<br>FOR A RULING</div>
+    </div>
+
+    <div class="lever-row">
+      <div class="lever-plate">PULL<br>FOR<br>RULING</div>
+      <div class="lever-housing">
+        <div class="lever-track"></div>
+        <div class="lever" id="lever">
+          <div class="lever-shaft"></div>
+          <div class="lever-ball"></div>
+        </div>
+        <div class="lever-base"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">Click the ball, or tap the machine</div>
+</div>
+
+<script>
+(function(){
+  const DEFAULT_DECISIONS = [
+	"Goal judges should be seen and not heard",
+	"I don't care what the goal judge said, I say it wasn't offside.",
+	"I don't care what the goal judge said, I say it was offside.",
+	"RED CARD - Send the home team's head coach off. Not sure why...",
+	"STRAIGHT RED CARD - Applause is never acceptable",
+	"Tell the away team's bench to 'Stop being dicks', then destroy the video evidence.",
+	"PLAY ON - If you can dodge a wrench, you can dodge a ball",
+	"RETAKE THE PENALTY",
+	"FOUL - Why? Because I said so, that's why.",
+	"PENALTY! Definitely. Probably. Maybe.",
+	"VAR CHECK IN PROGRESS\u2026 please hold.",
+	"YELLOW CARD \u2014 for existing near the ball.",
+	"RED CARD! Off you go, son.",
+	"PLAY ON \u2014 nothing wrong there, apparently.",
+	"OFFSIDE \u2014 by a nose hair.",
+	"FREE KICK \u2014 dubious at best.",
+	"GOAL DISALLOWED \u2014 armpit offside.",
+	"ADVANTAGE \u2014 ref waves it through.",
+	"BOOKED \u2014 for looking at him funny.",
+	"SIN BIN \u2014 ten minutes to think about it.",
+	"SCRUM RESET \u2014 again.",
+	"SIMULATION! Card for the diver.",
+	"SPOT KICK \u2014 never in a million years.",
+	"SENT TO THE BUNKER FOR REVIEW.",
+	"NO FURTHER ACTION \u2014 move along now.",
+	"CAUTION \u2014 dissent, apparently loud dissent.",
+	"GOAL STANDS \u2014 the crowd's noise made it so.",
+	"HAND BALL \u2014 ball to hand, definitely, allegedly.",
+	"SECOND YELLOW \u2014 that's your lot."
+  ];
+
+  let decisions = DEFAULT_DECISIONS.slice();
+  let spinning = false;
+
+  async function loadDecisionsFromFile() {
+    try {
+      const res = await fetch('decisions.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (!Array.isArray(data) || data.length === 0) throw new Error('Empty or invalid list');
+      decisions = data.filter(d => typeof d === 'string' && d.trim().length > 0);
+    } catch (err) {
+      // decisions.json not reachable (e.g. opened via file:// rather than a server) - use built-in list
+      console.info('EP Random Decision Machine: using built-in decisions (decisions.json not loaded).', err);
+    }
+  }
+
+  const lever = document.getElementById('lever');
+  const resultScreen = document.getElementById('resultScreen');
+  const cabinet = document.querySelector('.cabinet');
+
+  function randomDecision() {
+    if (decisions.length === 0) return "NO DECISIONS LOADED. CHECK DECISIONS.JSON.";
+    return decisions[Math.floor(Math.random() * decisions.length)];
+  }
+
+  function pullLever() {
+    if (spinning) return;
+    spinning = true;
+
+    lever.classList.add('pulled');
+    resultScreen.classList.remove('show');
+    resultScreen.textContent = "";
+
+    setTimeout(() => { lever.classList.remove('pulled'); }, 220);
+
+    // brief pause for suspense before the ruling flickers onto the screen
+    setTimeout(() => {
+      const decision = randomDecision();
+      resultScreen.innerHTML = decision.replace(/\n/g, "<br>");
+      resultScreen.classList.add('show');
+      spinning = false;
+    }, 900);
+  }
+
+  lever.addEventListener('click', pullLever);
+  lever.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pullLever(); }
+  });
+  lever.setAttribute('tabindex', '0');
+  lever.setAttribute('role', 'button');
+  lever.setAttribute('aria-label', 'Pull lever for a random referee decision');
+
+  cabinet.addEventListener('click', (e) => {
+    // clicking anywhere on the cabinet also pulls, but don't double-fire with the lever itself
+    if (e.target === lever || lever.contains(e.target)) return;
+    pullLever();
+  });
+
+  loadDecisionsFromFile();
+})();
+</script>
+
+</body>
+</html>

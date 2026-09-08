@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Outcomes Verb Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950: #071a34;
+    --navy-900: #0b2545;
+    --blue-700: #17539c;
+    --blue-600: #1f5fa8;
+    --blue-500: #316bb0;
+    --blue-300: #9cc4ee;
+    --blue-100: #cfe3f7;
+    --blue-050: #eaf2fb;
+    --paper: #f7f9fc;
+    --ink: #0b1c33;
+    --ink-soft: #3c5170;
+    --gold: #c9a227;
+    --focus-ring: #0b1c33;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    background:
+      radial-gradient(ellipse at 20% -10%, #123a66 0%, var(--navy-900) 45%, var(--navy-950) 100%);
+    color: var(--paper);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 18px 64px;
+  }
+
+  .wrap { width: 100%; max-width: 720px; }
+
+  header { text-align: center; margin-bottom: 34px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue-300);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 5.5vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #c8d7ea;
+    max-width: 52ch;
+    margin: 0 auto;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: minmax(0, 280px) 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 620px) {
+    .app { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- PYRAMID (radiogroup) ---------- */
+  .pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .pyramid-caption {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue-300);
+    margin: 0 0 10px;
+    text-align: center;
+  }
+
+  .level-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 10px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+  }
+  .level-btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .level-btn:active { transform: translateY(0); }
+
+  .level-btn[aria-checked="true"] {
+    box-shadow: 0 0 0 2px var(--gold), 0 2px 0 rgba(0,0,0,0.18);
+  }
+
+  .level-btn:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px #ffffff;
+  }
+
+  /* six-step pyramid widths, apex (Create) to base (Remember) */
+  .lvl-create     { width: 62%;  background: var(--navy-900); color: #ffffff; }
+  .lvl-evaluate   { width: 72%;  background: var(--blue-600); color: #ffffff; }
+  .lvl-analyse    { width: 82%;  background: var(--blue-500); color: #ffffff; }
+  .lvl-apply      { width: 92%;  background: var(--blue-300); color: var(--navy-900); }
+  .lvl-understand { width: 100%; background: var(--blue-100); color: var(--navy-900); }
+  .lvl-remember   { width: 100%; background: var(--blue-050); color: var(--navy-900); }
+
+  .level-icon { font-size: 15px; line-height: 1; }
+
+  /* ---------- CARD AREA ---------- */
+  .card-area {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 260px;
+    justify-content: center;
+  }
+
+  .verb-card {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 26px 22px;
+    width: 100%;
+    box-shadow: 0 14px 30px -12px rgba(0,0,0,0.5);
+    perspective: 800px;
+  }
+
+  .card-level {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .card-verb {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.1;
+    text-transform: capitalize;
+    min-height: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-verb.settle {
+    animation: settle 0.32s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes settle {
+    0%   { transform: scale(0.9) rotateX(35deg); opacity: 0.4; }
+    100% { transform: scale(1) rotateX(0deg); opacity: 1; }
+  }
+
+  .draw-btn {
+    margin-top: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    color: var(--navy-950);
+    background: var(--gold);
+    border: none;
+    border-radius: 24px;
+    padding: 11px 24px;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .draw-btn:hover:not(:disabled) { filter: brightness(1.07); transform: translateY(-1px); }
+  .draw-btn:active:not(:disabled) { transform: translateY(0); }
+  .draw-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .draw-btn:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px #ffffff;
+  }
+
+  .status {
+    font-size: 12px;
+    color: #c8d7ea;
+    margin: 14px 0 0;
+    min-height: 16px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  footer {
+    margin-top: 34px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #9fb4cf;
+  }
+  footer code {
+    font-family: 'IBM Plex Sans', monospace;
+    background: rgba(255,255,255,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #e6edf7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .level-btn, .draw-btn, .card-verb.settle {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Learning Design Tool</p>
+    <h1>Learning Outcomes Verb Generator</h1>
+    <p class="subtitle">
+      Choose a level of Bloom's Revised Taxonomy and generate a measurable action verb
+      for writing a learning outcome.
+    </p>
+  </header>
+
+  <div class="app">
+    <div>
+      <p class="pyramid-caption">Select a level</p>
+      <div class="pyramid" role="radiogroup" aria-label="Bloom's revised taxonomy level" id="pyramid">
+        <button class="level-btn lvl-create" role="radio" aria-checked="false" tabindex="-1" data-level="create">
+          <span class="level-icon" aria-hidden="true">&#9733;</span> Create
+        </button>
+        <button class="level-btn lvl-evaluate" role="radio" aria-checked="false" tabindex="-1" data-level="evaluate">
+          Evaluate
+        </button>
+        <button class="level-btn lvl-analyse" role="radio" aria-checked="false" tabindex="-1" data-level="analyse">
+          Analyse
+        </button>
+        <button class="level-btn lvl-apply" role="radio" aria-checked="false" tabindex="-1" data-level="apply">
+          Apply
+        </button>
+        <button class="level-btn lvl-understand" role="radio" aria-checked="false" tabindex="-1" data-level="understand">
+          Understand
+        </button>
+        <button class="level-btn lvl-remember" role="radio" aria-checked="true" tabindex="0" data-level="remember">
+          Remember
+        </button>
+      </div>
+    </div>
+
+    <div class="card-area">
+      <div class="verb-card">
+        <p class="card-level" id="cardLevel">Ready</p>
+        <p class="card-verb" id="cardVerb">Select a level</p>
+      </div>
+      <button class="draw-btn" id="drawBtn" disabled>Draw a verb</button>
+      <p class="status" id="statusNote"></p>
+      <p class="sr-only" aria-live="polite" id="liveRegion"></p>
+    </div>
+  </div>
+
+  <footer>
+    Verb lists adapted from Anderson &amp; Krathwohl's (2001) Revised Bloom's Taxonomy.
+    All verbs live in the <code>VERB_BANK</code> object near the top of the script in this
+    file &mdash; add or remove any entry there to change what the generator can return.
+  </footer>
+</div>
+
+<script>
+(function(){
+  const LEVEL_LABELS = {
+    remember: "Remember",
+    understand: "Understand",
+    apply: "Apply",
+    analyse: "Analyse",
+    evaluate: "Evaluate",
+    create: "Create"
+  };
+
+  // ---------------------------------------------------------------
+  // VERB BANK
+  // Add or remove verbs here at any time - one string per line, comma-
+  // separated, inside the relevant level's array. No other file needed.
+  // Adapted from Anderson & Krathwohl's (2001) Revised Bloom's Taxonomy.
+  // ---------------------------------------------------------------
+  const VERB_BANK = {
+    remember: [
+      "cite", "define", "describe", "identify", "label", "list", "match",
+      "name", "outline", "quote", "recall", "report", "reproduce",
+      "retrieve", "show", "state", "tabulate", "tell"
+    ],
+    understand: [
+      "abstract", "arrange", "articulate", "associate", "categorise",
+      "clarify", "classify", "compare", "compute", "conclude", "contrast",
+      "defend", "diagram", "differentiate", "discuss", "distinguish",
+      "estimate", "exemplify", "explain", "extend", "extrapolate",
+      "generalise", "illustrate", "infer", "interpret", "outline",
+      "paraphrase", "predict", "rephrase", "restate", "summarise",
+      "translate"
+    ],
+    apply: [
+      "apply", "calculate", "carry out", "classify", "complete", "compute",
+      "demonstrate", "dramatise", "employ", "examine", "execute",
+      "experiment", "generalise", "illustrate", "implement", "infer",
+      "interpret", "manipulate", "modify", "operate", "organise",
+      "outline", "predict", "solve", "transfer", "translate", "use"
+    ],
+    analyse: [
+      "analyse", "arrange", "break down", "categorise", "classify",
+      "compare", "connect", "contrast", "deconstruct", "detect", "diagram",
+      "differentiate", "discriminate", "distinguish", "divide", "explain",
+      "identify", "integrate", "inventory", "order", "organise", "relate",
+      "separate", "structure"
+    ],
+    evaluate: [
+      "appraise", "argue", "assess", "compare", "conclude", "consider",
+      "contrast", "convince", "criticise", "critique", "decide",
+      "determine", "discriminate", "evaluate", "grade", "judge",
+      "justify", "measure", "rank", "rate", "recommend", "review",
+      "score", "select", "standardise", "support", "test", "validate"
+    ],
+    create: [
+      "arrange", "assemble", "build", "collect", "combine", "compile",
+      "compose", "construct", "create", "design", "develop", "devise",
+      "formulate", "generate", "hypothesise", "integrate", "invent",
+      "make", "manage", "modify", "organise", "plan", "prepare",
+      "produce", "propose", "rearrange", "reconstruct", "reorganise",
+      "revise", "rewrite", "specify", "synthesise", "write"
+    ]
+  };
+
+  const verbBank = VERB_BANK;
+  let currentLevel = 'remember';
+  let drawing = false;
+
+  const pyramid = document.getElementById('pyramid');
+  const radios = Array.from(pyramid.querySelectorAll('[role="radio"]'));
+  const cardLevel = document.getElementById('cardLevel');
+  const cardVerb = document.getElementById('cardVerb');
+  const drawBtn = document.getElementById('drawBtn');
+  const statusNote = document.getElementById('statusNote');
+  const liveRegion = document.getElementById('liveRegion');
+
+  function init() {
+    const total = Object.values(verbBank).reduce((sum, l) => sum + l.length, 0);
+    statusNote.textContent = total + ' verbs available across six levels.';
+    cardLevel.textContent = LEVEL_LABELS[currentLevel];
+    cardVerb.textContent = 'Press draw';
+    drawBtn.disabled = false;
+  }
+
+  function selectLevel(level, { focus = true } = {}) {
+    currentLevel = level;
+    radios.forEach(r => {
+      const isSelected = r.dataset.level === level;
+      r.setAttribute('aria-checked', String(isSelected));
+      r.tabIndex = isSelected ? 0 : -1;
+      if (isSelected && focus) r.focus();
+    });
+    cardLevel.textContent = LEVEL_LABELS[level];
+    drawVerb();
+  }
+
+  function drawVerb() {
+    if (drawing) return;
+    const list = verbBank[currentLevel] || [];
+    if (list.length === 0) {
+      cardVerb.textContent = 'No verbs for this level';
+      return;
+    }
+    drawing = true;
+    drawBtn.disabled = true;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finalVerb = list[Math.floor(Math.random() * list.length)];
+
+    if (prefersReducedMotion) {
+      cardVerb.textContent = finalVerb;
+      liveRegion.textContent = LEVEL_LABELS[currentLevel] + ': ' + finalVerb;
+      drawing = false;
+      drawBtn.disabled = false;
+      return;
+    }
+
+    let ticks = 0;
+    const maxTicks = 8;
+    const interval = setInterval(() => {
+      cardVerb.textContent = list[Math.floor(Math.random() * list.length)];
+      ticks++;
+      if (ticks >= maxTicks) {
+        clearInterval(interval);
+        cardVerb.textContent = finalVerb;
+        cardVerb.classList.remove('settle');
+        // force reflow so the animation replays every draw
+        void cardVerb.offsetWidth;
+        cardVerb.classList.add('settle');
+        liveRegion.textContent = LEVEL_LABELS[currentLevel] + ': ' + finalVerb;
+        drawing = false;
+        drawBtn.disabled = false;
+      }
+    }, 70);
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener('click', () => selectLevel(radio.dataset.level, { focus: false }));
+    radio.addEventListener('keydown', (e) => {
+      const idx = radios.indexOf(radio);
+      let nextIdx = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') nextIdx = (idx + 1) % radios.length;
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') nextIdx = (idx - 1 + radios.length) % radios.length;
+      if (nextIdx !== null) {
+        e.preventDefault();
+        selectLevel(radios[nextIdx].dataset.level);
+      }
+    });
+  });
+
+  drawBtn.addEventListener('click', drawVerb);
+
+  init();
+})();
+</script>
+
+</body>
+</html>

@@ -231,4 +231,22 @@ $(function () {
     }
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  var dividerColours = [
+    'divider-rose',
+    'divider-sky',
+    'divider-teal',
+    'divider-orchid',
+    'divider-lavender',
+    'divider-periwinkle'
+  ];
+
+  var randomClass = dividerColours[Math.floor(Math.random() * dividerColours.length)];
+
+  var divider = document.querySelector('.js-divider');
+  if (divider) {
+    divider.classList.add(randomClass);
+  }
+});
 /* ====================== end of jmac component scripts ================== */

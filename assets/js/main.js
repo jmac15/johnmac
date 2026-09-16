@@ -232,6 +232,7 @@ $(function () {
   });
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
   var dividerColours = [
     'divider-rose',

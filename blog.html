@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Resouces & Remixes- John MacMillan</title>
+		<title>Blog - John MacMillan</title>
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -20,12 +20,12 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
-							
+
 							<!-- Logo -->
 								<a href="index.html" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><h1>John MacMillan</h1>
 								</a>
-													
+
 
 							<!-- Nav -->
 								<nav style="top: 25px;">
@@ -53,17 +53,24 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Resouces & Remixes</h1>
-							<div class="divider-periwinkle"></div>
-								<p>Some silly little things built with a mixture of GenAI and humanity.</p>
-								<h2>GenAI experiments</h2>
-								<ul>
-									<li><a href="resources/learningoutcomes.html">Random verbs for learning outcomes - Claude</a></li>
-									<li><a href="resources/blooms-verb-generator.html">Random verbs for learning outcomes - Microsoft Co-Pilot</a></li>
-									<li><a href="resources/refbot/index.html">The Respect The Referee™ Random Decision Machine</a></li>
-								</ul>
-							
-							
+							<h1>Blog</h1>
+							<h1sub>Posts on learning design, technology, and whatever else comes up</h1sub>
+							<div class="js-divider"></div>
+
+							<div class="j-row">
+								<div class="j-col-9">
+									<!-- Post list, built from assets/js/blog-index.js by blog.js -->
+										<ul class="blog-list" id="blog-list"></ul>
+
+										<p class="blog-empty" id="blog-empty" style="display:none;">No posts yet &mdash; check back soon.</p>
+								</div>
+								<div class="j-col-3 blog-sidebar">
+									<!-- Category filters, built from posts/*.html by blog.js -->
+										<h2>Categories</h2>
+										<ul class="blog-filters" id="blog-filters"></ul>
+								</div>
+							</div>
+
 						</div>
 					</div>
 
@@ -84,7 +91,7 @@
 									<li><a href="https://www.linkedin.com/in/j-macmillan" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
 								</ul>
 							</section>
-						
+
 						</div>
 					</footer>
 
@@ -96,6 +103,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/blog-index.js"></script>
+			<script src="assets/js/blog.js"></script>
 
 	</body>
 </html>

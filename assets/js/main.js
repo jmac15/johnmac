@@ -232,7 +232,6 @@ $(function () {
   });
 });
 
-
 document.addEventListener('DOMContentLoaded', function () {
   var dividerColours = [
     'divider-rose',
@@ -249,5 +248,32 @@ document.addEventListener('DOMContentLoaded', function () {
   if (divider) {
     divider.classList.add(randomClass);
   }
+});
+/* post meta (date + tags) — auto-shown on any page that has a post-date meta tag */
+$(function () {
+  var $dateMeta = $('meta[name="post-date"]');
+  if ($dateMeta.length === 0)
+    return;
+
+  var dateStr = ($dateMeta.attr('content') || '').trim();
+  if (!dateStr || dateStr.toUpperCase() === 'YYYY-MM-DD')
+    return;
+
+  var tagsStr = $('meta[name="post-tags"]').attr('content') || '';
+  var tags = tagsStr.split(',').map(function (t) { return $.trim(t); }).filter(Boolean);
+
+  var formatted = dateStr;
+  var parts = dateStr.split('-');
+  if (parts.length === 3) {
+    var d = new Date(Date.UTC(+parts[0], +parts[1] - 1, +parts[2]));
+    formatted = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  var $back = $('<p class="post-back"><a href="../blog.html">&larr; Back to Blog</a></p>');
+  var $meta = $('<p class="post-meta"></p>').text('Posted on ' + formatted + (tags.length ? ' \u00b7 ' + tags.join(', ') : ''));
+
+  var $h1 = $('#main .inner h1').first();
+  $h1.before($back);
+  $h1.after($meta);
 });
 /* ====================== end of jmac component scripts ================== */

@@ -1,0 +1,118 @@
+/*
+	Creating Online Learning Experiences — customisations layered on the HTML5 UP "Stellar" template.
+	Loaded after main.css. Text: CC BY-NC 4.0 (see footer). Photos: Pixabay.
+*/
+
+/* ---------- Page background: a teal-to-indigo wash instead of Stellar's pink-to-purple */
+body {
+	background-color: #33708f;
+	background-image: url("images/overlay.png"), -moz-linear-gradient(45deg, #2f8f9d 15%, #3f4a96 85%);
+	background-image: url("images/overlay.png"), -webkit-linear-gradient(45deg, #2f8f9d 15%, #3f4a96 85%);
+	background-image: url("images/overlay.png"), linear-gradient(45deg, #2f8f9d 15%, #3f4a96 85%);
+}
+
+/* ---------- Header */
+#header p a { border-bottom-color: rgba(255, 255, 255, 0.35); }
+#header:not(.alt) h1 { font-size: 2.25em; line-height: 1.2; }
+#header.alt .logo img { width: 7.5em; max-width: 45%; }
+
+/* ---------- Circular spotlight photo (Stellar assumes a square image) */
+.spotlight .image img { width: 16em; height: 16em; object-fit: cover; }
+@media screen and (max-width: 736px) {
+	.spotlight .image img { width: 12em; height: 12em; }
+}
+.cr-note { margin-top: 1.5em; font-size: 0.6em; line-height: 1.4; }
+#main .cr-note, #main .cr-note a { color: #8a8a8a; }
+#main .cr-note a { border-bottom-color: rgba(138, 138, 138, 0.4); }
+
+/* ---------- Banner photo on content pages, with credit chip */
+.image.main { position: relative; }
+.image.main img { max-height: 24em; object-fit: cover; }
+#main .cr-credit {
+	position: absolute; right: 0.9em; bottom: 0.7em;
+	padding: 0.2em 0.7em; border-radius: 0.3em;
+	font-size: 0.5em; line-height: 1.5; letter-spacing: 0;
+	background: rgba(0, 0, 0, 0.55); color: #ffffff;
+}
+#main #content .cr-credit a:not(.button) { color: #ffffff; border-bottom-color: rgba(255, 255, 255, 0.6); }
+#main #content .cr-credit a:not(.button):hover { color: #ffffff; border-bottom-color: transparent; }
+
+/* ---------- Primary buttons: a deeper blue so the white label is readable */
+#main .button.primary { background-color: #2d6c8a; color: #ffffff !important; }
+#main .button.primary:hover { background-color: #3a7fa0; }
+#main .button.primary:active { background-color: #245a74; }
+
+/* ---------- Chapter cards on the home page */
+.cr-cards {
+	display: -moz-flex; display: -webkit-flex; display: -ms-flex; display: flex;
+	-moz-flex-wrap: wrap; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap;
+	width: calc(100% + 2em); margin: 0 0 0 -2em; padding: 0; list-style: none; text-align: left;
+}
+.cr-cards li { width: calc(33.33333% - 2em); margin: 0 0 3em 2em; padding: 0; }
+.cr-cards .cr-thumb {
+	display: block; margin: 0 0 1em 0; border: 0; border-radius: 0.4em; overflow: hidden;
+	aspect-ratio: 3 / 2; background: #eeeeee;
+	box-shadow: 0 0.15em 0.5em rgba(0, 0, 0, 0.18);
+}
+.cr-cards .cr-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; -moz-transition: transform 0.4s ease; -webkit-transition: transform 0.4s ease; transition: transform 0.4s ease; }
+.cr-cards .cr-thumb:hover img { -moz-transform: scale(1.05); -webkit-transform: scale(1.05); transform: scale(1.05); }
+.cr-cards h3 { margin: 0 0 0.4em 0; font-size: 1.05em; line-height: 1.3; }
+.cr-cards h3 a, .features h3 a { border-bottom: 0; }
+.cr-cards h3 a:hover, .features h3 a:hover { text-decoration: underline; }
+.cr-cards p { margin: 0; font-size: 0.75em; line-height: 1.55; }
+@media screen and (max-width: 980px) {
+	.cr-cards li { width: calc(50% - 2em); }
+}
+@media screen and (max-width: 736px) {
+	.cr-cards { width: 100%; margin: 0; }
+	.cr-cards li { width: 100%; margin: 0 0 2.5em 0; }
+}
+.features li a.icon { display: inline-block; border-bottom: 0; }
+.features li:nth-child(n+4) { margin-top: 3em; }
+
+/* ---------- Article typography */
+#content { overflow-wrap: anywhere; }
+#content a:not(.button) { color: #2d6c8a; border-bottom-color: rgba(45, 108, 138, 0.35); }
+#content a:not(.button):hover { color: #1b4a63; border-bottom-color: transparent; }
+#content > h2 { margin-top: 1.5em; }
+#content > h2:first-child, #content > .image.main + h2 { margin-top: 0; }
+#content h3 { font-size: 1.15em; }
+#content .box { background: rgba(45, 108, 138, 0.06); border-color: rgba(45, 108, 138, 0.35); }
+#content .box > :last-child { margin-bottom: 0; }
+#content .table-wrapper { margin: 0 0 2em 0; }
+#content table td, #content table th { vertical-align: top; font-size: 0.8em; line-height: 1.5; }
+#content table th { color: #636363; }
+#content blockquote { font-size: 0.95em; }
+.align-center { text-align: center; }
+.cr-figure { margin: 0 0 2.5em 0; text-align: center; }
+.cr-figure img { display: inline-block; max-width: 100%; height: auto; border-radius: 0.25em; }
+.cr-figure figcaption { margin: 0.75em 0 0 0; font-size: 0.7em; line-height: 1.5; color: #8a8a8a; }
+img.cr-logo { display: block; max-width: 150px; height: auto; }
+
+/* ---------- Previous / next */
+#main .cr-pager {
+	display: -moz-flex; display: -webkit-flex; display: -ms-flex; display: flex;
+	-moz-align-items: stretch; -webkit-align-items: stretch; -ms-align-items: stretch; align-items: stretch;
+	-moz-justify-content: center; -webkit-justify-content: center; -ms-justify-content: center; justify-content: center;
+	margin: 3.5em 0 0 -1em; width: calc(100% + 1em);
+}
+#main .cr-pager li { -moz-flex: 1 1 0; -webkit-flex: 1 1 0; -ms-flex: 1 1 0; flex: 1 1 0; min-width: 0; padding: 0 0 0 1em; }
+#main .cr-pager li .button {
+	display: block; height: 100%; min-height: 3.5em; line-height: 1.35; padding: 0.8em 1em;
+	white-space: normal; text-align: center;
+}
+.cr-pager .cr-dir { display: block; margin-bottom: 0.2em; font-size: 0.65em; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.75; }
+.cr-pager .cr-t { display: block; font-size: 0.85em; }
+@media screen and (max-width: 736px) {
+	#main .cr-pager { display: block; margin: 2.5em 0 0 0; width: 100%; }
+	#main .cr-pager li { display: block; width: 100%; padding: 0 0 1em 0; }
+}
+
+/* ---------- Footer */
+#footer .cr-toc { margin: 0; padding: 0; list-style: none; font-size: 0.75em; line-height: 1.4; -moz-columns: 2; -webkit-columns: 2; columns: 2; -moz-column-gap: 1.5em; -webkit-column-gap: 1.5em; column-gap: 1.5em; }
+#footer .cr-toc li { margin: 0 0 0.5em 0; padding: 0; -webkit-column-break-inside: avoid; break-inside: avoid; }
+#footer section p { font-size: 0.85em; line-height: 1.6; }
+#footer .cr-cc { margin: 1.25em 0 0 0; }
+@media screen and (max-width: 480px) {
+	#footer .cr-toc { -moz-columns: 1; -webkit-columns: 1; columns: 1; }
+}

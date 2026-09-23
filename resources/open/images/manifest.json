@@ -1,0 +1,47 @@
+{
+  "figures": {
+    "OER-venn-1024x792.jpg": "https://johnmac.me/opened/files/2019/06/OER-venn-1024x792.jpg"
+  },
+  "credits": {
+    "discussion-2822066_1280.jpg": {
+      "contributor": "rawpixel",
+      "page": "https://pixabay.com/photos/discussion-2822066/"
+    },
+    "business-1868015_1280.jpg": {
+      "contributor": "Pexels",
+      "page": "https://pixabay.com/photos/business-1868015/"
+    },
+    "teach-1820041_1280.jpg": {
+      "contributor": "WOKANDAPIX",
+      "page": "https://pixabay.com/photos/teach-1820041/"
+    },
+    "puzzle-3223941_1280.jpg": {
+      "contributor": "Alexas_Fotos",
+      "page": "https://pixabay.com/photos/puzzle-3223941/"
+    },
+    "man-791049_1280.jpg": {
+      "contributor": "kaboompics",
+      "page": "https://pixabay.com/photos/man-791049/"
+    },
+    "fence-3279849_1280.jpg": {
+      "contributor": "MabelAmber",
+      "page": "https://pixabay.com/photos/fence-3279849/"
+    },
+    "town-sign-1158387_1280.jpg": {
+      "contributor": "geralt",
+      "page": "https://pixabay.com/photos/town-sign-1158387/"
+    },
+    "dark-1852985.jpg": {
+      "contributor": "Pexels",
+      "page": "https://pixabay.com/photos/dark-door-door-handle-light-open-1852985/"
+    },
+    "open-book-1428428.jpg": {
+      "contributor": "lil_foot_",
+      "page": "https://pixabay.com/photos/open-book-library-education-read-1428428/"
+    }
+  },
+  "uncredited": [
+    "blackboard-business-chalkboard-355988-2000x1500.jpg",
+    "home-office-336378_1280.jpg"
+  ]
+}

@@ -1,0 +1,116 @@
+/* SOLO Taxonomy activity — additions to Solid State (HTML5 UP) */
+
+:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+#topic-title:focus { outline: none; }
+#topic-title:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
+.skip-link {position: absolute; left: -999em; top: 0; z-index: 20000; background: #ffd166; color: #1b1e2b !important; padding: 0.75em 1.25em; font-weight: 600; border-bottom: 0; }
+.skip-link:focus { left: 1em; top: 1em; }
+
+#banner .logo .icon { font-size: 2em; }
+#banner .banner-credit, .credit { display: block; font-size: 0.75em; opacity: 0.75; margin-top: 0.75em; letter-spacing: 0.02em; }
+#banner .banner-credit a, .credit a { border-bottom-color: rgba(255,255,255,0.35); }
+#banner p.lead { font-size: 1.05em; max-width: 36em; }
+
+
+/* ---------- Five levels ---------- */
+.solo-levels { list-style: none; padding: 0; margin: 2.5em 0 1em 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1em; align-items: end; }
+.solo-levels li { padding: 1.4em 1.2em 1.2em; border-radius: 6px; background: rgba(255,255,255,0.06); border-top: 4px solid var(--lv); display: flex; flex-direction: column; min-height: var(--h); }
+.solo-levels li:nth-child(1) { --lv: #8a8fa8; --h: 13em; }
+.solo-levels li:nth-child(2) { --lv: #6fb3d2; --h: 15em; }
+.solo-levels li:nth-child(3) { --lv: #5fc7a6; --h: 17em; }
+.solo-levels li:nth-child(4) { --lv: #f2c14e; --h: 19em; }
+.solo-levels li:nth-child(5) { --lv: #f28b66; --h: 21em; }
+.solo-levels .num { font-family: Raleway, Helvetica, sans-serif; font-weight: 700; font-size: 0.7em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lv); }
+.solo-levels h3 { font-size: 0.95em; margin: 0.4em 0 0.6em 0; }
+.solo-levels p { font-size: 0.9em; line-height: 1.5; margin: 0 0 0.8em 0; }
+.solo-levels .verbs { margin-top: auto; font-size: 0.8em; opacity: 0.85; font-style: italic; }
+.phase-row { display: grid; grid-template-columns: 1fr 2fr 2fr; gap: 1em; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.8; margin-bottom: 2em; }
+.phase-row span { border-top: 1px solid rgba(255,255,255,0.3); padding-top: 0.6em; text-align: center; }
+.phase-row span:first-child { grid-column: 2; }
+
+@media screen and (max-width: 980px) {
+	.solo-levels { grid-template-columns: 1fr 1fr; }
+	.solo-levels li { min-height: 0; }
+	.phase-row { display: none; }
+}
+@media screen and (max-width: 560px) {
+	.solo-levels { grid-template-columns: 1fr; }
+}
+
+/* ---------- HE uses ---------- */
+.he-uses { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em 2.5em; margin: 2em 0; }
+.he-uses h3 { font-size: 0.9em; margin-bottom: 0.5em; }
+.he-uses h3 .icon { margin-right: 0.5em; color: #f2c14e; }
+.he-uses p { margin: 0; }
+@media screen and (max-width: 736px) { .he-uses { grid-template-columns: 1fr; } }
+
+/* ---------- Activity ---------- */
+.steps { counter-reset: step; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; margin: 2em 0; }
+.steps li { counter-increment: step; padding: 0 0 0 0; }
+.steps li::before { content: counter(step); display: inline-block; width: 2em; height: 2em; line-height: 2em; border-radius: 50%; text-align: center; border: 2px solid rgba(255,255,255,0.35); font-family: Raleway, Helvetica, sans-serif; font-weight: 700; margin-bottom: 0.6em; }
+.steps li p { margin: 0; font-size: 0.95em; }
+@media screen and (max-width: 980px) { .steps { grid-template-columns: 1fr 1fr; } }
+@media screen and (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+
+.draw-panel { text-align: center; margin: 2.5em 0 0 0; }
+.draw-panel .deck-status { display: block; font-size: 0.85em; opacity: 0.75; margin-top: 1em; }
+.draw-panel .button .icon, .topic-actions .button .icon, .modal-close .icon { margin-right: 0.5em; }
+
+.topic-card { display: grid; grid-template-columns: 5fr 6fr; gap: 0; margin: 2.5em 0 0 0; background: rgba(0,0,0,0.18); border-radius: 6px; overflow: hidden; text-align: left; }
+.topic-card[hidden] { display: none; }
+.topic-card figure { margin: 0; position: relative; min-height: 18em; }
+.topic-card figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.topic-card figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.5em 1em 0.5em; font-size: 0.72em; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); }
+.topic-card figcaption a { border-bottom-color: rgba(255,255,255,0.4); }
+.topic-body { padding: 2em 2.25em; }
+.topic-meta { display: flex; flex-wrap: wrap; gap: 0.5em; align-items: center; margin-bottom: 1em; font-size: 0.8em; }
+.chip { display: inline-block; padding: 0.2em 0.85em; border-radius: 1em; background: rgba(255,255,255,0.12); letter-spacing: 0.05em; }
+.chip.num { background: transparent; border: 1px solid rgba(255,255,255,0.3); }
+.topic-body h3 { font-size: 1.35em; line-height: 1.35; margin: 0 0 0.75em 0; }
+.topic-prompt { font-size: 0.95em; }
+.topic-actions { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75em; margin: 1.5em 0 0 0; }
+.topic-actions li { padding: 0; }
+.topic-card.is-new { animation: soloIn 0.45s ease both; }
+@keyframes soloIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .topic-card.is-new { animation: none; } }
+@media screen and (max-width: 736px) {
+	.topic-card { grid-template-columns: 1fr; }
+	.topic-card figure { min-height: 0; aspect-ratio: 16 / 9; }
+	.topic-body { padding: 1.5em 1.25em; }
+	.topic-actions .button { width: 100%; }
+	.topic-actions li { flex: 1 1 100%; }
+}
+
+/* ---------- Modal ---------- */
+dialog.solo-modal { width: min(58em, calc(100vw - 2em)); max-height: calc(100vh - 2em); padding: 0; border: 0; border-radius: 6px; background: #2e3141; color: rgba(255,255,255,0.85); box-shadow: 0 1.5em 4em rgba(0,0,0,0.5); }
+dialog.solo-modal::backdrop { background: rgba(20, 22, 32, 0.8); }
+.modal-inner { padding: 2.25em 2.5em 2em; }
+.modal-inner .eyebrow { padding-right: 4em; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; margin: 0 0 0.5em 0; }
+.modal-inner h2 { font-size: 1.2em; margin: 0 0 1em 0; padding-right: 2.5em; }
+.modal-intro { border-left: 3px solid #f2c14e; padding: 0.6em 0 0.6em 1em; background: rgba(255,255,255,0.04); font-size: 0.95em; }
+.modal-x { position: absolute; top: 1em; right: 1em; width: 2.75em; height: 2.75em; padding: 0; line-height: 2.75em; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25); background: transparent; font-size: 0.9em; }
+.modal-x:hover { background: rgba(255,255,255,0.08); }
+.example-table th[scope="row"] { white-space: nowrap; font-family: Raleway, Helvetica, sans-serif; font-size: 0.72em; letter-spacing: 0.1em; text-transform: uppercase; vertical-align: top; padding-top: 1em; border-left: 4px solid var(--lv); }
+.example-table tr:nth-child(1) { --lv: #8a8fa8; }
+.example-table tr:nth-child(2) { --lv: #6fb3d2; }
+.example-table tr:nth-child(3) { --lv: #5fc7a6; }
+.example-table tr:nth-child(4) { --lv: #f2c14e; }
+.example-table tr:nth-child(5) { --lv: #f28b66; }
+.example-table td { font-size: 0.95em; line-height: 1.6; }
+.modal-reflect { font-size: 0.9em; opacity: 0.9; }
+.modal-reflect strong { color: #fff; }
+@media screen and (max-width: 736px) {
+	.modal-inner { padding: 1.75em 1.25em 1.5em; }
+	.example-table, .example-table tbody, .example-table tr, .example-table th, .example-table td { display: block; width: 100%; }
+	.example-table th[scope="row"] { padding: 0.9em 0.75em 0.2em; }
+	.example-table td { padding: 0.2em 0.75em 0.9em; border-left: 4px solid var(--lv); }
+}
+body.modal-open { overflow: hidden; }
+
+/* ---------- References & credits ---------- */
+.references { font-size: 0.9em; }
+.references li { margin-bottom: 0.5em; }
+details.credits-list summary { cursor: pointer; font-weight: 600; margin-bottom: 1em; }
+details.credits-list ol { columns: 3 16em; font-size: 0.8em; column-gap: 2em; }
+details.credits-list li { break-inside: avoid; margin-bottom: 0.3em; }

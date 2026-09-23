@@ -1,0 +1,92 @@
+/*
+	3E Framework — customisations layered on the HTML5 UP "Massively" template.
+	Loaded after main.css. Text: CC BY-NC-SA 2.5 UK: Scotland (see footer). Photos: Pixabay.
+*/
+
+/* ---------- Background: a night sky (Pixabay) with a soft dark wash so the white header text stays readable */
+#wrapper > .bg {
+	background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(8, 14, 28, 0.4), rgba(8, 14, 28, 0.4)), url("../../images/pixabay/night-sky-5742416.jpg");
+}
+
+/* ---------- Nav: keep each label on one line (the bar is a single fixed-height row) */
+#nav ul.links li a { white-space: nowrap; }
+
+/* ---------- Article links: a deeper blue than the template's pale accent, for contrast on white */
+#main .post a:not(.button),
+#main .posts article p a:not(.button) { color: #0a86ad; border-bottom-color: rgba(10, 134, 173, 0.4); }
+#main .post a:not(.button):hover,
+#main .posts article p a:not(.button):hover { color: #18bfef !important; border-bottom-color: transparent; }
+#main .post h2 a, #main .posts h2 a, #main .post.featured h2 a { color: inherit; border-bottom: 0; }
+
+#main > .post ul li, #main > .post ol li { margin-bottom: 0.4rem; }
+
+/* ---------- Comparison table on the Overview page */
+.cr-table th { color: #ffffff; background: #212931; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; padding: 0.9rem 1rem; }
+.cr-table th:nth-child(1) { background: #0f90b8; }
+.cr-table th:nth-child(2) { background: #4a6fd6; }
+.cr-table th:nth-child(3) { background: #7a5bc7; }
+.cr-table td { vertical-align: top; font-size: 0.9rem; line-height: 1.6; padding: 1rem; width: 33.333%; }
+.cr-table tbody tr:nth-child(odd) { background: transparent; }
+.cr-table tbody tr:nth-child(even) { background: rgba(33, 41, 49, 0.04); }
+
+/* ---------- Illustrative examples: each activity is a row of three colour-coded columns */
+.cr-activity { margin: 0 0 3.5rem 0; padding-top: 2.5rem; border-top: solid 2px #eeeeee; }
+.cr-activity:first-child { padding-top: 0; border-top: 0; }
+.cr-activity > h2 { font-size: 1.7rem; margin: 0 0 1.5rem 0; }
+.cr-3e {
+	display: -moz-flex; display: -webkit-flex; display: -ms-flex; display: flex;
+	-moz-align-items: stretch; -webkit-align-items: stretch; -ms-align-items: stretch; align-items: stretch;
+	width: calc(100% + 1rem); margin: 0 0 0 -1rem;
+}
+.cr-lvl {
+	-moz-flex: 1 1 0; -webkit-flex: 1 1 0; -ms-flex: 1 1 0; flex: 1 1 0; min-width: 0;
+	margin: 0 0 0 1rem; padding: 1.4rem 1.4rem 0.4rem 1.4rem;
+	border-top: solid 0.3rem #18bfef; border-radius: 0.35rem; background: #f5f7f9;
+}
+.cr-lvl.cr-extend { border-top-color: #4a6fd6; }
+.cr-lvl.cr-empower { border-top-color: #7a5bc7; }
+.cr-lvl h3 { margin: 0 0 0.9rem 0; font-size: 0.85rem; letter-spacing: 0.15em; color: #0f90b8; }
+.cr-lvl.cr-extend h3 { color: #4a6fd6; }
+.cr-lvl.cr-empower h3 { color: #7a5bc7; }
+.cr-lvl p { font-size: 0.95rem; line-height: 1.65; margin: 0 0 1.1rem 0; }
+@media screen and (max-width: 980px) {
+	.cr-3e { display: block; width: 100%; margin: 0; }
+	.cr-lvl { margin: 0 0 1rem 0; }
+}
+
+/* ---------- Licence icons */
+ul.cr-cc { margin: 1.25rem 0 0 0; }
+#main ul.cr-cc { margin: 2rem 0 0 0; }
+#main ul.cr-cc li a.icon { border-bottom: 0; }
+
+/* ---------- Previous / next */
+#main .cr-pager {
+	display: -moz-flex; display: -webkit-flex; display: -ms-flex; display: flex;
+	-moz-align-items: stretch; -webkit-align-items: stretch; -ms-align-items: stretch; align-items: stretch;
+	-moz-justify-content: center; -webkit-justify-content: center; -ms-justify-content: center; justify-content: center;
+	margin: 3.5rem 0 0 -1rem; width: calc(100% + 1rem);
+}
+#main .cr-pager li { -moz-flex: 1 1 0; -webkit-flex: 1 1 0; -ms-flex: 1 1 0; flex: 1 1 0; min-width: 0; padding: 0 0 0 1rem; }
+#main .cr-pager li .button {
+	display: block; height: 100%; min-height: 3.5rem; line-height: 1.35; padding: 0.8rem 1rem;
+	white-space: normal; text-align: center; letter-spacing: 0.05em;
+}
+.cr-pager .cr-dir { display: block; margin-bottom: 0.25rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.75; }
+.cr-pager .cr-t { display: block; font-size: 0.8rem; letter-spacing: 0.02em; text-transform: none; font-weight: 600; }
+@media screen and (max-width: 736px) {
+	#main .cr-pager { display: block; margin: 2.5rem 0 0 0; width: 100%; }
+	#main .cr-pager li { display: block; width: 100%; padding: 0 0 1rem 0; }
+}
+
+/* ---------- Footer: licence + contents */
+#footer .cr-toc { margin: 0; padding: 0; list-style: none; font-size: 0.9rem; line-height: 1.45; }
+#footer .cr-toc li { margin: 0 0 0.55rem 0; padding: 0; }
+#footer section p { font-size: 0.9rem; line-height: 1.6; color: #565d64; text-align: left; }
+#footer section a { color: #3f474e; }
+
+/* ---------- Credits under the footer: photo attribution and template credit are two separate paragraphs */
+#copyright { color: rgba(255, 255, 255, 0.6); }
+#copyright p { margin: 0 0 1rem 0; text-align: center; }
+#copyright p:last-child { margin-bottom: 0; }
+#copyright .cr-photos { font-size: 0.75rem; letter-spacing: 0.06em; line-height: 1.7; }
+#copyright .cr-design { font-size: 0.75rem; letter-spacing: 0.06em; }

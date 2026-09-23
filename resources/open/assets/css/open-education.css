@@ -1,0 +1,61 @@
+/* Open Education – customisations layered on the HTML5 UP Story template.
+   Additive only: main.css is the untouched template stylesheet. */
+
+/* ---------- Small labels ---------- */
+.oe-eyebrow { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.25em; margin: 0 0 1.25rem 0; opacity: 0.85; text-transform: uppercase; }
+.oe-date { font-size: 0.9rem; margin: 0 0 2rem 0; opacity: 0.85; }
+.oe-small { font-size: 0.75rem; margin: 2rem 0 0 0; opacity: 0.7; }
+.oe-anchor { display: block; height: 0; }
+
+/* ---------- Photo credits (sit inside the template's image panes) ---------- */
+.banner .image, .spotlight .image { position: relative; }
+.oe-credit {
+	background: rgba(0, 0, 0, 0.5); bottom: 0; color: #fff; font-size: 0.55rem; letter-spacing: 0.03em;
+	padding: 0.4rem 0.9rem; position: absolute; right: 0; z-index: 2;
+}
+.oe-credit a { color: #fff; }
+
+/* ---------- Section-page banner ---------- */
+.oe-banner { min-height: 27rem; }
+.oe-banner .content h1 { font-size: 2.6rem; line-height: 1.2; }
+.oe-banner .content .oe-date { margin-bottom: 0; }
+.oe-back { font-size: 0.7rem; letter-spacing: 0.15em; margin: 0 0 2.5rem 0; text-transform: uppercase; }
+.oe-back a { border: 0; text-decoration: none; }
+.oe-back a:hover { opacity: 0.75; }
+.oe-back .icon { margin-right: 0.5rem; }
+.oe-back .icon:before { font-size: 0.9em; }
+
+/* ---------- Article body ---------- */
+.oe-article > .inner { text-align: left; }
+.oe-article .inner > *:last-child { margin-bottom: 0; }
+.oe-article p { line-height: 1.75; }
+.oe-article .table-wrapper td, .oe-article .table-wrapper th { vertical-align: top; }
+.oe-article .table-wrapper td { font-size: 0.9rem; }
+.oe-figure { margin: 0 0 2.5rem 0; text-align: center; }
+.oe-figure img { border-radius: 4px; height: auto; max-width: 100%; }
+.oe-figure figcaption { font-size: 0.8rem; font-style: italic; margin-top: 0.75rem; opacity: 0.7; }
+
+/* ---------- Previous / next band ---------- */
+.oe-pager > .inner { padding: 3.5rem 2rem 2.25rem 2rem !important; }
+.oe-pager .actions { flex-wrap: wrap; }
+.oe-pager .actions li { padding-bottom: 1rem; }
+.oe-pager .button { height: auto; line-height: 1.5; padding: 0.8rem 1.75rem; white-space: normal; }
+
+/* ---------- Footer / attribution ---------- */
+.oe-attribution { font-size: 0.85rem; margin: 1.5rem auto 0 auto; max-width: 44rem; opacity: 0.85; }
+.oe-attribution + .oe-attribution { margin-top: 1rem; }
+.oe-cc { margin-bottom: 0; }
+.spotlight .oe-cc { margin-top: 1.5rem; }
+.spotlight h2 a { border: 0; }
+
+@media screen and (max-width: 980px) {
+	.oe-banner .content h1 { font-size: 2.1rem; }
+}
+@media screen and (max-width: 736px) {
+	.oe-banner { min-height: 0; }
+	.oe-banner .content h1 { font-size: 1.7rem; }
+	.oe-banner .image { min-height: 14rem; }
+}
+
+/* The source uses bold for its short sub-headings ("Institutional benefits" etc.) — make sure it reads as bold. */
+.oe-article strong { font-weight: 600; }

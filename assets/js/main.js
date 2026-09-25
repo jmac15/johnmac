@@ -276,4 +276,82 @@ $(function () {
   $h1.before($back);
   $h1.after($meta);
 });
+/* lightbox — click any .lightbox-trigger to view a larger version.
+   Add class="lightbox-trigger" to an <a href="[full-size image]"> that
+   wraps a thumbnail <img>. Give a set of related links the same
+   data-lightbox-group="name" attribute to get prev/next navigation
+   between them; leave it off for a single stand-alone image. */
+$(function () {
+  var $lightbox, $lbImage, $lbCaption, $currentGroup = $(), currentIndex = 0;
+
+  function buildLightbox() {
+    if ($lightbox) return;
+
+    $lightbox = $(
+      '<div id="lightbox" class="lightbox" aria-hidden="true">' +
+        '<button type="button" class="lightbox-close" aria-label="Close">&times;</button>' +
+        '<button type="button" class="lightbox-prev" aria-label="Previous image">&#10094;</button>' +
+        '<button type="button" class="lightbox-next" aria-label="Next image">&#10095;</button>' +
+        '<div class="lightbox-content">' +
+          '<img src="" alt="" />' +
+          '<p class="lightbox-caption"></p>' +
+        '</div>' +
+      '</div>'
+    ).appendTo('body');
+
+    $lbImage = $lightbox.find('img');
+    $lbCaption = $lightbox.find('.lightbox-caption');
+
+    $lightbox.on('click', function (e) {
+      if (e.target === this) closeLightbox();
+    });
+    $lightbox.find('.lightbox-close').on('click', closeLightbox);
+    $lightbox.find('.lightbox-prev').on('click', function () { show(currentIndex - 1); });
+    $lightbox.find('.lightbox-next').on('click', function () { show(currentIndex + 1); });
+  }
+
+  function show(index) {
+    if (!$currentGroup.length) return;
+    currentIndex = ((index % $currentGroup.length) + $currentGroup.length) % $currentGroup.length;
+
+    var $item = $currentGroup.eq(currentIndex);
+    var caption = $item.attr('data-caption') || $item.find('img').attr('alt') || '';
+
+    $lbImage.attr('src', $item.attr('href'));
+    $lbImage.attr('alt', caption);
+    $lbCaption.text(caption);
+    $lightbox.find('.lightbox-prev, .lightbox-next').toggle($currentGroup.length > 1);
+  }
+
+  function openLightbox($trigger) {
+    buildLightbox();
+
+    var group = $trigger.attr('data-lightbox-group');
+    $currentGroup = group ?
+      $('.lightbox-trigger[data-lightbox-group="' + group + '"]') :
+      $trigger;
+
+    show($currentGroup.index($trigger));
+    $lightbox.addClass('active').attr('aria-hidden', 'false');
+    $('body').addClass('lightbox-open');
+  }
+
+  function closeLightbox() {
+    if (!$lightbox) return;
+    $lightbox.removeClass('active').attr('aria-hidden', 'true');
+    $('body').removeClass('lightbox-open');
+  }
+
+  $(document).on('click', '.lightbox-trigger', function (e) {
+    e.preventDefault();
+    openLightbox($(this));
+  });
+
+  $(document).on('keydown', function (e) {
+    if (!$lightbox || !$lightbox.hasClass('active')) return;
+    if (e.keyCode === 27) closeLightbox();
+    if (e.keyCode === 37) show(currentIndex - 1);
+    if (e.keyCode === 39) show(currentIndex + 1);
+  });
+});
 /* ====================== end of jmac component scripts ================== */

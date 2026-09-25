@@ -4056,3 +4056,170 @@ input, select, textarea {
   color: #666;
   font-size: 0.9em;
 }
+
+/* jmac photography masonry grid */
+.photo-masonry {
+	column-count: 4;
+	column-gap: 1em;
+	margin-top: 1.5em;
+}
+
+	.photo-masonry .photo-item {
+		display: block;
+		break-inside: avoid;
+		-webkit-column-break-inside: avoid;
+		margin: 0 0 1em 0;
+		overflow: hidden;
+		border-radius: 4px;
+	}
+
+	.photo-masonry .photo-item a {
+		display: block;
+		line-height: 0;
+	}
+
+	.photo-masonry .photo-item img {
+		width: 100%;
+		display: block;
+		cursor: pointer;
+		transition: transform 0.4s ease;
+	}
+
+	.photo-masonry .photo-item a:hover img {
+		transform: scale(1.04);
+	}
+
+	.photo-empty {
+		margin-top: 1.5em;
+	}
+
+	@media screen and (max-width: 1280px) {
+		.photo-masonry {
+			column-count: 3;
+		}
+	}
+
+	@media screen and (max-width: 736px) {
+		.photo-masonry {
+			column-count: 2;
+		}
+	}
+
+	@media screen and (max-width: 480px) {
+		.photo-masonry {
+			column-count: 1;
+		}
+	}
+/* end of jmac photography masonry grid */
+
+/* jmac lightbox */
+.lightbox {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(20, 20, 20, 0.94);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease;
+	padding: 2em;
+	box-sizing: border-box;
+}
+
+	.lightbox.active {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.lightbox-content {
+		max-width: 90vw;
+		max-height: 90vh;
+		text-align: center;
+	}
+
+	.lightbox-content img {
+		max-width: 90vw;
+		max-height: 80vh;
+		display: block;
+		margin: 0 auto;
+		box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+		border-radius: 2px;
+	}
+
+	.lightbox-caption {
+		color: #fafafa;
+		margin-top: 0.85em;
+		font-size: 0.9em;
+		opacity: 0.85;
+	}
+
+	.lightbox-close,
+	.lightbox-prev,
+	.lightbox-next {
+		position: fixed;
+		background: none;
+		border: 0;
+		color: #fafafa;
+		cursor: pointer;
+		opacity: 0.75;
+		transition: opacity 0.2s ease, color 0.2s ease;
+		z-index: 10001;
+	}
+
+		.lightbox-close:hover,
+		.lightbox-prev:hover,
+		.lightbox-next:hover {
+			opacity: 1;
+			color: #a8547f;
+		}
+
+	.lightbox-close {
+		top: 1.25em;
+		right: 1.5em;
+		font-size: 2.25em;
+		line-height: 1;
+	}
+
+	.lightbox-prev,
+	.lightbox-next {
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 1.75em;
+		padding: 0.4em 0.6em;
+	}
+
+	.lightbox-prev {
+		left: 0.5em;
+	}
+
+	.lightbox-next {
+		right: 0.5em;
+	}
+
+	body.lightbox-open {
+		overflow: hidden;
+	}
+
+	@media screen and (max-width: 480px) {
+		.lightbox {
+			padding: 1em;
+		}
+
+		.lightbox-close {
+			top: 0.5em;
+			right: 0.5em;
+			font-size: 1.75em;
+		}
+
+		.lightbox-prev,
+		.lightbox-next {
+			font-size: 1.4em;
+			padding: 0.3em 0.4em;
+		}
+	}
+/* end of jmac lightbox */

@@ -42,5 +42,8 @@ const container=document.getElementById('levels');
 Object.entries(levels).forEach(([name,data])=>{const b=document.createElement('button');b.className='card'+(name==='Remember'?' selected':'');b.innerHTML=`<h3>${name}</h3><p>${data.description}</p>`;b.onclick=()=>{selected=name;document.getElementById('levelName').textContent=name;document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));b.classList.add('selected');};container.appendChild(b);});
 function generateVerb(){const list=levels[selected].verbs;document.getElementById('verb').textContent=list[Math.floor(Math.random()*list.length)];}
 </script>
+	<!-- GoatCounter: cookie-free page view counting -->
+	<script data-goatcounter="https://johnmac.goatcounter.com/count"
+	        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

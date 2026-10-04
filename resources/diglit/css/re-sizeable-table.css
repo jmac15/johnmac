@@ -1,0 +1,17 @@
+ @media screen and (max-width: 500px){
+.hide-on-mobile{ display:none;}
+.hide-on-desktop{ font-weight:bold;}
+.table-row{ padding:0 0 10px 0;}
+	 }
+	
+	
+@media screen and (min-width: 500px){
+.cols-7 {
+	margin:0;
+	padding:5px 0 5px 0;
+	position:relative;
+	float:left;
+	width:14.28%;}
+.hide-on-desktop{ display:none;}
+.grey { background-color:#F7F7F7;}
+	 }

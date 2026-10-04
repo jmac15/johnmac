@@ -1,0 +1,113 @@
+@charset "utf-8";
+/* CSS Document */
+
+#areas-of-interest li .button a{ color:#EFB8B8;}
+#areas-of-interest li a img{ padding-right:15px;}
+
+#slide-reveal{
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background: url(../img/interactive-map/operate-upstream-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;}
+	
+#slide-reveal2{
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background: url(../img/interactive-map/interest-upstream-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;}
+	
+#slide-reveal3{
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background: url(../img/interactive-map/pipeline-downstream-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;}
+	
+#slide-reveal4{
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background: url(../img/interactive-map/other-downstream-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;}
+
+@media screen and (min-width: 1024px){
+#map {
+	width:auto;
+	height:500px;
+	position:relative;
+	background: url(../img/interactive-map/full-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;
+	border:2px dotted #D9D9D9;
+	border-radius:10px;}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px){
+#map {
+	width:auto;
+	height:400px;
+	position:relative;
+	background: url(../img/interactive-map/full-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;
+	border:2px dotted #D9D9D9;
+	border-radius:10px;}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation : landscape) {	
+}
+	
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation : portrait) {	
+}
+
+@media screen and (max-width: 767px){
+	#map {
+	width:auto;
+	height:300px;
+	position:relative;
+	background: url(../img/interactive-map/full-map.png) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+  	background-size: cover;
+	border:2px dotted #D9D9D9;
+	border-radius:10px;}
+}
+
+@media screen and (max-width: 408px){
+}
+

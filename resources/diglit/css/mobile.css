@@ -1,0 +1,473 @@
+@charset "utf-8";
+/* CSS Document */
+
+@media screen and (max-width: 767px){
+	
+.menu-open {padding-left:260px !important;}
+/*.buttons-hide { display:none;}
+.help-hide { display:none;}*/
+	
+/*GALLERIA*/
+/* This rule is read by Galleria to define the gallery height. There must be a height or it wont work. This is defined sperately in the 3 stylesheets so that you can choose per device width. The galleria on a specific pageis targeted by using the id of the page (which is entered in Modify > Template Properties) eg. id 'page-name' is used here*/
+#page-name #galleria{height:200px;}
+#galleria-gallery #galleria {height:300px; margin:0 0 15px 0;}
+
+/*on pages with gallery in modal window, have everything centred*/
+#galleryModal {text-align:center;}
+
+/*add padding to the right of a column*/
+.padding-right-mobile { margin:0; padding-right:15px;}
+
+/*add padding to the bottom of things (in the template I have used a 25px gutter for most spacings)*/
+.padding-bottom{padding:0 0 15px 0;}
+
+/*no padding*/
+.no-padding {padding:0;}
+
+article ol {
+    margin: 0;
+    padding: 0 0 15px 15px;}
+	
+.img-float-left { width:150px; margin:0 7px 5px 0; float:left;}	
+.img-float-right { width:150px; margin:0 0 5px 7px; float:right;}
+
+/*============================================*/
+
+body{
+	margin:0;
+	padding:0;
+	font-family:Calibri, Arial, Helvetica, sans-serif;}
+	
+.clear{
+	clear:both;}
+
+#container-wrapper{
+	margin:0 auto 0 auto;
+	padding:50px 7px 7px 7px;
+	width:auto;}
+	
+#container{
+	margin:0;
+	padding:0;}
+	
+header a:hover, header a:focus { color:#E0FFCC;}
+	
+#header-inner{
+	margin:0;
+	padding:0px 5px 10px 10px;
+	width:auto;}
+	
+#fixed-top-band{
+	margin:0;
+	padding:0 10px 0px 10px;
+	position:fixed;
+	left:0;
+	top:0;
+	right:0;
+	height:50px;
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.41);
+	overflow:visible;
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.41);
+	overflow:visible;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter: alpha(opacity=90);
+	opacity: .9;
+	z-index:500;}
+	
+#fixed-top-band a{
+	font-size:30px;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);
+	text-decoration:none;}
+	
+#menu-toggle{
+	margin:0;
+	padding:5px 0 0 0;
+	width:40px;}
+	
+#menu-toggle{width:25px;}
+	
+#menu-inner{
+	margin:0;
+	padding:0;
+	width:auto;
+	float:left;
+	display:block;}
+	
+#menu-inner a{
+	margin:0;
+	padding:0;}
+	
+#menu-inner p{
+	margin:0;
+	padding:0;
+	font-size:37px;
+	display: block;
+	line-height:1;
+	color:#FFFFFF;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+#menu-inner i{
+	margin:0;
+	padding:0;}
+	
+/*==============*/
+
+/*a different button is shown in desktop version (the nav is different)*/
+
+#menu-toggle-desktop{display:none;}
+	
+#menu-inner-desktop{display:none;}
+	
+/*==============*/
+	
+.fittext-menu i:hover, .fittext-menu i:focus { color:#E0FFCC;}
+	
+#section{
+	margin:0;
+	padding:0;
+	float:left;
+	width:60%;}
+	
+#section-title{
+	margin:0;
+	padding:0;
+	width:auto;
+	float:left;
+	display:none;}
+	
+/*#section-title h1{
+	margin:0;
+	padding:8px 10px 0 3px;
+	text-align:right;
+	font-size:16px;
+	color:#FFFFFF;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}*/
+	
+#help{
+	margin:0;
+	padding:10px 0 0 0;
+	position:relative;
+	float:right;
+	width:35px;}
+	
+#help i{
+	margin:0;
+	padding:0 0 0 20px;}
+	
+.icon-key {
+	margin:0;
+	padding:0;
+	display:block;
+	float:right;}
+	
+#keyModal h2{
+	text-align:center;}
+	
+#keyModal hr{ padding:0 0 15px 0;}
+	
+.buttons{
+	margin:0;
+	padding:10px 0 0 0;
+	float:right;
+	width:65px;}
+	
+.btn-back, .btn-fwd{
+	margin:0;
+	padding:0;
+	width:50%;
+	float:left;}
+	
+.btn-fwd{float:right; text-align:right;}
+	
+.btn-back{float:left; text-align:left;}
+
+.buttons p{margin:0; padding:0; line-height:1;}
+	
+.buttons i.icon-chevron-left, .buttons i.icon-chevron-right { 
+	font-size:37px;
+	line-height:1;
+	/*display:block;*/
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+#bottom-buttons i { text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+.buttons a{ 
+	margin:0;
+	padding:0;
+	font-size:30px !important; 
+	color:#FFF;}
+	
+.buttons a:hover, .buttons a:focus{color:#03919C;}
+	
+#page{
+	margin:0;
+	padding:10px 10px 0 10px;
+	position:relative;
+	background-color:#FFF;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);
+	min-height:200px;}
+	
+#sidr{
+	margin:0;
+	padding:0;
+	float:left;
+	border-right:none;
+	display:none;}
+	
+nav {
+	margin:0;
+	padding:0;}
+	
+nav ul {
+	margin:0;
+	padding:0;}
+	
+nav li {
+	margin:0;
+	padding:5px 0 5px 0;
+	border-top:1px solid #062634;}
+
+nav li:last-child {
+	border-bottom:1px solid #062634;}
+	
+nav ul li ul {
+	margin:0;
+	padding:0 0 0 20px;}
+	
+nav ul li ul li {
+	margin:0;
+	padding:4px 0 4px 0;
+	border-top:none;
+	font-size:82%;}
+	
+nav ul li ul li:first-child {
+	padding:10px 0 4px 0;}
+	
+nav ul li ul li:last-child {
+	border-bottom:none;}
+	
+nav a{
+	margin:0;
+	padding:0;
+	color: #062634;
+  	text-decoration: none;
+	display:block;}
+	
+nav a:hover, nav a:focus{
+	color:#377495;}
+		
+nav .icon-home, nav .icon-book{
+	margin:0;
+	padding:0 10px 0 10px;}
+	
+#content-wrapper{
+	margin:0;
+	padding:0;
+	width:auto;
+	float:none;}
+	
+article{
+	margin:0;
+	padding:0;
+	width:auto;}
+		
+article h1{
+	color:#FFF;
+	margin:0 0 0.7em 0; 
+	padding:7px 0 7px 0;
+	text-align:center;
+	font-size:20px;}
+	
+article h2{ font-size:17px;}
+article h3{ font-size:17px; font-weight:normal;}
+
+article p{
+	margin:0;
+	padding:0 0 15px 0;
+	font-family:Calibri, Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;}
+
+article ul{
+	margin:0;
+	padding:0 0 15px 20px;}
+	
+article ol{
+ 	margin:0;
+ 	padding:0 0 15px 20px;}
+
+/*==============================================*/
+	
+/*ICONS*/
+
+/*==============================================*/
+	
+/*ICONS*/
+
+.activity-wrapper {
+	margin:0 0 25px 0;
+	padding:15px;
+	border:2px solid #062736;
+	min-height:92px;
+	-webkit-border-radius: 9px;
+	border-radius: 9px;}
+
+.activity-wrapper .fa-headphones, 
+.activity-wrapper .fa-film, 
+.activity-wrapper .fa-book, 
+.activity-wrapper .fa-download, 
+.activity-wrapper .fa-info-circle, 
+.activity-wrapper .fa-link, 
+.activity-wrapper .fa-font, 
+.activity-wrapper .fa-print, 
+.activity-wrapper .fa-question-circle, 
+.activity-wrapper .fa-asterisk, 
+.activity-wrapper .fa-comments-o, 
+.activity-wrapper .fa-users, 
+.activity-wrapper .fa-edit, 
+.activity-wrapper .fa-history {
+	margin:0 !important;
+	margin:0 15px 0 0 !important;
+	float:left !important;
+	font-size:25px !important;
+	color:#062736 !important;}
+	
+.activity-wrapper .fa-font {border:2px solid #062736; padding:2px 3px 2px 3px; font-size:17px !important; -webkit-border-radius: 6px; border-radius: 6px;}
+	
+.activity-wrapper p { padding:0 0 15px 0; color:#062736;}
+
+.activity-wrapper h3 {color:#062736;}
+
+
+/*.activity, .reading, .info, .print, .writing-task, .reading-task, .download, .audio-sound, .watch-video, .web-link, .illustration, .map, .discussion, .game, .file, .text-file, .spreadsheet, .collaborate, .reflective-journal, .research {
+	margin:0 0 25px 0;
+	padding:15px 15px 0 15px;
+	border:2px solid #062736;
+	min-height:80px;
+	-webkit-border-radius: 9px;
+	border-radius: 9px;}
+
+.activity i, .reading i, .info i, .print i, .writing-task i, .reading-task i, .download i, .audio-sound i, .watch-video i, .web-link i, .illustration i, .map i, .discussion i, .game i, .file i, .text-file i, .spreadsheet i, .collaborate i, .reflective-journal i, .research i {
+	margin:0;
+	padding:0 15px 5px 0;
+	float:left;
+	font-size:25px;
+	color:#062736;}
+	
+.activity p, .reading p, .info p, .print p, .writing-task p, .reading-task p, .download p, .audio-sound p, .watch-video p, .web-link p, .illustration p, .map p, .discussion p, game p, .file p, .text-file p, .spreadsheet p, .collaborate p, .reflective-journal p, .research p { padding:0 0 15px 0; color:#062736;}
+
+.activity p, .reading h3, .info h3, .print h3, .writing-task h3, .reading-task h3, .download h3, .audio-sound h3, .watch-video h3, .web-link h3,  .illustration h3, .map h3, .discussion h3, .game h3, .file h3, .text-file h3, .spreadsheet h3, .collaborate h3, .reflective-journal h3, .research h3 {color:#062736;}
+
+.activity {border-color:#F15700;}
+.activity i{color:#F15700;}
+.activity p {color:#F15700;}
+.activity h3 {color:#F15700;}
+
+.info {border-color:#bbb;}
+.info i{color:#bbb;}
+.info p {color:#bbb;}
+.info h3 {color:#bbb;}
+
+.print {border-color:#377495;}
+.print i{color:#377495;}
+.print p {color:#377495;}
+.print h3 {color:#377495;}*/
+
+	
+/*==============================================*/
+
+	
+.icon-info-sign {
+	margin:0;
+	padding:1px 4px 2px 3px;
+	display:block;
+	float:right;}
+	
+p.answer{ background-color:#F1F1F1;}
+
+	
+#footer-wrapper{
+	margin:0;
+	padding:0;}
+	
+footer{
+	margin:0;
+	padding:15px 0 0 0;}
+	
+#bottom-buttons{
+	margin:0;
+	padding:0;
+	width:100px;
+	float:right;}
+	
+.copyright-footer{
+	margin:0;
+	padding:10px 0 0 0;
+	text-align:left;
+	font-size:75%;
+	clear:both;}
+	
+#progress-wrapper{
+	margin:0;
+	padding:0;
+	position:fixed;
+	left:0;
+	bottom:0;
+	right:0;
+	height:35px;
+	overflow:visible;
+	z-index:501;
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.75);
+	overflow:visible;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter: alpha(opacity=90);
+	opacity: .9;}
+	
+#progress-inner{
+	margin:0;
+	padding:12px 0 2px 10px;
+	position:relative;
+	float:left;
+	width:100px;}
+	
+#pagination-numbers{
+	margin:0;
+	padding:8px 0 2px 13px;
+	position:relative;
+	width:70px;
+	float:left;}
+	
+#pagination-numbers p {
+	margin:0;
+	padding:0;
+	color:#FFF;
+	font-size:13px;
+	text-align:left;}
+	
+.progress { height:13px;}
+
+.progress .meter { background-color:#377495;}
+
+button, .button{ background-color:#377495;}
+
+section p { padding:0;}
+
+#back-to-top{
+	margin:0;
+	padding:7px 20px 0 0;
+	width:100px;
+	float:right;}
+
+#top-link p{
+	margin:0;
+	padding:0px 0 0 0;
+	font-size:12px;
+	text-align:right;}
+	
+a#top-link {
+	margin:0;
+	padding:0; 
+	font-size:13px;
+	color:#FFF;}
+
+	
+	
+}

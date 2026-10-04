@@ -1,0 +1,426 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+@media screen and (min-width: 1024px){
+	
+/*by default the sub nav items are set to hide (and JS makes them show when the page body ID and li class are the same).*/	
+nav ul li ul {display:hide;}
+	
+/*GALLERIA*/
+/* This rule is read by Galleria to define the gallery height. There must be a height or it wont work. This is defined sperately in the 3 stylesheets so that you ca choose. The galleria on a specific pageis targeted by using the id of the page (which is entered in Modify > Template Properties) eg. id 'page-name' is used here*/
+#page-name #galleria{height:300px;}
+#galleria-gallery #galleria {height:400px; margin:0 0 15px 0;}
+
+/*on pages with gallery in modal window, have everything centred*/
+#galleryModal {text-align:center;}
+
+/*add padding to the right of a column (in the template I have used a 25px gutter for most spacings in desktop styles) */
+.padding-right { margin:0; padding-right:25px;}
+
+/*add padding to the bottom of things (in the template I have used a 25px gutter for most spacings in desktop styles)*/
+.padding-bottom{padding:0 0 25px 0;}
+
+/*no padding*/
+.no-padding {padding:0;}
+
+.img-float-left { width:300px; margin:0 20px 10px 0; float:right;}
+.img-float-right { width:300px; margin:0 0 10px 20px; float:right;}
+
+/*Puts a white line between the content and the vertical tabs (the same as the other typs of tabs)*/
+.tabs-content.vertical.active {border-left: 1px solid white;}
+
+/*===================================*/
+
+body{
+	margin:0;
+	padding:0;
+	font-family:Calibri, Arial, Helvetica, sans-serif;}
+	
+.clear{
+	clear:both;}
+	
+#container-wrapper{
+	margin:0 auto 0 auto;
+	padding:45px 30px 55px 30px;
+	width:auto;
+	max-width:1400px;}
+	
+#container{
+	margin:0;
+	padding:0;}
+	
+#header-inner{
+	margin:0;
+	padding:22px 0 20px 25px;
+	width:auto;}
+
+#fixed-top-band{
+	margin:0;
+	padding:10px 16px 0px 16px;
+	position:fixed;
+	left:0;
+	top:0;
+	right:0;
+	height:52px;
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.75);
+	overflow:visible;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter: alpha(opacity=90);
+	opacity: .9;
+	z-index:500;
+}
+	
+#fixed-top-band a{
+	font-size:30px;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);
+	text-decoration:none;}
+	
+#menu-toggle{
+	margin:0;
+	padding:0;
+	float:left;
+	width:60px;
+	display:none;}
+	
+#menu-inner{
+	margin:0;
+	padding:0;
+	width:auto;
+	float:left;
+	display:none;}
+	
+#menu-inner a{
+	margin:0;
+	padding:0;}
+	
+#menu-inner p{
+	margin:0;
+	padding:0;
+	font-size:37px;
+	display: block;
+	line-height:1;
+	color:#FFFFFF;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+#menu-inner i{
+	margin:0;
+	padding:0;}
+	
+.fittext-menu i:hover, .fittext-menu i:focus { color:#E0FFCC;}
+
+#section{
+	margin:0;
+	padding:0;
+	float:left;
+	width:60%;}
+	
+#section-title{
+	margin:0;
+	padding:0;
+	width:auto;
+	float:left;}
+	
+#section-title h1{
+	margin:0;
+	padding:0 30px 0 0;
+	text-align:left;
+	font-size:1.5e;
+	color:#FFFFFF;
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);
+	display:inline;}
+
+#help{
+	margin:0;
+	padding:2px 0 0 0;
+	position:relative;
+	float:right;
+	width:40px;}
+	
+#help a {font-size:31px; display: flex;}
+	
+#help i{
+	margin:0;
+	padding:0 0 0 25px;}
+	
+.icon-key {
+	margin:0;
+	padding:0;
+	display:block;
+	float:right;}
+	
+#keyModal h2{
+	text-align:center;}
+	
+#keyModal hr{ padding:0 0 15px 0;}
+
+.buttons{
+	margin:0;
+	padding:2px 0 0 0;
+	float:right;
+	width:65px;}
+	
+.btn-back, .btn-fwd{
+	margin:0;
+	padding:0;
+	width:50%;
+	float:left;}
+	
+.btn-fwd{float:right; text-align:right;}
+	
+.btn-back{float:left; text-align:left;}
+
+.buttons p{margin:0; padding:0; line-height:1;}
+	
+.buttons i.icon-chevron-left, .buttons i.icon-chevron-right { 
+	font-size:37px;
+	line-height:1;
+	/*display:block;*/
+	text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+#bottom-buttons i { text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);}
+	
+.buttons a{ 
+	margin:0;
+	padding:0;
+	font-size:30px !important; 
+	color:#FFF;}
+	
+.buttons a:hover, .buttons a:focus{color:#03919C;}
+	
+#page{
+	margin:0;
+	padding:25px 25px 0 25px;
+	min-height:500px;
+	position:relative;
+	background-color:#FFF;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.41);
+	min-height:400px;}
+	
+.browsehappy{ text-align:center;}
+.browsehappy a{ color:#000000;}
+	
+#sidr{
+	margin:0 0 25px 0;
+	padding:0;
+	width:20%;
+	float:left;
+	border-right:1px solid #F1806A;}
+	
+nav {
+	margin:0;
+	padding:0 25px 0 0;}
+	
+nav ul {
+	margin:0;
+	padding:0;
+	list-style:none;}
+	
+nav li {
+	margin:0;
+	padding:7px 0 7px 0;
+	border-top:1px solid #062634; 
+	font-size:17px;}
+
+nav li:last-child {
+	border-bottom:1px solid #062634;}
+	
+nav ul li ul {
+	margin:0;
+	padding:0 0 0 25px;}
+	
+nav ul li ul li {
+	margin:0;
+	padding:0;
+	border-top:none;
+	font-size:16px;}
+	
+nav ul li ul li:first-child {
+	padding:2px 0 0 0;}
+	
+nav ul li ul li:last-child {
+	border-bottom:none;
+	padding-bottom:2px;}
+	
+nav a{
+	margin:0;
+	padding:0;
+	color: #062634;
+  	text-decoration: none;
+	display:block;}
+	
+nav .icon-home, nav .icon-book{
+	margin:0;
+	padding:0 10px 0 10px;}
+	
+.index .columns-layouts a{ display:none;}
+.book-shelf .columns-layouts a{ display:none;}
+.slideshow .columns-layouts a{ display:none;}
+	
+#content-wrapper{
+	margin:0;
+	padding:0;
+	float:right;}
+	
+article{
+	margin:0;
+	width:auto;}
+	
+/*=========================*/
+
+/*styling for changing classes when nav is toggled*/
+
+.content-width{width:80%;}
+.content-full-width{width:100%;}
+.article-padding{padding:0 0 0 25px;}
+.article-remove-padding{padding:0;}
+
+/*=========================*/
+	
+article h1{
+	margin:0 0 25px 0;
+	padding:6px 0 6px 12px;}
+	
+article h2{ margin:0 0 15px 0; font-size:1.1em; font-weight:bold;}
+
+article h3{ margin:0 0 15px 0; font-size: 1em; font-weight:bold;}
+
+article h4{ margin:0 0 15px 0;}
+
+article p{
+	margin:0;
+	padding:0 0 15px 0;}
+
+article ul{
+	margin:0;
+	padding:0 0 15px 25px;}
+	
+article ol{
+	margin:0;
+	padding:0 0 15px 25px;}
+	
+/*==============================================*/
+	
+/*ICONS*/
+
+
+.activity-wrapper {
+	margin:0 0 25px 0;
+	padding:15px;
+	min-height:92px;
+	-webkit-border-radius: 9px;
+	border-radius: 9px;}
+
+.activity-wrapper .fa-headphones, 
+.activity-wrapper .fa-film, 
+.activity-wrapper .fa-book, 
+.activity-wrapper .fa-download, 
+.activity-wrapper .fa-info-circle, 
+.activity-wrapper .fa-link, 
+.activity-wrapper .fa-font, 
+.activity-wrapper .fa-print, 
+.activity-wrapper .fa-question-circle, 
+.activity-wrapper .fa-asterisk, 
+.activity-wrapper .fa-comments-o, 
+.activity-wrapper .fa-users, 
+.activity-wrapper .fa-edit, 
+.activity-wrapper .fa-history,
+.activity-wrapper .fa-file-pdf-o {
+	margin:0 !important;
+	margin:0 15px 0 0 !important;
+	float:left !important;
+	font-size:60px !important;}
+	
+.activity-wrapper .fa-font {border:3px solid #062736; padding:2px 5px 2px 5px; font-size:46px !important; -webkit-border-radius: 6px; border-radius: 6px;}
+	
+.activity-wrapper p { padding:0 0 15px 0;}
+
+.activity-wrapper h3 {color:#062736;}
+	
+/*==============================================*/
+	
+#footer-wrapper{
+	margin:0;
+	padding:0;}
+	
+footer{
+	margin:0;
+	padding:18px 0 0 0;}
+	
+#bottom-buttons{
+	margin:0;
+	padding:0;
+	width:100px;
+	float:right;}
+	
+/*editable area - this is the copyright text styles, for the background photo, located under the main page, and the progress bar*/
+.copyright-footer{
+	text-align:left; 
+	margin:0;
+	padding:10px 0 0 0;
+	font-size:80%; }
+
+#progress-wrapper{
+	margin:0;
+	padding:0;
+	position:fixed;
+	left:0;
+	bottom:0;
+	right:0;
+	height:35px;
+	overflow:visible;
+	z-index:501;
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.75);
+	overflow:visible;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter: alpha(opacity=90);
+	opacity: .9;}
+	
+#progress-inner{
+	margin:0;
+	padding:12px 0 2px 13px;
+	position:relative;
+	float:left;
+	width:150px;}
+	
+#pagination-numbers{
+	margin:0;
+	padding:8px 0 2px 13px;
+	position:relative;
+	width:70px;
+	float:left;}
+	
+#pagination-numbers p {
+	margin:0;
+	padding:0;
+	color:#FFF;
+	font-size:13px;
+	text-align:left;}
+	
+.progress { height:13px;}
+
+.progress .meter { background-color:#377495;}
+
+section p { padding:0;}
+
+#back-to-top{
+	margin:0;
+	padding:5px 20px 0 0;
+	width:100px;
+	float:right;}
+
+#top-link p{
+	margin:0;
+	padding:0;
+	display:block;
+	text-align:right;}
+	
+a#top-link {
+	margin:0;
+	padding:0; 
+	font-size:13px;
+	color:#FFF;}
+	
+a#top-link:hover, a#top-link:focus { color:#03919C;}
+
+}

@@ -1,0 +1,74 @@
+@charset "utf-8";
+/* CSS Document */
+
+.photo-bg h2 i {text-shadow: 0 0 5px ##062736;}
+
+#pointer, #pointer2, #pointer3, #pointer4, #pointer5, #pointer6, #pointer7, #pointer8 {position: relative;}
+
+@media screen and (min-width: 1024px){
+.photo-bg{
+	margin:0;
+	padding:20px;
+	background: url(../img/tidal-ref-levels.jpg) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height:540px;}
+.photo-bg h2 i.icon-hand-right{
+	margin:0;
+	padding:0;
+	color:#FFFFFF;
+	font-size:45px;
+	text-shadow: 0 0 5px ##062736;}	
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px){
+.photo-bg{
+	margin:0;
+	padding:15px;
+	background: url(../img/tidal-ref-levels.jpg) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;}
+.photo-bg h2 i.icon-hand-right{
+	margin:0;
+	padding:0;
+	color:#FFFFFF;
+	font-size:30px;
+	text-shadow: 0 0 5px ##062736;}
+#slide-button, #slide-button2, #slide-button3, #slide-button4, #slide-button5, #slide-button6, #slide-button7, #slide-button8 { margin:0 0 15px 0;}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation : landscape) {	
+.photo-bg{min-height:570px;}
+}
+	
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation : portrait) {	
+.photo-bg{min-height:530px;}
+}
+
+@media screen and (max-width: 767px){
+.photo-bg{
+	margin:0;
+	padding:10px;
+	background: url(../img/tidal-ref-levels.jpg) no-repeat center center; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	min-height:470px;}
+.photo-bg h2 i.icon-hand-right{
+	margin:0;
+	padding:0;
+	color:#FFFFFF;
+	font-size:25px;
+	text-shadow: 0 0 5px ##062736;}
+#slide-button, #slide-button2, #slide-button3, #slide-button4, #slide-button5, #slide-button6, #slide-button7, #slide-button8 { margin:0 0 10% 0;}
+}
+
+@media screen and (max-width: 408px){
+.photo-bg{
+	min-height:550px;}
+}

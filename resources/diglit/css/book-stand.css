@@ -1,0 +1,466 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* DESKTOP */
+@media screen and (min-width: 1024px){
+#book-stand-container{
+	margin:0 auto 0 auto;
+	padding:20px 30px 90px 30px;
+	width:720px;
+	max-width:800px;
+	background-image:url(../img/bookshelves.jpg);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;}
+	
+.book-border {
+	margin:0;
+	padding:0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 1px 3px 5px rgba(50, 50, 50, 0.7);
+	-moz-box-shadow:    1px 3px 5px rgba(50, 50, 50, 0.7);
+	box-shadow:         1px 3px 5px rgba(50, 50, 50, 0.7);}
+	
+.book-border:hover {
+	-webkit-box-shadow: 5px 5px 5px rgba(100, 25, 107, 0.7);
+	-moz-box-shadow:    5px 5px 5px rgba(100, 25, 107, 0.7);
+	box-shadow:         5px 5px 5px rgba(100, 25, 107, 0.7);}
+	
+.book-border a{
+	display:block;
+	height:100%;}
+	
+.book-border a:hover { text-decoration:underline;}
+
+/*.book-border:hover .book-reading-logo{ bottom:30px;}*/
+	
+.book-stand li{
+	margin-bottom:30px;}
+	
+.book-stand li p {
+	margin:0;
+	padding:10px 2px 20px 2px;
+	font-size:12px;
+	display:inline-block;
+	text-align:center;
+	background-color:#572163; /*this is the book colour*/
+	border:3px solid #FFFFFF;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	transition:all 200ms ease-out 0s;
+	height:130px;
+	width:100%;
+	letter-spacing:-0.5px;
+	line-height:16px;
+	-webkit-box-shadow: inset 0px 0px 7px rgba(6, 39, 54, 0.75);
+	-moz-box-shadow:    inset 0px 0px 7px rgba(6, 39, 54, 0.75);
+	box-shadow:         inset 0px 0px 7px rgba(6, 39, 54, 0.75);}
+	
+.book-stand li p a, .book-stand a {color:#FFF;}
+
+.book-stand a.current {color: #7B2E8B;} /*this stops the .book-stand class affecting it in the navigation*/
+
+.book-stand a.title { display:inline;}
+
+.desc{ display:block;}
+	
+.book-stand .has-tip{
+	color:#FFF;
+	font-weight:normal;
+	position:absolute;
+	left:5px;
+	bottom:7px;
+	display:block;}
+	
+#book-stand-container > ul > li > div > p > span {color:#FFF !important;}
+	
+p.book-reading-logo span.has-tip:hover{border-bottom:#FFF;}
+	
+#book-stand span.tooltip{background-color:#062736;}
+	
+#book-stand .tooltip > .nub{border-color:rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #062736;}
+	
+.full-desc { display:none;}
+	
+.book-reading-logo, .book-illustration-logo, .book-audio-logo, .book-video-logo, .book-map-logo, .book-link-logo, .book-download-logo, .book-discussion-logo, .book-game-logo, .book-text-logo, .book-spreadsheet-logo, .book-file-logo  {
+	position:relative;}
+	
+.book-reading-logo:before, .book-illustration-logo:before, .book-audio-logo:before, .book-video-logo:before, .book-map-logo:before, .book-link-logo:before, .book-download-logo:before, .book-discussion-logo:before, .book-game-logo:before, .book-text-logo:before, .book-spreadsheet-logo:before, .book-file-logo:before {
+	position:absolute;
+	font-family:FontAwesome;
+	right:7px;
+	bottom:6px;
+	font-size:20px;
+	color:#FFF;}
+
+.book-reading-logo:before {content: "\f02d";}
+.book-illustration-logo:before {content: "\f03e";}
+.book-audio-logo:before {content: "\f001";}
+.book-video-logo:before {content: "\f008";}
+.book-map-logo:before {content: "\f041";}
+.book-link-logo:before {content: "\f0ac";}
+.book-download-logo:before {content: "\f019";}
+.book-discussion-logo:before {content: "\f086";}
+.book-game-logo:before {content: "\f11b";}
+.book-text-logo:before {content: "\f0f6";}
+.book-spreadsheet-logo:before {content: "\f0ce";}
+.book-file-logo:before {content: "\f15b";}
+	
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1350px){#book-stand-container{ width:720px;}}
+
+/* TABLET */
+@media screen and (min-width: 768px) and (max-width: 1023px){
+	
+#book-stand-container{
+	margin:0 auto 0 auto;
+	padding:20px 30px 90px 30px;
+	width:720px;
+	max-width:800px;
+	background-image:url(../img/bookshelves.jpg);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;}
+	
+.book-border {
+	margin:0;
+	padding:0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 1px 3px 5px rgba(50, 50, 50, 0.7);
+	-moz-box-shadow:    1px 3px 5px rgba(50, 50, 50, 0.7);
+	box-shadow:         1px 3px 5px rgba(50, 50, 50, 0.7);}
+	
+.book-border:hover {
+	-webkit-box-shadow: 5px 5px 5px rgba(100, 25, 107, 0.7);
+	-moz-box-shadow:    5px 5px 5px rgba(100, 25, 107, 0.7);
+	box-shadow:         5px 5px 5px rgba(100, 25, 107, 0.7);}
+	
+.book-border a{
+	display:block;
+	height:100%;}
+	
+.book-stand li{
+	margin-bottom:30px;
+	width:20%;}
+	
+.book-stand li p {
+	margin:0;
+	padding:10px 2px 20px 2px;
+	font-size:12px;
+	text-align:center;
+	background-color:#572163; /*this is the book colour*/
+	border:3px solid #FFFFFF;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	transition:all 200ms ease-out 0s;
+	width:100%;
+	height:130px;
+	letter-spacing:-0.5px;
+	line-height:16px;
+	-webkit-box-shadow: inset 0px 0px 7px rgba(6, 39, 54, 0.75);
+	-moz-box-shadow:    inset 0px 0px 7px rgba(6, 39, 54, 0.75);
+	box-shadow:         inset 0px 0px 7px rgba(6, 39, 54, 0.75);}
+	
+.book-stand li p a {color:#FFF;}
+	
+#book-stand-container > ul > li > div > p > span {color:#FFF !important;}
+	
+p.book-reading-logo span.has-tip:hover{border-bottom:#FFF;}
+	
+#book-stand span.tooltip{background-color:#062736;}
+	
+#book-stand .tooltip > .nub{border-color:rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #062736;}
+	
+.desc { display:block;}
+	
+.full-desc{display:none;}
+	
+.book-reading-logo, .book-illustration-logo, .book-audio-logo, .book-video-logo, .book-map-logo, .book-link-logo, .book-download-logo, .book-discussion-logo, .book-game-logo, .book-text-logo, .book-spreadsheet-logo, .book-file-logo  {
+	position:relative;}
+
+.book-reading-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f02d";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-illustration-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f03e";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-audio-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f001";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-video-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f008";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-map-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f041";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-link-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f0ac";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-download-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f019";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-discussion-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f086";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-game-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f11b";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-text-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f0f6";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-spreadsheet-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f0ce";
+		font-size:20px;
+		color:#FFF;}
+	
+.book-file-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        right:7px;
+        bottom:6px;
+        content: "\f15b";
+		font-size:20px;
+		color:#FFF;}
+	
+}
+
+/* MOBILE */
+@media screen and (max-width: 767px){
+	
+#book-stand-container{
+	margin:0 auto 0 auto;
+	padding:0 10px 0 10px;
+	position:relative;}
+		
+#book-stand-container ul.large-block-grid-5 li { 
+	clear:both;}
+
+p span.has-tip { color:#000;}
+
+[class*="block-grid-"] > li {
+    display: block;
+    float: none;
+    height: auto;
+    padding:0;}
+	
+.book-border p a{
+		margin: 0 0 0 40px;
+		padding:0 0 0 15px; 
+		display:block; 
+		border-left:3px solid #B74783;}
+		
+.desc { display:none;}
+
+.has-tip {
+	/*margin: 0 0 0 80px;
+	padding:0 0 0 15px;
+	border-left:3px solid #E0FFCC;
+	border-bottom:none;
+	display:inline;*/
+	display:none;}
+	
+.full-desc{
+	/*margin: 0 0 0 80px;
+	padding:0 0 0 15px;
+	border-left:3px solid #E0FFCC;*/
+	display:block;}
+	
+.book-reading-logo, .book-illustration-logo, .book-audio-logo, .book-video-logo, .book-map-logo, .book-link-logo, .book-download-logo, .book-discussion-logo, .book-game-logo, .book-text-logo, .book-spreadsheet-logo, .book-file-logo  {
+	position:relative;}
+
+.book-reading-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f02d";
+		font-size:20px;
+		color:#572163;}
+		
+.book-illustration-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f03e";
+		font-size:20px;
+		color:#572163;}
+	
+.book-audio-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f001";
+		font-size:20px;
+		color:#572163;}
+	
+.book-video-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f008";
+		font-size:20px;
+		color:#572163;}
+	
+.book-map-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f041";
+		font-size:20px;
+		color:#572163;}
+	
+.book-link-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f0ac";
+		font-size:20px;
+		color:#572163;}
+	
+.book-download-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f019";
+		font-size:20px;
+		color:#572163;}
+	
+.book-discussion-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f086";
+		font-size:20px;
+		color:#572163;}
+	
+.book-game-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f11b";
+		font-size:20px;
+		color:#572163;}
+	
+.book-text-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f0f6";
+		font-size:20px;
+		color:#572163;}
+	
+.book-spreadsheet-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f0ce";
+		font-size:20px;
+		color:#572163;}
+	
+.book-file-logo:before {
+        position:absolute;
+        font-family:FontAwesome;
+        left:7px;
+        top:0;
+        content: "\f15b";
+		font-size:20px;
+		color:#572163;}
+	
+}
+
+@media screen and (max-width: 480px){
+
+.desc { display:block;}
+
+.has-tip {
+	margin: 0 0 0 40px;
+	padding:0 0 0 15px;
+	border-left:3px solid #B74783;
+	border-bottom:none;
+	display:inline;}
+	
+.full-desc{
+	display:none;}
+}
+

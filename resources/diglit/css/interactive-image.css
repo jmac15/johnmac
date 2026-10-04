@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*PlEASE NOTE: the button class (from foundation framework) is also used, giving the colouring and hover change of state.*/
+
+.image-wrapper { position:relative;}
+
+.button{
+	margin:0;
+	padding:2%;}
+	
+.button p{
+	font-size:90%;
+	text-align:center;
+	line-height:1.2;}
+	
+#div1{
+	position:absolute;
+	z-index:10;
+	width:10%;
+	height:13%;
+	left:26%;
+	top:0%;}	
+	
+#div2{
+	position:absolute;
+	z-index:10;
+	width:19%;
+	height:20%;
+	left:44%;
+	top:6%;}
+	
+#div3{
+	position:absolute;
+	z-index:10;
+	width:22%;
+	height:20%;
+	left:45%;
+	top:54%;}
+	
+#div4{
+	position:absolute;
+	z-index:10;
+	width:22%;
+	height:16%;
+	left:32%;
+	top:80%;}
+

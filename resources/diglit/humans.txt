@@ -1,0 +1,24 @@
+# humanstxt.org
+
+# TEAM
+
+	Developer: Mhairi Longmuir
+	EDU Department
+	University of the Highlands and Islands
+
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3, jQuery
+	
+	Font Awesome: http://fontawesome.io/
+    Normalize.css: http://necolas.github.io/normalize.css/
+	Modernizr: http://modernizr.com/ 
+	Foundation Framework: http://foundation.zurb.com/
+	Sidr: http://www.berriart.com/sidr/
+
+# VERSION
+
+	template version 4
+	
+	

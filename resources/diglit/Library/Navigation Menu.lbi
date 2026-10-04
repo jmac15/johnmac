@@ -1,0 +1,20 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+					<ul class="hide-for-print">
+                        <li class="index"><a href="../index.html">Home page <i class="fa fa-home"></i></a></li>
+                        <li class="over"><a href="../page_01.html">Digital literacies</a>
+                          <ul>
+                            <li><a href="../page_02.html">Literacies?</a></li>
+                            <li><a href="../page_03.html">The myth of the digital native</a></li>
+                          </ul>
+                        </li>
+                        <li class="icons"><a href="../page_04.html">Models of digital literacies</a>
+                          <ul>
+                            <li><a href="../page_05.html">The seven elements of digital literacy</a></li>
+                            <li><a href="../page_06.html">Digital capability framework</a></li>
+                          </ul>
+                        </li>
+                        <li class="dummy"><a href="../page_07.html">Summary</a></li>
+                        <li class="bookstand"><a href="../page_08.html">References <i class="fa fa-book"></i></a></li> 
+                    </ul>  
+					
+					<!--The list item class name must match the page body id for the 'current' class to be applied-->

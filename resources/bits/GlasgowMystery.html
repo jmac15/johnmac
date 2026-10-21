@@ -1,0 +1,677 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Big Sneck: a Glasgow murder mystery</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+<style>
+:root{
+  --rain:#dfe4e4; --panel:#eef1f0; --ink:#1b2529; --muted:#55646a;
+  --tile:#1f6b5a; --tile-ink:#f3f7f5; --orange:#c9500c; --rule:#b7c1c2;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --rain:#172024; --panel:#1f2a2f; --ink:#e4e9e8; --muted:#9aa9ad;
+    --tile:#2f8f79; --tile-ink:#0f1a18; --orange:#f08a3c; --rule:#37464c;
+  }
+}
+:root[data-theme="dark"]{
+  --rain:#172024; --panel:#1f2a2f; --ink:#e4e9e8; --muted:#9aa9ad;
+  --tile:#2f8f79; --tile-ink:#0f1a18; --orange:#f08a3c; --rule:#37464c;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--rain);color:var(--ink);
+  font-family:"Newsreader",Georgia,"Times New Roman",serif;font-size:1.16rem;line-height:1.62}
+main{max-width:38rem;margin:0 auto;padding:1.5rem 1.15rem 4rem}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  border-bottom:3px solid var(--tile);padding-bottom:.5rem;margin-bottom:1.6rem}
+.brand{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;
+  font-size:1.5rem;letter-spacing:.02em;line-height:1}
+.day{color:var(--muted);font-size:.95rem;font-style:italic;text-align:right}
+h1{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;
+  font-size:clamp(2.3rem,9vw,3.4rem);line-height:.98;margin:0 0 1.1rem;letter-spacing:.005em}
+p{margin:0 0 1rem}
+.choices{list-style:none;padding:0;margin:1.8rem 0 0;display:grid;gap:.6rem}
+.choices button{width:100%;text-align:left;font:inherit;font-weight:600;line-height:1.35;
+  color:var(--tile-ink);background:var(--tile);border:0;border-left:.55rem solid var(--orange);
+  padding:.85rem 1rem;border-radius:2px;cursor:pointer}
+.choices button:hover{filter:brightness(1.1)}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.ending{border-top:3px solid var(--orange);margin-top:1.8rem;padding-top:1rem}
+.ending .kind{color:var(--orange);font-weight:600}
+.ending h2{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-size:2rem;
+  line-height:1.05;margin:.1rem 0 .5rem}
+.ending small{color:var(--muted);font-size:.95rem}
+details{margin-top:2.4rem;background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  padding:.7rem 1rem;font-size:1rem}
+summary{cursor:pointer;font-weight:600}
+details ul{margin:.6rem 0 .2rem;padding-left:1.1rem}
+details li{margin-bottom:.35rem}
+.empty{color:var(--muted);font-style:italic}
+.fade{animation:in .35s ease-out}
+@keyframes in{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}}
+
+figure.art{margin:0 0 1.2rem;border-radius:2px;overflow:hidden;border-bottom:3px solid var(--tile);color:var(--ink);background:var(--panel)}
+figure.art svg{display:block;width:100%;height:auto}
+.art .a{fill:currentColor;opacity:.1}.art .b{fill:currentColor;opacity:.28}.art .c{fill:currentColor;opacity:.55}.art .d{fill:currentColor;opacity:.88}
+.art .o{fill:var(--orange)}.art .t{fill:var(--tile)}.art .m{fill:var(--panel);opacity:.75}
+.art .l{stroke:currentColor;fill:none;stroke-width:2;opacity:.7}.art .lo{stroke:var(--orange);fill:none;stroke-width:1.5}
+.art .rain{stroke:currentColor;opacity:.22;stroke-width:1}
+</style>
+</head>
+<body>
+<main>
+  <header><div class="brand">The Big Sneck</div><div class="day" id="day"></div></header>
+  <article id="scene" aria-live="polite"></article>
+  <details id="file"><summary>Case file</summary><div id="clues"></div></details>
+</main>
+
+<script>
+/* ============================================================
+   STORY DATA
+   Each passage: title, text (array of paragraphs, or a function
+   of state returning one), choices (array, or function of state).
+   A choice: t = label, to = passage id | [ids] (picked at random)
+   | function(state), fx = optional function that changes state.
+   State: clues[], taint (corners cut), heat (Dalziel's dislike),
+   time (days used), seen{}, f{} (misc flags).
+   ============================================================ */
+
+const CLUES = {
+  lenses:  {l:"Bruising under the jaw; her lenses were removed. Murder, not misadventure."},
+  tide:    {l:"MUNGO's tide model: she went into the river at the barrage, nowhere else.", lyle:1, say:"the tide puts her in the water at your barrage"},
+  pass:    {l:"Her pass card: tapped in to Gallery 9 at 23:40. The chip holds no tap out.", lyle:1, say:"her pass never tapped out"},
+  threats: {l:"Eleven threatening messages from Callum Brodie, handed over by Gordon Lyle."},
+  slip:    {l:"Lyle knew she went into the water at Gallery 9. Nobody had told him.", lyle:1, say:"you told me where she went in before anyone knew"},
+  logs:    {l:"Door logs: a fourteen-minute blank, made with Assurance admin rights.", lyle:1, say:"fourteen minutes wiped with your department's admin rights"},
+  story:   {l:"Brodie's statement: she was frightened of someone at her work, not of him.", lyle:1, say:"she told Brodie she was feart of her own office"},
+  slate:   {l:"Rennie's sealed slate: Pier 9 has sunk 31 mm. The official record says 2.", lyle:1, say:"her own survey says Pier 9 is sinking"},
+  delay:   {l:"Dalziel admits Rennie wanted Friday's opening postponed, and that she refused."},
+  corridor:{l:"Okafor was secretly checking her figures. She told him: 'somebody on my own corridor'.", lyle:1, say:"she told Okafor it was somebody on her own corridor"},
+  alibi:   {l:"Okafor lied about being at home, but he was in a Broomielaw hotel until 3am."},
+  trap:    {l:"Whoever set the midnight meeting can switch off the barrage's lights. Fresh sealant on the Gallery 9 floor.", lyle:1, say:"someone who runs that building tried to get me alone in it"},
+  logger:  {l:"Rennie's private data logger: a year of readings, every false figure countersigned G.L.", lyle:1, say:"a year of false figures, every one initialled G.L."},
+  poolcar: {l:"The figure at the Whangie drove an Authority pool car booked on an Assurance admin pass.", lyle:1, say:"a pool car on an Assurance pass at the Whangie this morning"}
+};
+const add = (s,c)=>{ if(!s.clues.includes(c)) s.clues.push(c); };
+const lyleCount = s => s.clues.filter(c=>CLUES[c].lyle).length;
+const LYLE_NEEDED = 4;
+
+const STORY = {
+
+start:{ title:"Dock No. 1",
+  text:[
+  `Govan Graving Docks, twenty to seven on a Tuesday morning. The rain is coming in sideways off the Clyde, the way it has since before the city learned to live with the river in its streets.`,
+  `Below you, on the mud, a woman lies face up in a hi-vis jacket with Clyde Barrage Authority across the back. Dr Eilidh Rennie, forty-one. The engineer who was meant to stand beside the Council Leader on Friday, when they shut the gates of the Big Sneck for the first time and tell Glasgow it will never flood again.`,
+  `DC Aisha Rafiq hands you a coffee that tastes of the printer it came out of. "MUNGO's calling it probable misadventure, Sarge. Sixty-one per cent."`,
+  `You are Detective Sergeant Donald MacIssac. Thirty years off South Uist, twenty-six of them polis. You have never yet met a sixty-one per cent.`],
+  choices:[{t:"Get to work", to:"dock_hub"}]
+},
+
+dock_hub:{ title:"The mud",
+  text:s=>[ Object.keys(s.seen).some(k=>k.startsWith("dock_")&&k!=="dock_hub")
+    ? `The tide has turned. The scene examiners want her moved before the water comes back for her.`
+    : `The scene examiners are still unpacking. You have a little time before the tide comes back for her.`],
+  choices:s=>[
+    !s.seen.dock_body    && {t:"Climb down and look at her yourself", to:"dock_body"},
+    !s.seen.dock_tide    && {t:"Ask MUNGO how a body gets to Govan", to:"dock_tide"},
+    !s.seen.dock_witness && {t:"Speak to the woman who found her", to:"dock_witness"},
+    {t:"Head in for the briefing", to:"briefing"}
+  ].filter(Boolean)
+},
+
+dock_body:{ title:"What the river left",
+  enter:s=>add(s,"lenses"),
+  text:[
+  `The ladder is slick and your knees tell you about it. Up close: bruising under the jaw, thumb-wide, both sides. No froth at the mouth. She was dead, or near it, before the river had her.`,
+  `And her eyes are bare. No lenses. Nobody under seventy leaves the house without lenses in, and an engineer on a site visit records every bolt she looks at.`,
+  `"Fish?" says Aisha.`,
+  `"Fish don't unclip the case off your belt as well."`],
+  choices:[{t:"Back up the ladder", to:"dock_hub"}]
+},
+
+dock_tide:{ title:"Sixty-one per cent",
+  enter:s=>add(s,"tide"),
+  text:[
+  `MUNGO, the city's civic intelligence, speaks in your ear in the voice of a Kelvinside minister.`,
+  `"Good morning, Detective Sergeant. The Authority ran a test flush of the barrage sluices at ten past two. Anything in the inner basin at Erskine at that time would be carried upriver and laid down in Govan by half past five. An object entering the water elsewhere, in the canal, the Kelvin or at the city quays, would not be here."`,
+  `"So she went in at the barrage."`,
+  `"I would not care to speculate. Eighty-eight per cent."`],
+  choices:[{t:"Back to the dockside", to:"dock_hub"}]
+},
+
+dock_witness:{ title:"Senga",
+  text:[
+  `Senga McGroarty is seventy-odd, in chest waders, with a metal detector older than Aisha. She has mudlarked these docks since they were dry.`,
+  `"There was a wee drone ower her afore youse came. Nae lights on it. Hingin there like a bluebottle, then away doon the river."`,
+  `Then, quieter: "I fun her pass card an aw, twenty yards up. It's no on me. It's somewhere safe. Two hunner and it's yours, cash, and I never seen it. I've a caution for these docks already. Put me through your books and I'll have forgot where I left it."`],
+  choices:[
+    {t:"Pay her from your own pocket, off the books", to:"dock_paid", fx:s=>{s.taint++;s.f.senga=1;add(s,"pass");}},
+    {t:"Tell her it goes through the book or not at all", to:"dock_book"}
+  ]
+},
+dock_paid:{ title:"Two hundred",
+  text:[
+  `She comes back from a hole in the dock wall with the card in a crisp poke. Aisha reads the chip and says nothing about where it came from, which is its own kind of comment.`,
+  `Last entry: in, Gallery 9, Clyde Barrage, 23:40 on Monday. There is no tap out.`,
+  `Somewhere above the rain, you'd swear you hear a drone.`],
+  choices:[{t:"Back to the dockside", to:"dock_hub"}]
+},
+dock_book:{ title:"By the book",
+  text:[
+  `"Whit card?" says Senga, and wades off with great dignity.`,
+  `Aisha logs the drone sighting. You could turn out forty officers to search a mile of dock wall for a thing the size of a biscuit. You will not be given forty officers.`],
+  choices:[{t:"Back to the dockside", to:"dock_hub"}]
+},
+
+briefing:{ title:"Two things",
+  text:[
+  `DCI Sandra Meikle shuts her office door, which she does not often do.`,
+  `"Two things. One: Councillor Dalziel has been on to the Chief three times before breakfast. The barrage opens Friday in front of the world's cameras and she wants this tidy by then."`,
+  `"Two, and this doesn't leave the room. Professional Standards are in the building. Somebody in this division has been selling cases. Until they find who, everything goes through the book. Everything, Donald. A parking receipt out of place and they'll have you."`,
+  `You have until Friday. Three days, if nothing slows you down.`],
+  choices:[{t:"Look at who was in her life", to:"leads"}]
+},
+
+leads:{ title:"Four names",
+  text:s=> s.time>=3
+   ? [`Thursday night. The days are spent. Whatever you didn't get to will have to stay not got to.`]
+   : [[`Tuesday, late morning.`,`Wednesday.`,`Thursday. The last clear day.`][s.time]+` Four names on the board, and no time for all of them.`,
+      `Gordon Lyle, her deputy at the Barrage Authority. Callum Brodie, the ex-partner who campaigns against the wall she built. Morag Dalziel, the Council Leader, who phoned her three times the night she died. Professor Anselm Okafor, the old supervisor she accused of stealing her work.`],
+  choices:s=> s.time>=3 ? [{t:"Go home to Partick", to:"night_call"}] : [
+    !s.seen.barrage_1  && {t:"The Barrage Authority at Erskine", to:"barrage_1", fx:s=>s.time++},
+    !s.seen.brodie_1   && {t:"Callum Brodie's barge at Bowling", to:"brodie_1", fx:s=>s.time++},
+    !s.seen.chambers_1 && {t:"The Council Leader at the City Chambers", to:"chambers_1", fx:s=>s.time++},
+    !s.seen.uni_1      && {t:"Professor Okafor's tidal lab", to:"uni_1", fx:s=>s.time++}
+  ].filter(Boolean)
+},
+
+/* ---------- Lead: the barrage ---------- */
+barrage_1:{ title:"Tea and wafers",
+  enter:s=>add(s,"threats"),
+  text:[
+  `The Authority sits in a glass box at Erskine, looking down on the Big Sneck itself: nine concrete piers across the river, and gates the size of tenements waiting to swing shut.`,
+  `Gordon Lyle, Deputy Director of Assurance, comes down to the lobby himself. Cardigan. Lanyard. Eyes red with greeting. "Eilidh was the best of us. Anything you need, Sergeant. Anything at all."`,
+  `There is tea, and a plate of caramel wafers. There is also, before you've asked for it, a folder: eleven messages sent to Dr Rennie this past month by Callum Brodie of the Clyde Reclaimers. The last one reads: you'll drown with your wall.`,
+  `"I hate to point the finger," says Lyle, pointing it.`],
+  choices:[
+    {t:"Ask what she was doing here on Monday night", to:"barrage_night"},
+    {t:"Ask for the door logs for Gallery 9", to:"barrage_logs"},
+    {t:"Thank him and go", to:"leads"}
+  ]
+},
+barrage_night:{ title:"Gallery 9",
+  enter:s=>{ if(s.clues.includes("tide")) add(s,"slip"); },
+  text:s=>[
+  `"A routine inspection. Gallery 9, down inside the pier. She liked the place when it was quiet." He shakes his head. "It's terrible to think of her going into the water down there, all alone."`,
+  s.clues.includes("tide")
+   ? `You keep your face still. The papers have her found at Govan. Only MUNGO, Aisha and you know she went in at the barrage, and nobody at all has said which gallery.`
+   : `You write it down. Something about the sentence snags on you like a hook in a jersey, but you can't find what it's caught on. You never did ask anyone how a body gets to Govan.`],
+  choices:s=>[
+    !s.seen.barrage_logs && {t:"Ask for the door logs for Gallery 9", to:"barrage_logs"},
+    {t:"Thank him and go", to:"leads"}
+  ].filter(Boolean)
+},
+barrage_logs:{ title:"The quick way",
+  text:[
+  `"Of course. Though a warrant will keep your lawyers and ours busy for a full day." Lyle lowers his voice, one reasonable man to another. "Or I push the lot to your own lens this minute, off my private link. Nobody's time wasted."`,
+  `It would be fast. It would also be evidence that arrived outside the book, from a witness, as a favour.`],
+  choices:[
+    {t:"Take the logs now, on his private link", to:"barrage_logs_got", fx:s=>{s.taint++;s.f.link=1;add(s,"logs");}},
+    {t:"Insist on the warrant and lose a day", to:"barrage_logs_got", fx:s=>{s.time++;add(s,"logs");}},
+    {t:"Leave the logs; there isn't time", to:"leads"}
+  ]
+},
+barrage_logs_got:{ title:"Fourteen minutes",
+  text:[
+  `Rennie in to Gallery 9 at 23:40. Rennie out at 00:15. Tidy.`,
+  `Too tidy, says Aisha, who reads logs the way you read weather. Between 23:52 and 00:06 the door system recorded nothing at all, not even its own heartbeat. Someone with Assurance admin rights pressed pause on the building, and then wrote her a tap out she never made.`,
+  `"How many folk have those rights?"`,
+  `"Two. And one of them's in the mortuary."`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+
+/* ---------- Lead: Brodie ---------- */
+brodie_1:{ title:"Bowling Basin",
+  text:[
+  `Bowling, where the Forth and Clyde Canal gives up and falls into the river. Callum Brodie lives on a barge called Thrawn, with solar film peeling off the roof and a banner along the side: let the river back in.`,
+  `He sees the two of you on the towpath. He is out of the far hatch and running before you've said a word.`],
+  choices:[
+    {t:"Run him down", to:"brodie_chase", fx:s=>s.f.ran=1},
+    {t:"Shout that Eilidh's dead and you only want to know why", to:"brodie_talk"},
+    {t:"Let him go, and search the barge while it's empty", to:"brodie_search", fx:s=>{s.taint++;s.f.barge=1;s.f.ran=1;add(s,"slate");}}
+  ]
+},
+brodie_chase:{ title:"The towpath",
+  text:[
+  `You are fifty-four and he is thirty-eight, but he's wearing sandals. You take him at the lock gates and the pair of you go into the nettles.`,
+  `He says one word, and the word is "lawyer". By teatime the footage is on every lens in the city: polis batter grieving partner. The Council Leader's office lets it be known they are glad to see progress.`,
+  `Whatever Brodie knew, he'll not be telling you now.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+brodie_talk:{ title:"Thrawn",
+  text:[
+  `He stops. He comes back along the towpath greeting like a wean.`,
+  `They met on Monday at a bar in Finnieston. Aye, they shouted. They always shouted. "She wasnae feart of me. She was feart of her work. She said the numbers on the wall were wrong and somebody in there knew it."`,
+  `From inside his jacket, a data slate sealed with a thumbprint lock. "She gave me this. If anything happened, I was to get it to somebody honest. I hear your station leaks like a sieve. So you take it and keep it off your system. Or I keep it, and take my chances with the papers."`],
+  choices:[
+    {t:"Take the slate and keep it off the evidence system", to:"brodie_slate", fx:s=>{s.taint++;s.f.slate=1;add(s,"slate");add(s,"story");}},
+    {t:"Refuse. It's logged properly or you can't touch it", to:"brodie_refuse", fx:s=>add(s,"story")}
+  ]
+},
+brodie_slate:{ title:"The kitchen table",
+  text:[
+  `Aisha cracks it that night at your kitchen table in Partick, on her own time, with her jaw set.`,
+  `A settlement survey. Pier 9 of the Clyde Barrage has sunk thirty-one millimetres into the riverbed since it was poured. The Authority's published figure is two. And a note in Rennie's own hand: signed off every month by Assurance. Regulator on Monday.`,
+  `Monday was the day she died. The slate goes in your sock drawer, where no court will ever admit it.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+brodie_refuse:{ title:"A statement",
+  text:[
+  `"Then it stays wi me." He puts the slate away. He gives you a statement, though, signed and proper: she was frightened of someone at her work, and it wasn't the river she was feart of.`,
+  `It's the word of a man who sent her eleven threats. But it's in the book.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+brodie_search:{ title:"No warrant",
+  text:[
+  `Aisha stays on the towpath with her arms folded. "I'm not seeing this, Sarge."`,
+  `Under the bunk: a boning knife, half a bottle, and a data slate with a thumbprint lock. Later, at your kitchen table, she opens it anyway. A survey of Pier 9: sunk thirty-one millimetres, where the Authority says two. A note in Rennie's hand: signed off every month by Assurance. Regulator on Monday.`,
+  `It tells you a great deal. You can never say how you came by it, and Brodie now knows a polis has been through his home.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+
+/* ---------- Lead: Dalziel ---------- */
+chambers_1:{ title:"The marble stair",
+  text:[
+  `The City Chambers. The marble staircase was built to make men feel small, and it has outlived an empire doing it.`,
+  `Council Leader Morag Dalziel receives you beneath a portrait of herself. "Detective Sergeant MacIssac. South Uist, I'm told. My granny was a Barra woman. We'll understand each other."`,
+  `You have the call records. Three calls from this office to Eilidh Rennie on the night she died: 22:02, 22:31, 23:15.`],
+  choices:[
+    {t:"Ask, respectfully, what the calls were about", to:"chambers_soft"},
+    {t:"Tell her three calls in an hour isn't small talk", to:"chambers_hard", fx:s=>{s.heat++;add(s,"delay");}},
+    {t:"Tell her you'll have her diary, her phone and her in an interview room", to:"end_removed"}
+  ]
+},
+chambers_soft:{ title:"A courtesy",
+  text:[
+  `"The running order for Friday. A courtesy." She smiles at you the way she'd smile at a pothole she intends to have filled.`,
+  `You learn nothing. On the way out her aide falls into step beside you and murmurs that the Leader finds Mr Brodie a very plausible culprit, and so do the papers.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+chambers_hard:{ title:"Forty thousand homes",
+  text:[
+  `The smile goes out like a close light.`,
+  `"She wanted the opening postponed. Concerns, she said. No details, not on a call. I told her forty thousand homes in Clydebank and Renfrew flood again this winter if that gate doesn't shut, and I'd need more than concerns. She hung up on me. That is the last I heard of her."`,
+  `She lets a moment pass. "You'll remember I answered that, Sergeant. I'll remember how you asked it."`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+
+/* ---------- Lead: Okafor ---------- */
+uni_1:{ title:"The model firth",
+  text:[
+  `The university's tidal lab is a hangar holding a scale model of the whole firth, twenty metres long, the tide breathing in and out of it every ninety seconds.`,
+  `Professor Anselm Okafor supervised Rennie's doctorate. Last spring she lodged a formal complaint that he had published her settlement model under his own name.`,
+  `"A misunderstanding. Resolved." And Monday night? "At home. Alone. Asleep." He says it to a model of Greenock.`],
+  choices:[
+    {t:"Tell him he's lying, and badly", to:"uni_hard", fx:s=>s.f.okaforLied=1},
+    {t:"Go gently. Talk about tides", to:"uni_soft", fx:s=>add(s,"corridor")},
+    {t:"Have Aisha quietly pull his movements without a warrant", to:"uni_pull", fx:s=>{s.taint++;s.f.pull=1;add(s,"alibi");}}
+  ]
+},
+uni_hard:{ title:"Nine minutes",
+  text:[
+  `He is a man who has chaired committees. He knows precisely when to stop talking. His solicitor is in the room in nine minutes.`,
+  `You leave with a liar who has no alibi and a grudge on the record. It looks like something. It may be nothing.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+uni_soft:{ title:"The only clock",
+  text:[
+  `You watch the wee tide go out. "Where I'm from, that's the only clock anyone trusts."`,
+  `He breathes out. The complaint was theatre, and her idea. If the world thought they'd fallen out, nobody would guess he was checking her numbers. "She had found something wrong with the barrage and she didn't trust her own building. Her words were: it's somebody on my own corridor, Anselm."`,
+  `He still won't say where he was on Monday night. "It isn't relevant, and it isn't only mine to tell."`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+uni_pull:{ title:"Ninety seconds",
+  text:[
+  `Aisha doesn't look at you while she does it. It takes ninety seconds, and it is exactly the sort of thing Professional Standards are in the building to find.`,
+  `Okafor was not at home. He was in a suite at the hotel on stilts over the Broomielaw until three in the morning, with two directors of an engineering firm, being offered a job his university doesn't know about.`,
+  `A liar, then. But a liar four miles from the barrage.`],
+  choices:[{t:"Back to the board", to:"leads"}]
+},
+
+/* ---------- Bottleneck: Thursday night ---------- */
+night_call:{ title:"Come alone",
+  text:[
+  `Thursday, ten to eleven. Your close smells of somebody else's curry. You have your key in the door when your lens lights up. No sender. Routed through nowhere.`,
+  `I know who killed her. Gallery 9. Midnight. Come alone or I'm gone.`,
+  `Something else has been nagging at you all evening: Rennie's car logged a trip to the Kilpatrick Hills every Sunday for a year. She was no hillwalker.`],
+  choices:[
+    {t:"Go alone, as asked", to:"end_flush"},
+    {t:"Go, with Aisha out of sight on the walkway", to:"night_backup", fx:s=>add(s,"trap")},
+    {t:"Ignore it. Sleep, and be on the hill at first light", to:"whangie"}
+  ]
+},
+night_backup:{ title:"Nobody comes",
+  text:[
+  `Gallery 9 is a concrete throat inside the pier, with the river moving on the other side of the wall. Midnight comes. Nobody else does.`,
+  `At twenty past, Aisha's whisper: "Sarge. The lights went out on the upper walkway for about a minute. Somebody was up there. They looked down, counted two of us, and left."`,
+  `By the sump there's a patch of fresh grey sealant the size of a doormat, still tacky. Somebody has been tidying. And whoever sent that message can turn off the lights in this building.`],
+  choices:[{t:"A few hours' sleep, then the Kilpatrick Hills", to:"whangie"}]
+},
+
+/* ---------- Bottleneck: the Whangie ---------- */
+whangie:{ title:"The Whangie",
+  text:[
+  `Friday, first light. The Whangie: a split in the Kilpatrick Hills where, they say, the Devil flicked his tail on the way to meet his witches and tore the crag in two. The haar is down thick.`,
+  `Above the cleft stands a small mast, bolted to the bedrock, pointing a laser at the barrage twelve miles off. Rennie didn't trust the Authority's sensors, so she built her own.`,
+  `Someone is at the mast. Hood up, unscrewing the data logger. They see you, and run north along the lip of the crag into the white.`],
+  choices:[
+    {t:"After them, along the top of the crag", to:"end_cliff"},
+    {t:"Drop into the cleft and come out ahead of them", to:"whangie_cleft", fx:s=>add(s,"logger")},
+    {t:"Stand still and send Aisha's drone up after them", to:"whangie_drone", fx:s=>add(s,"poolcar")}
+  ]
+},
+whangie_cleft:{ title:"Through the Devil's cut",
+  text:[
+  `The cleft is a wet stone corridor, shoulder-wide. You come out of the far end blowing like a seal, just as the figure arrives above you, sees you, and panics. The logger comes spinning down into the bracken. They go down the far slope at a scramble. You never see a face.`,
+  `But you have the logger. A year of readings. Pier 9 has sunk thirty-one millimetres. The Authority's figure is two. And every monthly return is countersigned in Assurance with the same initials: G.L.`],
+  choices:[{t:"Back down to the car", to:s=>s.taint>=2?"end_framed":"pressure"}]
+},
+whangie_drone:{ title:"Queen's View",
+  text:[
+  `The drone goes up into the haar and follows a heat shape down to the car park at Queen's View. Hood, scarf, no face.`,
+  `But there is a car: white, a Barrage Authority pool vehicle, booked out at ten past five this morning on a staff pass the system lists only as Assurance, admin.`,
+  `The logger is gone with it.`],
+  choices:[{t:"Back down to the car", to:s=>s.taint>=2?"end_framed":"pressure"}]
+},
+
+/* ---------- Bottleneck: pressure ---------- */
+pressure:{ title:"A name before noon",
+  text:[
+  `Friday, half past nine. The gates shut at noon. There is a council car outside the station with its window down, and Morag Dalziel is in it.`,
+  `"I need a name before I stand on that platform, Sergeant. Brodie threatened her. He's a fanatic and he ran from you. Charge him, and the city will thank you. So will I."`],
+  choices:[
+    {t:"Give her Brodie", to:"end_brodie"},
+    {t:"Tell her she'll get the right name or no name", to:s=>{s.heat++;return s.heat>=2?"end_removed":"board";}},
+    {t:"\"By noon, Councillor.\" Buy yourself the morning", to:"board"}
+  ]
+},
+
+board:{ title:"The board",
+  text:s=>[
+  `The incident room. Four faces on the board and a clock above them. Aisha puts down two coffees and waits.`,
+  s.clues.length ? `What you have: `+s.clues.length+` thing`+(s.clues.length>1?`s`:``)+` in the case file, and a feeling. The feeling won't stand up in court.` : `What you have is a feeling, and precious little else.`,
+  `"Your call, Sarge."`],
+  choices:[
+    {t:"Callum Brodie, the ex with the threats", to:"end_brodie"},
+    {t:"Professor Okafor, the supervisor with the grudge", to:"end_okafor"},
+    {t:"Morag Dalziel, the Council Leader", to:"end_platform"},
+    {t:"Gordon Lyle, the helpful deputy", to:s=>lyleCount(s)>=LYLE_NEEDED?"confront":"end_thin"},
+    {t:"Admit it: you don't know", to:"end_honest"}
+  ]
+},
+
+confront:{ title:"Twenty to twelve",
+  text:s=>[
+  `The control room at Erskine. Storm light on the water, and the gates waiting. Gordon Lyle is alone at the long window in his cardigan.`,
+  `You lay it out for him plainly: `+s.clues.filter(c=>CLUES[c].lyle).map(c=>CLUES[c].say).join("; ")+`.`,
+  `He listens the way he'd listen to a contractor's excuse. "She'd have stopped the opening. Two years' delay, over thirty millimetres. I only wanted her to wait."`,
+  `Then, quietly: "The contractor paid me four million in clean credits to sign those sheets. It's yours. All of it. There's a croft for sale at Daliburgh. I looked. Thirty years you've stood in the rain for these people, Donald. Go home."`,
+  `Aisha is down in the car park. Nobody is listening. Probably.`],
+  choices:[
+    {t:"Take the money", to:["end_croft","end_sting"]},
+    {t:"Arrest him", to:["end_justice","end_collapse"]}
+  ]
+},
+
+/* ---------- Endings ---------- */
+end_flush:{ end:"The Flush", kind:"You died",
+  text:[
+  `Gallery 9 is a concrete throat inside the pier. Your footsteps come back to you off the walls.`,
+  `The lights go out. It isn't a flicker; it's a decision. Behind you, a step, unhurried, from someone who knows where the handrail is without looking. Then a thumb under your jaw on either side, patient as arithmetic.`,
+  `You think of the machair in June. The sluices open at ten past two.`,
+  `You never saw a face.`]
+},
+end_cliff:{ end:"The Devil's Tail", kind:"You died",
+  text:[
+  `You were reared on Beinn Mhòr. A wee Lowland hill holds no fears for you.`,
+  `Three strides into the white, the grass is there. On the fourth it isn't. Thirty feet is not far to fall, unless the bottom is rock.`,
+  `The Devil, they'll say in the station, got another one. Aisha will not find that funny for a very long time.`]
+},
+end_framed:{ end:"The Bent Yin", kind:"Disgraced",
+  text:s=>[
+  `They are waiting at your car. Two from Professional Standards, and DCI Meikle, who can't look at you.`,
+  `Forty thousand in credits landed in your account at three this morning, from a shell company that leads nowhere. On its own you'd fight that. But they have the rest, and the rest is true: `+[
+    s.f.senga&&`cash handed to a witness on a dockside`,
+    s.f.link&&`evidence taken as a private favour from a man at the Authority`,
+    s.f.slate&&`a slate kept in your sock drawer instead of the evidence system`,
+    s.f.barge&&`a barge searched without a warrant`,
+    s.f.pull&&`a professor's movements pulled without a warrant`].filter(Boolean).join("; ")+`.`,
+  `Every corner you cut, somebody was watching, and built a frame around it.`,
+  `"I'm the one man in that building who isn't bent."`,
+  `"Aye," says the inspector. "They all say that."`,
+  `The barrage opens at noon. You watch it on a cell wall.`]
+},
+end_removed:{ end:"Fresh Eyes", kind:"Removed from the case",
+  text:[
+  `It isn't dramatic. There is no shouting. There is DCI Meikle's door, shut, and a form already filled in.`,
+  `"The Leader's office feels the inquiry would benefit from fresh eyes."`,
+  `You are reassigned to stolen autonomous vehicles, in Cumbernauld. A DI comes through from Edinburgh and has Callum Brodie charged within the week.`,
+  `You never do find out whether he was right. He wasn't.`]
+},
+end_platform:{ end:"The Platform", kind:"Wrong person",
+  text:[
+  `You walk onto the platform at Erskine and caution the Leader of Glasgow City Council in front of the cameras of forty nations.`,
+  `She was ruthless that night. She leaned on a frightened woman to keep quiet. She was also on a logged call to the First Minister's office from ten to midnight until half past, with six people in the room.`,
+  `She doesn't raise her voice. She doesn't need to. By Monday you are off the case, off the division, and counting traffic drones in a room with no window.`]
+},
+end_okafor:{ end:"Room Service", kind:"Wrong person",
+  text:[
+  `You arrest Professor Okafor in front of his students, beside his model sea.`,
+  `At four o'clock his solicitor produces hotel footage, two company directors, and a room service receipt stamped four minutes past midnight. At five he announces he is suing the force. At six the Chief stops returning Meikle's calls.`,
+  `The misconduct hearing takes eleven minutes. Thirty years. They let you keep the leather holder but not the warrant card inside it.`,
+  `There's a ferry to Lochboisdale in the morning. You'll have the time now.`]
+},
+end_brodie:{ end:"A Robin on the Front", kind:"Wrong person, and you never know",
+  text:[
+  `The threats. The row in the bar. The fact that he ran. The jury is out for two hours.`,
+  `The barrage opens on time. You make Detective Inspector by the spring. At your promotion do your colleagues raise their glasses and look at each other over the rims. Aisha transfers to Aberdeen and doesn't say why.`,
+  `Every December a card comes with no stamp on it. A robin on the front. Inside: thinking of you, with gratitude. G.`,
+  `Some member of the public, you suppose. You put it on the mantelpiece with the others.`,
+  `Pier 9 goes on sinking, a little every month.`]
+},
+end_thin:{ end:"No Case to Answer", kind:"He walks",
+  text:s=>[
+  `You bring Gordon Lyle in. He brings a solicitor who bills by the minute, and a look of wounded helpfulness.`,
+  `You have `+(lyleCount(s)===0?`nothing that points at him`:lyleCount(s)===1?`one thing that points at him`:lyleCount(s)+` things that point at him`)+`, and a feeling. The fiscal reads the file twice and sighs. It isn't enough.`,
+  `Lyle shakes your hand on the way out and says there are no hard feelings. He takes early retirement to Madeira. The gates shut at noon on Friday.`,
+  `The case stays open. Technically.`]
+},
+end_honest:{ end:"An Honest Man", kind:"Unsolved, for now",
+  text:[
+  `"I don't know," you say. It's the first time in twenty-six years you've said it out loud in that room.`,
+  `The case goes cold. The barrage opens. Eleven months later Aisha Rafiq, on her own time, finds fourteen missing minutes in a door log, and a man in a cardigan stops being helpful.`,
+  `She is a Detective Inspector at thirty-one. She mentions you kindly in her speech. Pier 9 is underpinned before the winter storms.`,
+  `You find, to your surprise, that you are mostly glad.`]
+},
+end_croft:{ end:"Daliburgh", kind:"Corrupt, and away with it",
+  text:[
+  `You say, "All right."`,
+  `The file closes as misadventure. Sixty-one per cent; MUNGO was right all along, officially. Callum Brodie is released without charge. You put your papers in by the spring.`,
+  `The croft at Daliburgh has a new roof by summer. Peat smoke, larks over the machair, and your mother's language in the shop.`,
+  `On still nights you do the sum without wanting to: so many millimetres a year, so many years. You've stopped watching the Glasgow weather. Mostly.`]
+},
+end_sting:{ end:"Four Seconds", kind:"Corrupt, and caught",
+  text:[
+  `You say, "All right."`,
+  `Lyle closes his eyes, and then looks past your shoulder. The door. DCI Meikle. Two from Professional Standards. And Aisha behind them, with a face like a shut close.`,
+  `She found the fourteen minutes by herself last night. Lyle was lifted at eight this morning and offered a trade: five years off, for one bent detective on tape. They had been sure for months that the leak in the division was you.`,
+  `It wasn't. Not until four seconds ago.`]
+},
+end_justice:{ end:"The Right Name", kind:"Solved",
+  text:[
+  `"Gordon Lyle, I am arresting you for the murder of Eilidh Rennie."`,
+  `He puts his tea down carefully first. The evidence holds. The opening is postponed, Pier 9 is underpinned, and forty thousand homes stay dry through a winter that would have drowned them. Morag Dalziel takes the credit for the delay, and you let her.`,
+  `Lyle gets life. Callum Brodie scatters Eilidh's ashes in the river off Bowling.`,
+  `Aisha buys you a pint in Partick. "Sixty-one per cent," she says. You clink glasses.`]
+},
+end_collapse:{ end:"Saltmarket Steps", kind:"Caught, then lost",
+  text:[
+  `"Gordon Lyle, I am arresting you for the murder of Eilidh Rennie."`,
+  `Eight months later, at the High Court, his counsel goes to work. MUNGO's tide model is ruled inadmissible: a civic intelligence cannot be cross-examined. The Authority's own door logs turn out to have been routinely purged. On the ninth day the trial collapses.`,
+  `Lyle walks down the Saltmarket steps into the rain and puts up his umbrella. He nods to you, one professional to another.`,
+  `You did it right. That will have to be the comfort.`]
+}
+};
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+
+/* ============================================================
+   SCENE ILLUSTRATIONS
+   One drawing per location (viewBox 400 x 170). SCENE_OF maps a
+   passage id, or the start of one, to a drawing.
+   ============================================================ */
+const rep=(n,f)=>Array.from({length:n},(_,i)=>f(i)).join("");
+const RAIN=`<g class="rain">`+rep(46,i=>{const x=(i*53)%420,y=(i*37)%150;return `<path d="M${x} ${y}l-6 16"/>`;})+`</g>`;
+const SKY=`<rect class="a" width="400" height="170"/>`;
+const ART={
+docks:{alt:"A flooded dry dock under a giant cantilever crane, in the rain",svg:SKY+
+ `<path class="b" d="M0 96h30V80h20v16h25V70h15v26h40V86h30v10h240v20H0z"/>
+ <path class="c" d="M250 112V40h12v72zM196 32h136v8H196z"/><rect class="c" x="243" y="22" width="26" height="10"/><path class="l" d="M318 40v30M206 40l44 30M330 40l-68 30"/>
+ <path class="c" d="M0 110h60v10h20v10h20v10h200v-10h20v-10h20v-10h60v60H0z"/><path class="d" d="M100 140h200v30H100z"/>
+ <rect class="o" x="188" y="151" width="18" height="5" rx="2"/>`+RAIN},
+office:{alt:"An office with the door shut and a desk lamp lit",svg:SKY+
+ `<rect class="b" x="20" y="28" width="62" height="142"/><circle class="d" cx="72" cy="102" r="3"/>
+ <rect class="b" x="230" y="18" width="140" height="88"/>`+rep(8,i=>`<rect class="c" x="230" y="${22+i*11}" width="140" height="4"/>`)+
+ `<path class="o" opacity=".45" d="M150 62l-34 60h78z"/><path class="l" d="M118 122V80l32-18"/>
+ <rect class="d" x="40" y="122" width="320" height="10"/><rect class="c" x="58" y="132" width="10" height="38"/><rect class="c" x="332" y="132" width="10" height="38"/>`},
+board:{alt:"An incident board with four faces linked by string",svg:SKY+
+ `<rect class="b" x="40" y="22" width="320" height="122"/>`+rep(4,i=>`<rect class="d" x="${62+i*74}" y="46" width="52" height="66"/><circle class="m" cx="${88+i*74}" cy="68" r="11"/><path class="m" d="M${70+i*74} 104q18-28 36 0z"/>`)+
+ `<path class="lo" d="M88 46l74-14 74 14 74-14M88 112l148 20 74-20"/><circle class="o" cx="162" cy="32" r="3"/><circle class="o" cx="236" cy="132" r="3"/>
+ <rect class="c" x="0" y="158" width="400" height="12"/>`},
+barrage:{alt:"Nine concrete piers and great gates across the river at Erskine",svg:SKY+
+ `<path class="b" d="M0 84q60-30 130-10t140-8 130 14v40H0z"/><rect class="c" y="118" width="400" height="52"/>
+ <rect class="d" x="14" y="66" width="340" height="7"/>`+rep(9,i=>`<rect class="d" x="${20+i*40}" y="60" width="14" height="76"/>`)+rep(8,i=>`<rect class="t" x="${36+i*40}" y="${i%2?76:84}" width="22" height="34"/>`)+
+ `<rect class="t" x="356" y="34" width="38" height="32"/><path class="l" d="M356 45h38M356 55h38M369 34v32M382 34v32"/><rect class="d" x="352" y="66" width="48" height="60"/>`+RAIN},
+canal:{alt:"A barge moored in a canal basin beside lock gates",svg:SKY+
+ `<path class="b" d="M0 92q70-40 150-16t130-12 120 20v30H0z"/><rect class="c" y="134" width="400" height="36"/><rect class="b" y="112" width="400" height="22"/>
+ <path class="d" d="M34 88h9v58h-9zM43 96l62-8v9l-62 7z"/>
+ <path class="d" d="M130 128h190l-12 16H142z"/><rect class="c" x="162" y="110" width="110" height="18"/><rect class="o" x="168" y="115" width="98" height="6"/><rect class="d" x="284" y="100" width="5" height="28"/>`+RAIN},
+chambers:{alt:"A grand marble staircase rising beneath arches",svg:SKY+
+ rep(3,i=>`<path class="b" d="M${40+i*115} 100V50q45-44 90 0v50z"/>`)+rep(9,i=>`<rect class="${i%2?'c':'d'}" x="${i*22}" y="${158-i*12}" width="${400-i*22}" height="12"/>`)+
+ `<path class="l" d="M0 126l198-108"/>`+rep(8,i=>`<path class="l" d="M${12+i*22} ${119-i*12}v22"/>`)+
+ `<rect class="o" x="318" y="14" width="38" height="46"/><rect class="m" x="323" y="19" width="28" height="36"/><circle class="d" cx="337" cy="33" r="6"/>`},
+lab:{alt:"A hangar holding a long scale model of the firth",svg:SKY+
+ `<path class="l" d="M0 46L200 10l200 36M0 46h400M100 28v18M200 10v36M300 28v18M100 46l100-36 100 36"/>
+ <path class="o" opacity=".4" d="M120 46l-24 54h68zM300 46l-24 54h68z"/>
+ <rect class="d" x="24" y="100" width="352" height="38"/><path class="t" d="M30 114q22-10 44 0t44 0 44 0 44 0 44 0 44 0 44 0 42 0v20H30z"/>
+ <rect class="c" x="44" y="138" width="10" height="32"/><rect class="c" x="346" y="138" width="10" height="32"/><rect class="c" x="195" y="138" width="10" height="32"/>`},
+close:{alt:"A tenement at night with one window lit",svg:SKY+
+ `<rect class="c" x="70" y="16" width="270" height="154"/>`+rep(12,i=>`<rect class="${i===6?'o':'a'}" x="${92+(i%4)*64}" y="${30+Math.floor(i/4)*42}" width="28" height="30"/>`)+
+ `<rect class="d" x="188" y="128" width="30" height="42"/><path class="l" d="M36 170V60q0-12 14-12"/><circle class="o" cx="52" cy="50" r="5"/><path class="o" opacity=".3" d="M52 50l-26 120h56z"/>`+RAIN},
+gallery:{alt:"A concrete tunnel narrowing to a single distant light",svg:
+ `<rect class="d" width="400" height="170"/>`+rep(6,i=>`<rect class="m" opacity="${.1+i*.02}" x="${i*30}" y="${i*13}" width="${400-i*60}" height="${170-i*26}"/>`)+
+ `<path class="lo" d="M0 0l150 65M400 0L250 65M0 170l150-65M400 170l-150-65"/><rect class="d" x="180" y="72" width="40" height="26"/><circle class="o" cx="200" cy="80" r="4"/>`},
+whangie:{alt:"A split crag in the mist with a small mast above the cleft",svg:SKY+
+ `<path class="b" d="M0 110q110-50 200-30t200-10v100H0z"/>
+ <path class="d" d="M0 170V84l58-24 72 6 40-14 14 118z"/><path class="c" d="M206 170l8-124 62 10 58-12 66 26v100z"/>
+ <path class="l" d="M150 54V18M142 26h16"/><path class="lo" d="M150 22L400 40"/><circle class="o" cx="150" cy="22" r="3"/>
+ <rect class="m" y="92" width="400" height="18"/><rect class="m" y="128" width="400" height="14"/><rect class="m" x="120" y="60" width="280" height="10" opacity=".5"/>`},
+car:{alt:"A dark car waiting outside the police station in the rain",svg:SKY+
+ `<rect class="c" x="0" y="20" width="400" height="118"/>`+rep(5,i=>`<rect class="a" x="${24+i*76}" y="36" width="44" height="50"/>`)+`<rect class="t" x="150" y="98" width="100" height="14"/>
+ <rect class="d" y="138" width="400" height="32"/>
+ <path class="d" d="M96 142q4-26 46-30h74q40 4 60 30z"/><rect class="o" x="150" y="118" width="46" height="14"/><circle class="b" cx="128" cy="146" r="11"/><circle class="b" cx="248" cy="146" r="11"/>`+RAIN},
+control:{alt:"A figure at a long window looking down on the barrage gates",svg:SKY+
+ `<rect class="b" x="16" y="14" width="368" height="108"/><rect class="c" x="16" y="92" width="368" height="30"/>`+rep(6,i=>`<rect class="d" x="${40+i*58}" y="56" width="12" height="50"/><rect class="t" x="${54+i*58}" y="68" width="42" height="30"/>`)+
+ `<path class="l" d="M108 14v108M200 14v108M292 14v108"/>
+ <circle class="d" cx="92" cy="74" r="12"/><path class="d" d="M68 150q2-60 24-62t24 62z"/><rect class="d" y="140" width="400" height="30"/>`+rep(7,i=>`<rect class="o" x="${150+i*30}" y="150" width="12" height="5"/>`)},
+croft:{alt:"A low white croft house on the machair, with the sea beyond",svg:SKY+
+ `<path class="b" d="M0 80q90-46 180-20t220-24v60H0z"/><rect class="c" y="92" width="400" height="16"/><rect class="b" y="108" width="400" height="62"/>
+ <path class="d" d="M140 128v-20l46-16 46 16v20z"/><rect class="m" x="146" y="108" width="80" height="20"/><rect class="d" x="180" y="113" width="10" height="15"/><rect class="d" x="212" y="88" width="8" height="12"/>
+ <path class="l" d="M216 86q-10-12 2-22t-4-22"/>`+rep(24,i=>`<circle class="o" cx="${(i*67)%390+5}" cy="${134+(i*29)%32}" r="2"/>`)}
+};
+const SCENE_OF=[["end_croft","croft"],["end_flush","gallery"],["end_cliff","whangie"],["end_framed","car"],["end_removed","office"],
+ ["end_platform","barrage"],["end_okafor","lab"],["end_brodie","canal"],["end_thin","board"],["end_honest","board"],["end_collapse","car"],["end_","control"],
+ ["start","docks"],["dock_","docks"],["briefing","office"],["leads","board"],["board","board"],["barrage_","barrage"],["brodie_","canal"],
+ ["chambers_","chambers"],["uni_","lab"],["night_call","close"],["night_backup","gallery"],["whangie","whangie"],["pressure","car"],["confront","control"]];
+function artFor(id){
+  const m=SCENE_OF.find(([k])=>id===k||id.startsWith(k)); if(!m) return null;
+  const a=ART[m[1]], f=document.createElement("figure"); f.className="art";
+  f.innerHTML=`<svg viewBox="0 0 400 170" role="img" aria-label="${a.alt}">${a.svg}</svg>`; return f;
+}
+
+const TOTAL = Object.values(STORY).filter(p=>p.end).length;
+let S;
+const fresh = ()=>({clues:[],taint:0,heat:0,time:0,seen:{},f:{}});
+
+function found(){ try{ return JSON.parse(localStorage.getItem("sneck_endings")||"[]"); }catch(e){ return []; } }
+function remember(id){ const f=found(); if(!f.includes(id)){ f.push(id); try{ localStorage.setItem("sneck_endings",JSON.stringify(f)); }catch(e){} } return f.length; }
+
+function go(id){
+  const p = STORY[id];
+  S.seen[id] = true;
+  if(p.enter) p.enter(S);
+  const text = typeof p.text==="function" ? p.text(S) : p.text;
+  const el = document.getElementById("scene");
+  el.className = ""; void el.offsetWidth; el.className = "fade";
+  el.innerHTML = "";
+  const pic = artFor(id); if(pic) el.appendChild(pic);
+  if(p.title){ const h=document.createElement("h1"); h.textContent=p.title; el.appendChild(h); }
+  text.forEach(t=>{ const x=document.createElement("p"); x.textContent=t; el.appendChild(x); });
+
+  if(p.end){
+    const n = remember(id);
+    const box = document.createElement("div"); box.className="ending";
+    box.innerHTML = `<div class="kind"></div><h2></h2><small></small>`;
+    box.querySelector(".kind").textContent = p.kind;
+    box.querySelector("h2").textContent = p.end;
+    box.querySelector("small").textContent = `You have found ${n} of ${TOTAL} endings.`;
+    el.appendChild(box);
+  }
+  const list = document.createElement("ul"); list.className="choices";
+  const choices = p.end ? [{t:"Start the case again", restart:true}]
+                : (typeof p.choices==="function" ? p.choices(S) : p.choices);
+  choices.forEach(c=>{
+    const li=document.createElement("li"), b=document.createElement("button");
+    b.type="button"; b.textContent=c.t;
+    b.onclick=()=>{
+      if(c.restart){ S=fresh(); go("start"); return; }
+      if(c.fx) c.fx(S);
+      let to = typeof c.to==="function" ? c.to(S) : c.to;
+      if(Array.isArray(to)) to = to[Math.floor(Math.random()*to.length)];
+      go(to);
+    };
+    li.appendChild(b); list.appendChild(li);
+  });
+  el.appendChild(list);
+  hud(p);
+  window.scrollTo(0,0);
+}
+
+function hud(p){
+  const d = document.getElementById("day");
+  const days = ["Tuesday","Wednesday","Thursday","Thursday night"];
+  d.textContent = p.end ? "Case closed" :
+    (S.seen.whangie ? "Friday" : S.seen.night_call ? "Thursday night" : S.seen.leads ? days[Math.min(S.time,3)] : "Tuesday, dawn");
+  const c = document.getElementById("clues");
+  c.innerHTML = "";
+  if(!S.clues.length){ const e=document.createElement("p"); e.className="empty"; e.textContent="Nothing in the file yet. Go and ask some questions."; c.appendChild(e); return; }
+  const ul=document.createElement("ul");
+  S.clues.forEach(k=>{ const li=document.createElement("li"); li.textContent=CLUES[k].l; ul.appendChild(li); });
+  c.appendChild(ul);
+}
+
+S = fresh(); go("start");
+</script>
+</body>
+</html>
+
+</body></html>

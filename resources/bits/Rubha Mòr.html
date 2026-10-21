@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rubha Mòr: the wind and hydrogen proposal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap">
+<style>
+:root{
+  --bg:#e6ebea; --panel:#f4f6f5; --ink:#17242a; --muted:#52636a; --sea:#1d5f7a; --sea-ink:#f2f7f9;
+  --warn:#b4530a; --rule:#b9c5c6; --good:#1f6b5a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131c20; --panel:#1c282d; --ink:#e3e9e9; --muted:#9aaab0; --sea:#58aacb; --sea-ink:#0c1a20;
+    --warn:#f0954a; --rule:#34454c; --good:#49b097;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131c20; --panel:#1c282d; --ink:#e3e9e9; --muted:#9aaab0; --sea:#58aacb; --sea-ink:#0c1a20;
+  --warn:#f0954a; --rule:#34454c; --good:#49b097;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1.03rem;line-height:1.6}
+main{max-width:42rem;margin:0 auto;padding:1.2rem 1.1rem 4rem}
+header{border-bottom:3px solid var(--sea);padding-bottom:.5rem;margin-bottom:1rem}
+.brand{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;font-size:1.45rem;line-height:1}
+.sub{color:var(--muted);font-size:.9rem}
+.meter{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.8rem 0 1.4rem}
+.meter div{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:.45rem .6rem}
+.meter b{display:block;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.meter span{font-size:.78rem;color:var(--muted)}
+.stage{color:var(--warn);font-weight:700;font-size:.9rem;letter-spacing:.03em;text-transform:uppercase}
+h1{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;font-size:clamp(2rem,8vw,2.8rem);line-height:1;margin:.15rem 0 .3rem}
+.when{color:var(--muted);font-style:italic;margin-bottom:1rem}
+h2{font-size:1.05rem;margin:1.6rem 0 .5rem}
+p{margin:0 0 .85rem}
+ul{padding-left:1.15rem;margin:0 0 .85rem} li{margin-bottom:.35rem}
+.opt{display:block;border:2px solid var(--rule);border-radius:4px;padding:.7rem .85rem;margin-bottom:.55rem;background:var(--panel);cursor:pointer}
+.opt:has(input:checked){border-color:var(--sea);box-shadow:inset .4rem 0 0 var(--sea)}
+.opt input{margin-right:.5rem;accent-color:var(--sea)}
+.opt strong{font-weight:650}
+.opt small{display:block;color:var(--muted);font-size:.92rem;margin-top:.2rem}
+textarea,input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--rule);border-radius:4px;padding:.6rem .7rem}
+textarea{min-height:9rem;resize:vertical}
+textarea:focus,input:focus{outline:3px solid var(--sea);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem}
+.chips label{border:1px solid var(--rule);border-radius:99px;padding:.2rem .65rem;font-size:.88rem;background:var(--panel);cursor:pointer}
+.chips label:has(input:checked){background:var(--sea);color:var(--sea-ink);border-color:var(--sea)}
+.chips input{position:absolute;opacity:0;width:0;height:0}
+.count{font-size:.85rem;color:var(--muted)}
+button{font:inherit;font-weight:650;border:0;border-radius:4px;padding:.75rem 1.1rem;background:var(--sea);color:var(--sea-ink);cursor:pointer;margin-top:.8rem}
+button[disabled]{opacity:.45;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--sea);border:2px solid var(--sea)}
+button:focus-visible,summary:focus-visible,.opt:focus-within{outline:3px solid var(--warn);outline-offset:2px}
+.box{border-left:.4rem solid var(--warn);background:var(--panel);padding:.8rem .95rem;border-radius:0 4px 4px 0;margin:1rem 0}
+.box.exp{border-left-color:var(--good)}
+.box h2{margin-top:0}
+details{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:.6rem .9rem;margin:1.2rem 0;font-size:.95rem}
+summary{cursor:pointer;font-weight:650}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:.6rem 0}
+th,td{text-align:left;vertical-align:top;padding:.35rem .5rem;border-bottom:1px solid var(--rule)}
+.logitem{border-top:1px solid var(--rule);padding-top:.8rem;margin-top:.8rem}
+.logitem q{quotes:none;display:block;white-space:pre-wrap;border-left:3px solid var(--rule);padding-left:.7rem;margin:.4rem 0}
+.note{font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <header><div class="brand" id="brand"></div><div class="sub" id="sub"></div></header>
+  <div class="meter" id="meter" hidden>
+    <div><b id="m0"></b><span id="l0"></span></div>
+    <div><b id="m1"></b><span id="l1"></span></div>
+    <div><b id="m2"></b><span id="l2"></span></div>
+  </div>
+  <article id="view"></article>
+  <details id="datasheet" hidden><summary id="st"></summary><div id="sheet"></div></details>
+</main>
+<script>
+/* SCENARIO: settings, briefing sheet and stages. Edit here. */
+const clamp=v=>Math.max(0,Math.min(100,v));
+const CFG = {
+  key:"rubha_mor_state", file:"rubha-mor-decision-log.md", total:7, minWords:40,
+  brand:"Rubha Mòr", sub:"A branching decision scenario on economic development and stakeholder engagement. Fictional place, people and companies; simplified law and figures.",
+  title:"The wind and hydrogen proposal",
+  intro:[
+   "You are an economic development officer for the regional development agency covering the Highlands and Islands. A multinational consortium wants to build a large wind farm and hydrogen plant on the Rubha Mòr peninsula. Your agency supports it in principle. Much of the community does not, yet.",
+   "Over seven stages you will deal with crofters, landowners, councillors, local figures, the developer, planners, the Scottish Government, a think tank and a public relations firm. Your choices change how each of them treats you afterwards.",
+   "At every decision you must justify your choice in writing before you can go on. After you commit, you will see the consequence and the considerations an experienced practitioner would have weighed. You are assessed on your reasoning.",
+   "Use the briefing sheet, which appears below once you start. Watch two things in particular: how far the community consents, and how committed the developer remains. You need both, and most choices trade one for the other."],
+  sheetTitle:"Briefing sheet (use this in your justifications)",
+  expertTitle:"What an experienced practitioner would weigh",
+  factors:["Economic evidence","Community consent and trust","Land and crofting rights","Planning law and due process","Developer and investor interests","Government policy","Ethics and integrity","Culture, language and environment"],
+  init:{consent:40,dev:70},
+  meters:[{label:"Community consent",val:s=>clamp(s.consent)+"/100"},{label:"Developer commitment",val:s=>clamp(s.dev)+"/100"},{label:"Integrity flags",val:s=>s.flags.length}],
+  summary:s=>[s.outcome||``, s.terms||``, `Community consent: ${clamp(s.consent)} out of 100 (it started at 40)`,`Developer commitment: ${clamp(s.dev)} out of 100 (it started at 70)`,
+    s.flags.length?`Integrity flags: ${s.flags.join("; ")}`:`No integrity flags`].filter(Boolean),
+  reflect:"Before you submit, answer in a short paragraph: your brief was to persuade. Looking back, where was the line between persuading people and manipulating them, and did you stay on the right side of it? Which stakeholder did you understand least at the start?"
+};
+const SHEET = `
+<h2>The proposal</h2>
+<ul>
+<li>A 200 MW wind farm of 40 turbines on the moor of the Rubha Mòr peninsula, with a hydrogen plant at the old pier. Export by subsea cable and by ship.</li>
+<li>Developer: Nordhavn Energy, a European energy company, with a Japanese hydrogen partner, Seiwa. They are comparing Rubha Mòr with a site in Norway and will choose one within the year.</li>
+<li>Your agency's own analysis: about 300 construction jobs for two years, mostly filled from outside, and about 45 permanent jobs. Most of the equipment will be made abroad.</li>
+<li>The peninsula has 620 residents, a falling school roll, a shortage of housing, and a majority of Gaelic speakers. Six of the turbines and the access road would sit on deep peat close to the township of Druimbeag.</li>
+</ul>
+<h2>The land</h2>
+<div class="tw"><table>
+<tr><th>Owner</th><th>Share of site</th><th>Notes</th></tr>
+<tr><td>Corran Estate (private)</td><td>60%</td><td>Owned through a family trust. The owner lives in Surrey and is keen to sign.</td></tr>
+<tr><td>Urras Rubha Mòr (community trust)</td><td>25%</td><td>Bought by the community in 2011. Its board is divided.</td></tr>
+<tr><td>Druimbeag common grazings</td><td>15%</td><td>On the private estate, but 14 crofters hold grazing rights. Six turbines and the access road are here.</td></tr>
+</table></div>
+<h2>The people</h2>
+<ul>
+<li><strong>Iain Morrison</strong>, grazings clerk for Druimbeag. Speaks for the crofters. Undecided, and wary.</li>
+<li><strong>Catriona Nicolson</strong>, retired headteacher and Gaelic broadcaster. Widely respected. Sceptical.</li>
+<li><strong>Alasdair Grant</strong>, hotel owner and chair of the business association. In favour.</li>
+<li><strong>Three ward councillors</strong>: one for, one against, one undecided. <strong>Cllr Margaret Ross</strong> chairs the planning committee.</li>
+<li><strong>Head of planning</strong> at the council. Neutral by duty.</li>
+<li><strong>The minister's office</strong> in Edinburgh. Wants an announcement.</li>
+<li><strong>The Forth Institute</strong>, an Edinburgh think tank commissioned by the developer, and <strong>Calton Communications</strong>, the developer's public relations firm.</li>
+</ul>
+<h2>The rules (simplified)</h2>
+<ul>
+<li>Wind farms over 50 MW are decided by Scottish Ministers. The council is consulted, and if it objects there is normally a public inquiry, which can add 18 months or more.</li>
+<li>The hydrogen plant needs planning permission from the council.</li>
+<li>Councillors on a planning committee must decide on the planning merits and must not be lobbied privately. Approaches should be declared.</li>
+<li>Crofters have legal rights over common grazings. Development there needs their agreement or a scheme approved by the Scottish Land Court.</li>
+<li>Community benefit payments are voluntary and are not a planning consideration. The usual benchmark for onshore wind is £5,000 per MW per year, which here is £1m a year. Scottish Government policy also encourages developers to offer communities a share in ownership.</li>
+</ul>`;
+
+function decide(s){
+  const c=clamp(s.consent), d=clamp(s.dev);
+  s.terms = (s.land==="joint"?"The three landowning interests signed one agreement on equal terms. ":s.land==="split"?"The private estate signed alone; the community trust and crofters were left outside the deal. ":"")
+          + (s.benefit==="shared"&&d>=30?"Community benefit: £1m a year, a 10% community stake and 20 houses.":s.benefit==="gov"?"Community benefit: £1m a year, with a shared ownership offer still under discussion.":"Community benefit: the standard £1m a year.");
+  if(s.withdrawn && d<30){ s.terms=""; return s.outcome="Outcome: without agency support, Nordhavn chose the Norwegian site. Nothing will be built at Rubha Mòr."; }
+  if(d<30){ s.terms=""; return s.outcome="Outcome: Nordhavn announced that it would take the project to Norway. Nothing will be built at Rubha Mòr."; }
+  if(c>=60) return s.outcome="Outcome: the council raised no objection and Ministers granted consent with conditions. The peninsula is not unanimous, but the decision is widely seen as fair.";
+  if(c>=40) return s.outcome="Outcome: the council split and, by one vote, did not object. Consent was granted. The peninsula is divided, and neighbours who disagreed are not speaking.";
+  return s.outcome="Outcome: the council objected, which triggered a public inquiry, and the crofters are contesting the grazings at the Land Court. A decision is at least 18 months away.";
+}
+
+const STAGES = {
+s1:{ n:1, title:"The leak", when:"Monday morning",
+  brief:s=>[
+   `The local paper has the story before anyone on the peninsula was told: "Giant wind and hydrogen scheme for Rubha Mòr." Your phone has not stopped.`,
+   `Nordhavn wants to seize the moment with a launch at the village hall next week, with the minister on the platform. The minister's office likes the idea.`,
+   `Iain Morrison, the grazings clerk, has left you a one-line voicemail: "I'd have thought we'd hear it from you first."`],
+  options:s=>[
+   {k:"launch", l:"Go ahead with the launch", d:"Get the developer and the minister in front of the community and set out the opportunity with confidence."},
+   {k:"township", l:"Go to Druimbeag first", d:"Ask Nordhavn to hold off. Spend the week in kitchens and at the fank, starting with the crofters whose grazings are affected."},
+   {k:"council", l:"Brief the councillors and leading local figures first", d:"Secure the backing of those with influence before going to the wider community."}],
+  resolve:(s,k)=>{
+   if(k==="launch"){ s.consent-=15; s.dev+=10;
+    return {out:[`The hall is full. The slides are polished and the minister speaks well. The first question from the floor is from Iain Morrison: "Six of those are on our grazings. When were you planning to ask us?" The room applauds him.`],
+     exp:[`The order in which people hear things tells them where they rank. The people with legal rights over the land found out from a newspaper and then from a stage.`,
+          `A launch presents a decision. People who expected a conversation read it as a decision already made.`,
+          `You gained the developer's and minister's goodwill. Consider what it will cost to win back the hall.`]}; }
+   if(k==="township"){ s.consent+=10; s.dev-=5; s.first="township";
+    return {out:[`You drink a great deal of tea. Nobody says yes. Several people say they will listen, and Iain Morrison walks you up the moor to show you where the peat is deepest. Nordhavn's project director is irritated by the lost week, and one councillor complains that he heard after the crofters did.`],
+     exp:[`Going first to those most affected, and with rights at stake, is both respectful and practical. They can stop the project.`,
+          `You were listening as much as persuading. What you learned about the peat may matter more than anything you said.`,
+          `It had a cost. Elected members expect to be told early too, and the developer's patience is a finite resource.`]}; }
+   s.consent-=5; s.first="council";
+   return {out:[`The councillors appreciate the courtesy and Alasdair Grant offers the hotel for meetings. By Thursday the word in Druimbeag is that it has all been settled in the council chamber and the hotel bar.`],
+    exp:[`Elected representatives and respected figures do matter, and briefing them early is normal practice.`,
+         `In a small community, who was told first is known by everyone within days. Going to the influential before the affected confirms a familiar suspicion about how decisions get made.`,
+         `Support from those in favour already tells you little about those who are not.`]}; },
+  next:s=>"s2" },
+
+s2:{ n:2, title:"The numbers", when:"Two weeks later",
+  brief:s=>[
+   `The Forth Institute's report, paid for by Nordhavn, says the project will "support up to 600 jobs" and add £1.2bn to the Scottish economy.`,
+   `Your own analyst's figures: about 300 construction jobs for two years, mostly from outside the area, and about 45 permanent posts. The 600 counts every job anywhere in the supply chain.`,
+   `Calton Communications has drafted a joint press release leading on 600 jobs and wants your agency's logo on it.`],
+  options:s=>[
+   {k:"big", l:"Sign up to the 600 jobs headline", d:"It is a published figure from a reputable institute, and a strong number is what gets a project moving."},
+   {k:"own", l:"Publish your agency's own figures", d:"Say 45 permanent local jobs, explain the difference, and set out the downsides alongside the benefits."},
+   {k:"indep", l:"Give no figures until an independent assessment is done", d:"Commission one jointly with the community. It will take about two months."}],
+  resolve:(s,k)=>{
+   if(k==="big"){ s.consent-=10; s.dev+=5; s.flags.push("Promoted a jobs figure the agency's own analysis did not support");
+    return {out:[`The headline runs. A week later Catriona Nicolson reads your agency's own internal estimate, obtained by freedom of information request, on Gaelic radio. "Six hundred," she says, "or forty-five?"`],
+     exp:[`You knew the figure would be heard as local jobs, and you knew it was not. That is the test for whether a true statement misleads.`,
+          `Your agency's value to every party is that its numbers can be believed. That was spent on one press release.`,
+          `Internal analysis in a public body rarely stays internal.`]}; }
+   if(k==="own"){ s.consent+=10; s.dev-=10;
+    return {out:[`Nordhavn's project director phones to ask whose side you are on. At the next meeting in Druimbeag, someone says, "Forty-five is at least a number I believe," and the conversation turns to what kind of jobs, and for whom.`],
+     exp:[`Forty-five permanent jobs among 620 people is a substantial thing. It did not need inflating.`,
+          `Setting out the downsides yourself makes the benefits credible. People were going to find the downsides anyway.`,
+          `The developer now doubts you. Think about how to show them that a believable agency is worth more to them than a cheerleader.`]}; }
+   s.consent+=5; s.dev-=10;
+   return {out:[`The community trust agrees to help choose the consultants. Nordhavn warns that the Norwegian site is not standing still. For two months the only number in circulation is the 600, which you have neither endorsed nor corrected.`],
+    exp:[`An assessment the community helped commission will carry weight that neither yours nor the developer's can.`,
+         `Process takes time, and the developer's alternative is real. Delay is a cost you chose to impose.`,
+         `Silence left a figure you believed to be misleading unchallenged for two months. Consider whether you owed people your own estimate in the meantime.`]}; },
+  next:s=>"s3" },
+
+s3:{ n:3, title:"Whose land", when:"Month three",
+  brief:s=>[
+   `Nordhavn's lawyers have a plan. Sign a lease with Corran Estate, whose owner is eager. Redesign to keep off the community trust's land. For the common grazings, apply to the Land Court for a scheme if the crofters will not agree.`,
+   `Under that plan the private estate would receive nearly all the rent. The community trust would receive nothing. The crofters would get the access road, six turbines and a statutory share.`,
+   `The trust's chair asks you directly: "Is the agency going to stand by while one man in Surrey gets the lot?"`],
+  options:s=>[
+   {k:"split", l:"Back the developer's route", d:"It is lawful and fast, and without a signed lease there is no project for anyone."},
+   {k:"joint", l:"Press for a single land agreement", d:"One deal covering the estate, the trust and the grazings, with the same rent per turbine for all and the crofters at the table. Tell Nordhavn your support depends on it."},
+   {k:"neutral", l:"Stay out of it", d:"Land deals are private matters between the parties. The agency's role is economic development."}],
+  resolve:(s,k)=>{
+   if(k==="split"){ s.consent-=15; s.dev+=10; s.land="split";
+    return {out:[`The lease with Corran Estate is signed within the month. The trust's board votes to oppose the project. In Druimbeag, the phrase people use is "over our heads".`],
+     exp:[`The fastest lawful route produced a project in which the benefits go to an absentee and the burdens to the neighbours. That pattern has a long history here, and people recognise it.`,
+          `A Land Court scheme is a legal remedy. Using it against unwilling crofters is a choice about what kind of developer, and agency, you are.`,
+          `You kept the developer's confidence. You may have converted undecided people into opponents.`]}; }
+   if(k==="joint"){ s.consent+=15; s.dev-=15; s.land="joint";
+    return {out:[`It takes ten weeks and nearly fails twice. The estate's agent resists equal terms until Nordhavn, pressed by you, makes them a condition. The crofters agree to the access road and to talk about the six turbines. Nordhavn's board asks why the Scottish site is so much harder than the Norwegian one.`],
+     exp:[`Equal terms across different kinds of owner turned a contest over who gains into a shared interest in the project working.`,
+          `You used the agency's support as leverage. That is legitimate, and you can only do it so many times before the developer stops valuing the support.`,
+          `Bringing the crofters to the table as parties recognises their rights before a court has to.`]}; }
+   s.consent-=5; s.land="split";
+   return {out:[`Nordhavn signs with Corran Estate. When the trust's chair is asked on the radio what the development agency did, she says, "They told us it was none of their business."`],
+    exp:[`Neutrality between a multinational with lawyers and a township with a grazings clerk leaves the outcome to the stronger party.`,
+         `Your remit is economic development for the area. Who receives the rent for forty years is an economic development question.`,
+         `There are good reasons for a public body not to broker private deals. If that was your reason, the community needed to hear it explained.`]}; },
+  next:s=>"s4" },
+
+s4:{ n:4, title:"What the community gets", when:"Month five",
+  brief:s=>[
+   `Nordhavn has tabled the standard community benefit: £5,000 per MW, or £1m a year, to a local fund.`,
+   `The community trust wants more than money: a 20% ownership stake, and the construction workers' housing built as permanent homes to be handed over afterwards. Housing is the peninsula's most pressing need.`,
+   `Nordhavn says the project's margins will not carry it. The minister's office wants to announce a deal at a conference in three weeks.`],
+  options:s=>[
+   {k:"std", l:"Recommend the standard offer and lock it in", d:"£1m a year is real money for 620 people, and it is on the table now."},
+   {k:"shared", l:"Back the trust's case for ownership and housing", d:"Negotiate hard alongside them, knowing Nordhavn may walk."},
+   {k:"gov", l:"Ask the Scottish Government to make ownership a condition", d:"Use the minister's wish for an announcement to get shared ownership tied to public support for the hydrogen plant."}],
+  resolve:(s,k)=>{ s.benefit=k;
+   if(k==="std"){ s.consent-=5; s.dev+=5;
+    return {out:[`The minister announces it. The fund will be the largest the peninsula has seen. The trust's chair says, "A million a year to people with nowhere for their children to live," and the hall is quiet.`],
+     exp:[`A certain £1m a year against an uncertain larger prize is a defensible judgement, and you should be able to defend it as one.`,
+          `Money and assets are different things. A fund pays for what a community wants this year. A stake and houses change what it owns in twenty.`,
+          `The timetable was set by a conference. Ask whose deadline that was.`]}; }
+   if(k==="shared"){ s.dev-=15; s.consent+=10;
+    const ok=s.dev>=30;
+    return {out:[ ok ? `Three hard weeks. Nordhavn settles at a 10% stake, financed against future income, and 20 of the workers' houses built to permanent standard. The minister misses the conference announcement and is not pleased.`
+                     : `Nordhavn listens, then tells you its board has lost patience with the site: too many concessions already, and now this. Talks are suspended. The trust thanks you for standing with them.`],
+     exp:[`Housing as a construction legacy cost the developer little extra and met the community's most urgent need. Good negotiation looks for trades of that kind.`,
+          `Every earlier concession you asked of the developer was drawn from the same account. Whether this one could be afforded depended on what you had already spent.`,
+          `Standing with the community is worth something even when the answer is no. It is worth less if the project they wanted to shape no longer exists.`]}; }
+   s.dev-=5; s.consent+=5;
+   return {out:[`A civil servant is polite and clear. Consent decisions must be made on planning merits, and community benefit cannot be part of them. Grant criteria for the hydrogen plant are another matter and can favour projects with community ownership. Nordhavn takes the hint and opens talks on a stake, without commitment.`],
+    exp:[`You found the lever that was actually available. Planning consent could not carry the condition. Public funding could.`,
+         `Knowing which part of government can do what is a core skill in this job.`,
+         `You went over the developer's head to its funder. It worked, and they will remember.`]}; },
+  next:s=>"s5" },
+
+s5:{ n:5, title:"The opposition", when:"Month seven",
+  brief:s=>[
+   `A campaign group has formed, the Guardians of Rubha Mòr, with Catriona Nicolson as its voice. Their case: deep peat dug up in the name of the climate, eagles, the view from the machair, and a Gaelic-speaking community becoming, in her words, "a sacrifice zone for other people's targets".`,
+   `Calton Communications proposes a response. They will set up and fund a "Rubha Mòr Says Yes" group fronted by local faces, run a social media campaign, and brief journalists that the objectors are mostly retirees who moved in from elsewhere.`,
+   `Nordhavn asks whether the agency is comfortable with that.`],
+  options:s=>[
+   {k:"pr", l:"Tell Nordhavn the agency has no objection", d:"Opponents are organised. Supporters should be too, and how the developer runs its campaign is its own affair."},
+   {k:"liaise", l:"Bring the opponents inside", d:"Propose a liaison group jointly chaired by the community, with full access to the environmental data, and ask Nordhavn to drop the six turbines on deep peat by the township."},
+   {k:"ignore", l:"Leave the campaign alone and concentrate on the decision-makers", d:"The council and Ministers decide this. A campaign group does not."}],
+  resolve:(s,k)=>{
+   if(k==="pr"){ s.consent-=20; s.dev+=5; s.flags.push("Agreed to a covert campaign and personal attacks on opponents");
+    return {out:[`It lasts nine days. A community news site traces the "Says Yes" page to an Edinburgh office address and publishes Calton's briefing note, including the line about incomers. Catriona Nicolson was born in Druimbeag. So were most of the Guardians.`],
+     exp:[`A supporters' group secretly created and funded by the developer is a deception, and you were asked for your view before it happened.`,
+          `Attacking who people are, in place of answering what they say, is corrosive in any community and quickly exposed in a small one.`,
+          `There may be real local supporters. They have now been discredited along with the fake ones.`]}; }
+   if(k==="liaise"){ s.consent+=15; s.dev-=10;
+    return {out:[`Catriona Nicolson agrees to co-chair, "to keep an eye on you". With the peat surveys in front of them, the argument narrows to the six turbines. Nordhavn drops them after its own engineers concede the peat makes them the most expensive on the site. The Guardians do not disband, but two of their five objections are withdrawn.`],
+     exp:[`The opposition was making arguments. Some of them were right, and acting on those made the project better as well as more acceptable.`,
+          `Sharing the data gave up control of the story. It also meant the argument was about evidence.`,
+          `Dropping six turbines cost the developer output. It helped that the concession also saved them money, and it is worth looking for concessions like that.`]}; }
+   s.consent-=10;
+   return {out:[`The Guardians hold three public meetings to which nobody from the agency or the developer comes. Their petition reaches 380 signatures on a peninsula of 620. Each ward councillor receives a copy.`],
+    exp:[`Decision-makers are elected by, and listen to, the people you chose not to answer.`,
+         `Unanswered arguments are not neutralised. They become the settled account.`,
+         `Some of the Guardians' points were about peat and birds, which are planning matters the decision-makers must weigh in any case.`]}; },
+  next:s=>"s6" },
+
+s6:{ n:6, title:"The committee", when:"Month ten",
+  brief:s=>[
+   `The council's planning committee meets in three weeks to decide whether to object. An objection means a public inquiry.`,
+   `The head of planning reminds you, pleasantly, that committee members must decide on planning merits and should not be approached privately.`,
+   `That evening Nordhavn's project director phones. "You know Margaret Ross. Have a quiet word. Tell her what's at stake."`],
+  options:s=>[
+   {k:"lobby", l:"Have the quiet word", d:"Speak privately to the committee chair and one or two members. You would only be giving them the facts."},
+   {k:"formal", l:"Make a formal, public representation", d:"Submit the agency's economic case in writing through the planning process, and urge everyone else to do the same."},
+   {k:"none", l:"Make no representation", d:"The agency has said enough. Let the committee decide without you."}],
+  resolve:(s,k)=>{
+   if(k==="lobby"){ s.consent-=10; s.flags.push("Privately lobbied planning committee members");
+    return {out:[`Cllr Ross hears you out over coffee. At the start of the committee meeting she declares the approach, as she is required to, and withdraws from the item. It is in the paper by Friday.`],
+     exp:[`She did what the rules require. You placed a councillor you respect in a position where her only proper course was to step aside.`,
+          `"Only the facts", given privately to a decision-maker, is lobbying. The same facts given openly are evidence.`,
+          `The project lost its most experienced committee member and gained a headline about backroom influence.`]}; }
+   if(k==="formal"){ s.consent+=5;
+    return {out:[`Your representation is published with all the others: the Guardians', the trust's, the crofters', the business association's. The committee has the economic case in front of it, with your name on it, open to challenge.`],
+     exp:[`The agency has a legitimate view and a proper channel for it. Using the channel protects the decision from challenge later.`,
+          `A decision reached through a process people can see is easier for the losing side to live with.`,
+          `You had to tell the developer no. Consider how you explained that the open route was also in their interest.`]}; }
+   s.dev-=5;
+   return {out:[`The committee papers contain the Forth Institute's report and the Guardians' rebuttal of it. The agency's own, more modest and more credible estimate is absent. Nordhavn asks what the agency is for.`],
+    exp:[`Staying out avoided any impropriety. It also withheld the one set of figures most people had come to trust.`,
+         `There is a difference between not lobbying and not participating. The process invites representations.`,
+         `Caution after an earlier misstep is understandable. Check whether it served the committee or protected you.`]}; },
+  next:s=>"s7" },
+
+s7:{ n:7, title:"Your recommendation", when:"The week before the vote",
+  brief:s=>[
+   `Your agency's board must confirm its position before the council votes. They ask for your recommendation.`,
+   `Community consent stands at ${clamp(s.consent)} out of 100. Developer commitment stands at ${clamp(s.dev)} out of 100.`],
+  options:s=>[
+   {k:"asis", l:"Support the project as it now stands", d:"It will never be perfect, and the jobs are needed."},
+   {k:"cond", l:"Support it on stated conditions", d:"Publicly tie the agency's backing to local hiring and training commitments and to the community terms being honoured in full."},
+   {k:"out", l:"Withdraw the agency's support", d:"The project in its present form, or the way it has been pursued, is not one the agency should stand behind."}],
+  resolve:(s,k)=>{
+   if(k==="asis") s.dev+=5; else if(k==="cond"){ s.consent+=10; s.dev-=10; } else { s.dev-=40; s.withdrawn=true; }
+   const o=decide(s);
+   return {out:[o.replace("Outcome: ","").replace(/^./,c=>c.toUpperCase()), s.terms].filter(Boolean),
+    exp:[`You needed two things at once, the community's consent and the developer's commitment, and nearly every choice bought one with the other. Look at where you spent each.`,
+         `Your brief was to persuade. The choices that moved people most were the ones where the project itself changed in response to them.`,
+         `Ask who carries the consequences of this outcome, and for how long: the developer, the agency, or the 620 people who live there.`]}; },
+  next:s=>"debrief" }
+};
+
+/* ENGINE: no need to edit below. */
+const fresh=()=>Object.assign({name:"",stage:"intro",phase:"intro",flags:[],log:[],last:null},CFG.init);
+let S=fresh();
+const $=id=>document.getElementById(id);
+const view=$("view");
+function save(){ try{ localStorage.setItem(CFG.key,JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(CFG.key); if(r){ const o=JSON.parse(r); if(o&&o.stage) S=Object.assign(fresh(),o); } }catch(e){} }
+const words=t=>(t.trim().match(/\S+/g)||[]).length;
+const el=(tag,props={},html)=>{ const e=document.createElement(tag); Object.assign(e,props); if(html!==undefined) e.innerHTML=html; return e; };
+const fnv=v=>typeof v==="function"?v(S):v;
+const totals=()=>CFG.meters.map(m=>m.label+": "+m.val(S)).join("; ");
+function meter(){
+  $("meter").hidden = S.phase==="intro"; $("datasheet").hidden = S.phase==="intro";
+  CFG.meters.forEach((m,i)=>{ $("m"+i).textContent=m.val(S); $("l"+i).textContent=m.label; });
+}
+function render(){
+  meter(); view.innerHTML="";
+  if(S.phase==="intro") return intro();
+  if(S.phase==="debrief") return debrief();
+  const st=STAGES[S.stage];
+  view.append(el("div",{className:"stage"},`Stage ${st.n} of ${CFG.total}`), el("h1",{textContent:st.title}), el("div",{className:"when",textContent:fnv(st.when)}));
+  if(S.phase==="decide"){
+    st.brief(S).forEach(h=>view.append(h.startsWith("<ul")?el("div",{},h):el("p",{},h)));
+    view.append(el("h2",{textContent:"Your decision"}));
+    const opts=st.options(S);
+    opts.forEach(o=>{ const lab=el("label",{className:"opt"}); const r=el("input",{type:"radio",name:"opt",value:o.k}); r.onchange=check;
+      lab.append(r, el("strong",{textContent:o.l}), el("small",{textContent:o.d})); view.append(lab); });
+    view.append(el("h2",{textContent:"Justify it"}),
+      el("p",{className:"note",textContent:"Explain why this is the right call, using the evidence in front of you and the local circumstances. Say what you are uncertain about and what would change your mind."}));
+    const ta=el("textarea",{id:"just"}); ta.setAttribute("aria-label","Your justification"); ta.oninput=check;
+    const cnt=el("div",{className:"count",id:"cnt"});
+    view.append(ta,cnt, el("p",{className:"note",textContent:"Which factors did you weigh? Tick all that apply."}));
+    const chips=el("div",{className:"chips"}); CFG.factors.forEach(f=>{ const l=el("label"); l.append(el("input",{type:"checkbox",value:f}), document.createTextNode(f)); chips.append(l); }); view.append(chips);
+    const b=el("button",{id:"commit",textContent:"Commit decision",disabled:true}); view.append(b);
+    function check(){ const n=words(ta.value); const sel=view.querySelector("input[name=opt]:checked");
+      cnt.textContent=n+" words (minimum "+CFG.minWords+")"; b.disabled=!(sel&&n>=CFG.minWords); }
+    check();
+    b.onclick=()=>{ const k=view.querySelector("input[name=opt]:checked").value; const o=opts.find(x=>x.k===k);
+      const factors=[...chips.querySelectorAll("input:checked")].map(i=>i.value);
+      const brief=st.brief(S).map(h=>h.replace(/<li>/g,"- ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim()).filter(Boolean).join(" ");
+      const res=st.resolve(S,k);
+      S.log.push({n:st.n,title:st.title,when:fnv(st.when),situation:brief,choice:o.l,rejected:opts.filter(x=>x.k!==k).map(x=>x.l),just:ta.value.trim(),factors,out:res.out,totals:totals()});
+      S.last=res; S.phase="result"; save(); render(); window.scrollTo(0,0); };
+  } else {
+    const L=S.log[S.log.length-1];
+    const p=el("p",{},`<strong>You chose:</strong> `); p.append(document.createTextNode(L.choice)); view.append(p);
+    const o=el("div",{className:"box"}); o.append(el("h2",{textContent:"What happened"})); S.last.out.forEach(t=>o.append(el("p",{textContent:t}))); view.append(o);
+    const x=el("div",{className:"box exp"}); x.append(el("h2",{textContent:CFG.expertTitle})); const ul=el("ul"); S.last.exp.forEach(t=>ul.append(el("li",{textContent:t}))); x.append(ul); view.append(x);
+    view.append(el("p",{className:"note",textContent:"This commentary is not a mark. Your tutor will assess the quality of your justification, whichever option you chose."}));
+    const b=el("button",{textContent:"Continue"}); b.onclick=()=>{ const nx=st.next(S); if(nx==="debrief"){S.phase="debrief";} else {S.stage=nx;S.phase="decide";} save(); render(); window.scrollTo(0,0); }; view.append(b);
+  }
+}
+function intro(){
+  view.append(el("h1",{textContent:CFG.title}));
+  CFG.intro.forEach(t=>view.append(el("p",{textContent:t})));
+  view.append(el("h2",{textContent:"Your name or student number"}));
+  const inp=el("input",{type:"text",value:S.name}); inp.setAttribute("aria-label","Your name or student number"); view.append(inp);
+  const b=el("button",{textContent:"Begin"}); b.onclick=()=>{ S.name=inp.value.trim(); S.stage="s1"; S.phase="decide"; save(); render(); window.scrollTo(0,0); }; view.append(b);
+  view.append(el("p",{className:"note",textContent:"Your progress is kept in this browser only. The people, places and figures are fictional and simplified for teaching."}));
+}
+function report(){
+  let m=`# ${CFG.brand}: ${CFG.title}\n\n**Student:** ${S.name||"(not given)"}\n\n## Outcome\n\n`+CFG.summary(S).map(t=>"- "+t).join("\n")+`\n\n## Decision log\n`;
+  S.log.forEach(L=>{ m+=`\n### Stage ${L.n}: ${L.title} (${L.when})\n\n**Situation:** ${L.situation}\n\n**Decision:** ${L.choice}\n\n**Options rejected:** ${L.rejected.join("; ")}\n\n**Justification:**\n\n${L.just}\n\n**Factors ticked:** ${L.factors.join(", ")||"none"}\n\n**What happened:** ${L.out.join(" ")}\n\n**Running totals:** ${L.totals}\n`; });
+  if(S.reflect) m+=`\n## Reflection\n\n${S.reflect}\n`;
+  return m;
+}
+async function debrief(){
+  view.append(el("div",{className:"stage"},"Debrief"), el("h1",{textContent:"How it went"}));
+  const ul=el("ul"); CFG.summary(S).forEach(t=>ul.append(el("li",{textContent:t}))); view.append(ul);
+  view.append(el("p",{className:"note",textContent:"Other routes through this scenario end very differently. A good outcome does not by itself mean good decisions, and a poor one does not mean poor reasoning. Some sound decisions are costly, and some weak ones were lucky."}));
+  view.append(el("h2",{textContent:"Reflection"}), el("p",{textContent:CFG.reflect}));
+  const ta=el("textarea",{value:S.reflect||""}); ta.setAttribute("aria-label","Your reflection"); ta.oninput=()=>{S.reflect=ta.value.trim();save();}; view.append(ta);
+  view.append(el("h2",{textContent:"Your decision log"}));
+  S.log.forEach(L=>{ const d=el("div",{className:"logitem"}); d.append(el("strong",{textContent:`Stage ${L.n}: ${L.title}`}), el("div",{textContent:"Decision: "+L.choice}), el("q",{textContent:L.just}), el("div",{className:"note",textContent:"Factors: "+(L.factors.join(", ")||"none ticked")})); view.append(d); });
+  const dl=await (window.claude&&claude.use?claude.use("downloads"):Promise.resolve(null)).catch(()=>null);
+  const msg=el("p",{className:"note"});
+  if(dl){ const b=el("button",{textContent:"Save log to submit"}); b.onclick=async()=>{ try{ await dl.save({filename:CFG.file,data:report()}); msg.textContent="Saved."; }catch(e){ msg.textContent = e&&e.code==="declined" ? "Save cancelled." : "Could not save here. Copy the text below instead."; show(); } }; view.append(b," "); }
+  const c=el("button",{className:"ghost",textContent:"Show log as text to copy"}); view.append(c); view.append(msg);
+  const out=el("textarea",{readOnly:true,hidden:true}); out.setAttribute("aria-label","Decision log as text"); view.append(out);
+  function show(){ out.hidden=false; out.value=report(); out.focus(); out.select(); }
+  c.onclick=show;
+  const r=el("button",{className:"ghost",textContent:"Start again (clears this attempt)"}); r.style.display="block";
+  r.onclick=()=>{ if(r.dataset.sure){ S=fresh(); save(); render(); window.scrollTo(0,0); } else { r.dataset.sure=1; r.textContent="Press again to confirm: your log will be erased"; } }; view.append(r);
+}
+$("st").textContent=CFG.sheetTitle; $("brand").textContent=CFG.brand; $("sub").textContent=CFG.sub;
+$("sheet").innerHTML=SHEET;
+load(); render();
+</script>
+</body>
+</html>

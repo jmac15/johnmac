@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Àird na Gaoithe: the T2 gearbox alarm</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap">
+<style>
+:root{
+  --bg:#e6ebea; --panel:#f4f6f5; --ink:#17242a; --muted:#52636a; --sea:#1d5f7a; --sea-ink:#f2f7f9;
+  --warn:#b4530a; --rule:#b9c5c6; --good:#1f6b5a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#131c20; --panel:#1c282d; --ink:#e3e9e9; --muted:#9aaab0; --sea:#58aacb; --sea-ink:#0c1a20;
+    --warn:#f0954a; --rule:#34454c; --good:#49b097;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131c20; --panel:#1c282d; --ink:#e3e9e9; --muted:#9aaab0; --sea:#58aacb; --sea-ink:#0c1a20;
+  --warn:#f0954a; --rule:#34454c; --good:#49b097;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1.03rem;line-height:1.6}
+main{max-width:42rem;margin:0 auto;padding:1.2rem 1.1rem 4rem}
+header{border-bottom:3px solid var(--sea);padding-bottom:.5rem;margin-bottom:1rem}
+.brand{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;font-size:1.45rem;line-height:1}
+.sub{color:var(--muted);font-size:.9rem}
+.meter{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.8rem 0 1.4rem}
+.meter div{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:.45rem .6rem}
+.meter b{display:block;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.meter span{font-size:.78rem;color:var(--muted)}
+.stage{color:var(--warn);font-weight:700;font-size:.9rem;letter-spacing:.03em;text-transform:uppercase}
+h1{font-family:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;font-weight:800;font-size:clamp(2rem,8vw,2.8rem);line-height:1;margin:.15rem 0 .3rem}
+.when{color:var(--muted);font-style:italic;margin-bottom:1rem}
+h2{font-size:1.05rem;margin:1.6rem 0 .5rem}
+p{margin:0 0 .85rem}
+ul{padding-left:1.15rem;margin:0 0 .85rem} li{margin-bottom:.35rem}
+.opt{display:block;border:2px solid var(--rule);border-radius:4px;padding:.7rem .85rem;margin-bottom:.55rem;background:var(--panel);cursor:pointer}
+.opt:has(input:checked){border-color:var(--sea);box-shadow:inset .4rem 0 0 var(--sea)}
+.opt input{margin-right:.5rem;accent-color:var(--sea)}
+.opt strong{font-weight:650}
+.opt small{display:block;color:var(--muted);font-size:.92rem;margin-top:.2rem}
+textarea,input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--rule);border-radius:4px;padding:.6rem .7rem}
+textarea{min-height:9rem;resize:vertical}
+textarea:focus,input:focus{outline:3px solid var(--sea);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem}
+.chips label{border:1px solid var(--rule);border-radius:99px;padding:.2rem .65rem;font-size:.88rem;background:var(--panel);cursor:pointer}
+.chips label:has(input:checked){background:var(--sea);color:var(--sea-ink);border-color:var(--sea)}
+.chips input{position:absolute;opacity:0;width:0;height:0}
+.count{font-size:.85rem;color:var(--muted)}
+button{font:inherit;font-weight:650;border:0;border-radius:4px;padding:.75rem 1.1rem;background:var(--sea);color:var(--sea-ink);cursor:pointer;margin-top:.8rem}
+button[disabled]{opacity:.45;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--sea);border:2px solid var(--sea)}
+button:focus-visible,summary:focus-visible,.opt:focus-within{outline:3px solid var(--warn);outline-offset:2px}
+.box{border-left:.4rem solid var(--warn);background:var(--panel);padding:.8rem .95rem;border-radius:0 4px 4px 0;margin:1rem 0}
+.box.exp{border-left-color:var(--good)}
+.box h2{margin-top:0}
+details{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:.6rem .9rem;margin:1.2rem 0;font-size:.95rem}
+summary{cursor:pointer;font-weight:650}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:.6rem 0}
+th,td{text-align:left;vertical-align:top;padding:.35rem .5rem;border-bottom:1px solid var(--rule)}
+.logitem{border-top:1px solid var(--rule);padding-top:.8rem;margin-top:.8rem}
+.logitem q{quotes:none;display:block;white-space:pre-wrap;border-left:3px solid var(--rule);padding-left:.7rem;margin:.4rem 0}
+.note{font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">Àird na Gaoithe Community Wind Farm</div>
+    <div class="sub">A branching decision scenario for undergraduate engineers. Fictional site, illustrative figures.</div>
+  </header>
+  <div class="meter" id="meter" hidden>
+    <div><b id="m_cost">£0k</b><span>Direct cost so far</span></div>
+    <div><b id="m_lost">0 MWh</b><span>Generation lost</span></div>
+    <div><b id="m_flag">0</b><span>Safety or integrity flags</span></div>
+  </div>
+  <article id="view"></article>
+  <details id="datasheet" hidden>
+    <summary>Site data sheet (use this in your justifications)</summary>
+    <div id="sheet"></div>
+  </details>
+</main>
+
+<script>
+/* ============================================================
+   SETTINGS a tutor may want to change
+   ============================================================ */
+const MIN_WORDS = 40;          // minimum words of justification per decision
+const PRICE = 90;              // £ per MWh, used for lost revenue
+const FACTORS = ["Engineering and technical","Safety","Weather","Logistics and access","Supply chain","Cost and revenue","Community and stakeholders","Uncertainty and risk"];
+
+const SHEET = `
+<h2>The site</h2>
+<ul>
+<li>Three 2.3 MW geared turbines (T1, T2, T3), 80 m hub height, on moorland on the west side of Lewis. Twelve years old; design life 20 to 25 years. Out of manufacturer's warranty.</li>
+<li>Drivetrain: main shaft, three-stage gearbox (one planetary stage, two parallel stages), high-speed shaft (HSS) with the mechanical brake disc, flexible coupling, generator.</li>
+<li>Owned by a community trust. Income pays for local projects, so every lost megawatt-hour is money the community does not get.</li>
+<li>One resident technician, Calum, trained in borescope inspection and routine service. Specialist crews and heavy plant come from the mainland.</li>
+</ul>
+<h2>Energy and money</h2>
+<div class="tw"><table>
+<tr><th>Item</th><th>Figure</th></tr>
+<tr><td>Energy price</td><td>£90 per MWh</td></tr>
+<tr><td>One turbine, typical winter day</td><td>about 28 MWh (about £2,500)</td></tr>
+<tr><td>One turbine, storm day at rated power</td><td>about 55 MWh (about £5,000)</td></tr>
+<tr><td>Rated power reached at</td><td>13 m/s</td></tr>
+<tr><td>Cut-out</td><td>25 m/s (10-minute mean)</td></tr>
+</table></div>
+<h2>Site working limits (rules for this scenario)</h2>
+<div class="tw"><table>
+<tr><th>Activity</th><th>Wind limit</th></tr>
+<tr><td>Tower climb and nacelle work</td><td>10-minute mean up to 18 m/s</td></tr>
+<tr><td>Lifts with the nacelle service crane</td><td>up to 12 m/s</td></tr>
+<tr><td>Main crane lifts (rotor, gearbox)</td><td>gusts up to 8 m/s at hook height</td></tr>
+<tr><td>Rotor lock engaged</td><td>10-minute mean up to 20 m/s</td></tr>
+</table></div>
+<h2>Getting things to the island</h2>
+<ul>
+<li>Freight comes by road to Ullapool and by ferry to Stornoway, then about an hour by road. Winter storms regularly cancel sailings for a day or more.</li>
+<li>Scheduled flights to Stornoway carry small freight only (about 100 kg per item).</li>
+<li>The last 4 km to site is a single-track road over peat with a weight-restricted bridge. Heavy loads need a route survey.</li>
+<li>Daylight in late October is about 9.5 hours, falling to about 7 by December.</li>
+</ul>
+<h2>Indicative costs and lead times</h2>
+<div class="tw"><table>
+<tr><th>Item</th><th>Cost</th><th>Lead time</th></tr>
+<tr><td>HSS bearing kit, manufacturer</td><td>£18k</td><td>3 weeks</td></tr>
+<tr><td>HSS bearing kit, UK stockist</td><td>£14k</td><td>5 days</td></tr>
+<tr><td>HSS pinion shaft assembly (240 kg)</td><td>£28k extra</td><td>with the kit</td></tr>
+<tr><td>Uptower specialist crew of three</td><td>£3.5k per day working, £2.5k standby</td><td>1 week notice</td></tr>
+<tr><td>Gearbox, new</td><td>£350k</td><td>10 weeks</td></tr>
+<tr><td>Gearbox, refurbished exchange</td><td>£220k</td><td>3 weeks</td></tr>
+<tr><td>500 t class crane from the mainland</td><td>£120k mobilisation, £8k per day standby</td><td>3 weeks</td></tr>
+</table></div>`;
+
+/* ============================================================
+   SCENARIO
+   Each stage: n (number shown), title, when, brief(s), options(s),
+   resolve(s,k) -> {out:[...], exp:[...]} and changes state, next(s).
+   State s: op (full|derate|stop), damage (early|advanced|secondary),
+   seen (has anyone looked inside), path (U uptower | X exchange),
+   cost (£k), lost (MWh), flags[], log[].
+   ============================================================ */
+const STAGES = {
+
+s1:{ n:1, title:"The alarm", when:"Monday 21 October, 06:40",
+  brief:s=>[
+   `You are the duty operations engineer. Overnight, T2's condition monitoring system raised an amber alarm on the gearbox.`,
+   `<ul><li>Vibration at the high-speed shaft, generator-side bearing: three times its 30-day baseline and still rising.</li><li>That bearing is running 9 °C hotter than the same bearing on T1 and T3 at the same load.</li><li>The oil particle counter shows ferrous debris has doubled in a week.</li></ul>`,
+   `The forecast: south-westerly 9 m/s today, building to 16 m/s by Tuesday evening. Wednesday and Thursday bring a severe gale, mean 22 to 24 m/s with gusts over 30. Friday eases to 12 m/s.`,
+   `Storm days are the best earning days of the year. The turbine's own protection will trip it at the red alarm threshold. What do you do with T2 right now?`],
+  options:s=>[
+   {k:"full", l:"Keep T2 running at full power", d:"Watch the alarms and rely on the red-alarm trip. No income lost."},
+   {k:"derate", l:"Derate T2 to 50% power", d:"Lower torque and heat on the bearing, about half the income, while you find out more."},
+   {k:"stop", l:"Stop T2 and lock it out", d:"No further load on the bearing. No income from T2."}],
+  resolve:(s,k)=>{ s.op=k; s.lost+={full:0,derate:12,stop:25}[k];
+   return {full:{out:[`T2 stays at full output. You set a watch on the vibration trend and note the red-alarm threshold.`],
+     exp:[`Alarm thresholds are there to catch imminent failure. They do not protect against damage that grows steadily below the trip level.`,
+          `A spalling bearing sheds hard steel debris into oil that also feeds the gear meshes. The question is what else that debris can reach before a trip.`,
+          `Compare the sizes of the two risks: two storm days are worth about £10k from T2. A gearbox exchange on an island is several hundred thousand pounds plus a crane.`]},
+    derate:{out:[`T2 drops to 50%. Bearing temperature falls 4 °C within the hour. The vibration trend flattens but does not fall.`],
+     exp:[`Derating cuts torque, and so bearing load and heat. It slows damage. It does not stop it.`,
+          `It buys time only if you use the time. A derate with no review trigger and no inspection plan is a slower version of running on.`,
+          `Consider what evidence would make you stop the turbine, and decide that before the storm rather than during it.`]},
+    stop:{out:[`T2 is stopped, feathered and locked out. The alarm clears. So does the income.`],
+     exp:[`Stopping preserves the damage as it is, which also preserves the evidence for diagnosis.`,
+          `It is the most cautious option and the most expensive in the short term. Whether it is proportionate depends on how confident you are in what three independent indicators are telling you.`,
+          `A feathered, idling rotor in a storm is a normal survival state for the turbine.`]}}[k]; },
+  next:s=>"s2" },
+
+s2:{ n:2, title:"Finding out", when:"Monday 21 October, 08:30",
+  brief:s=>[
+   `You need to know what is happening inside the gearbox. The window is closing: from Tuesday evening until Friday, wind speeds rule out any tower climb.`,
+   `T2 is currently `+{full:"running at full power",derate:"running derated at 50%",stop:"stopped"}[s.op]+`.`],
+  options:s=>[
+   {k:"local", l:"Send Calum up this morning with the borescope", d:"Visual inspection of the high-speed stage and an oil sample. T2 must be stopped for about four hours. The sample has to fly to a mainland lab; results in about three days."},
+   {k:"oem", l:"Wait for the manufacturer's gearbox specialist", d:"A definitive inspection, but with sailings likely cancelled midweek the earliest arrival is Friday. £6k."},
+   {k:"remote", l:"Commission remote analysis of the vibration spectra today", d:"The manufacturer's monitoring centre analyses the data. Nobody climbs. £2k."}],
+  resolve:(s,k)=>{
+   if(k==="local"){ s.seen=true; s.damage="early"; s.cost+=1; s.lost+=150; const was=s.op; s.op="stop";
+     return {out:[`Calum is in the nacelle by ten. The borescope shows a patch of spalling about 15 mm across on the inner race of the generator-side bearing. The pinion teeth he can see are clean.`,
+       was==="stop"?`T2 stays stopped. The oil sample catches the afternoon flight.`:`On that evidence you stop T2 before the storm arrives. The oil sample catches the afternoon flight.`],
+      exp:[`A competent person on site today, inside a closing weather window, gave you more than a better-qualified person on Friday could have.`,
+           `Visual inspection tells you extent and collateral damage. Vibration analysis tells you location. Oil analysis tells you what is wearing. They answer different questions.`,
+           `Note the island lead time on a lab result. Decisions here often have to be made before all the data arrives.`]}; }
+   s.cost+= k==="oem"?6:2;
+   s.damage={full:"secondary",derate:"advanced",stop:"early"}[s.op];
+   s.lost+={full:80,derate:80,stop:160}[s.op];
+   s.seen = k==="oem" || s.damage==="secondary";
+   const remote=`The monitoring centre reports by mid-afternoon: an inner-race defect frequency with shaft-speed sidebands at the HSS generator-side bearing, high confidence. Gear condition cannot be judged from vibration alone.`;
+   const out = s.damage==="secondary"
+     ? [(k==="remote"?remote+` `:``)+`T2 runs into the storm. At 23:10 on Wednesday it trips on red vibration alarm.`,
+        `On Friday the inspection finds the bearing cage broken up, debris carried through the intermediate stage, and chipped teeth on the intermediate gear.`]
+     : s.damage==="advanced"
+       ? (k==="oem" ? [`T2 runs derated through the storm. On Friday the specialist finds the spall has grown to cover a third of the inner race, and debris has scuffed the HSS pinion teeth.`]
+                    : [remote,`T2 runs derated through the storm. The vibration level climbs another 40% by Friday. Nobody has looked inside.`])
+       : (k==="oem" ? [`T2 sits stopped through the storm. On Friday the specialist finds a 15 mm spall on the inner race of the generator-side bearing. The gear teeth are clean.`]
+                    : [remote,`T2 sits stopped through the storm. Nobody has looked inside.`]);
+   if(s.damage==="secondary") s.flags.push("In-service gearbox failure during the storm");
+   return {out, exp:[
+     `Time matters because damage progresses under load. Each day's delay in diagnosis has a cost that depends on what the turbine is doing in the meantime.`,
+     `Vibration analysis is good at locating a bearing fault. It is poor at telling you whether debris has damaged the gears.`,
+     `On an island, the availability of an expert is itself weather-dependent. Local competence that can act inside the window is a real engineering asset.`]}; },
+  next:s=>s.damage==="secondary"?"s4x":"s3" },
+
+s3:{ n:3, title:"Repair strategy", when:"Friday 25 October",
+  brief:s=>[
+   s.seen ? (s.damage==="early" ? `What you know: a spalled inner race on the HSS generator-side bearing. Gear teeth clean on inspection.`
+                                : `What you know: a badly spalled HSS bearing, and scuffing on the HSS pinion teeth. The planetary and intermediate stages look sound.`)
+          : `What you know: remote analysis points to the HSS generator-side bearing with high confidence. Nobody has inspected the gears.`,
+   `The trust's chair has asked for a plan by the end of the day.`],
+  options:s=>[
+   {k:"up", l:"Repair it uptower", d:"Replace the HSS bearings, and anything else found, inside the nacelle using the service crane. Specialist crew of three, about three working days. No heavy crane."},
+   {k:"exchange", l:"Exchange the whole gearbox", d:"Removes all doubt about hidden damage. Needs a heavy crane from the mainland and a calm lifting window."},
+   {k:"winter", l:"Run T2 derated through the winter and repair in spring", d:"Keep half the winter income and do the work when weather windows are longer."}],
+  resolve:(s,k)=>{
+   if(k==="up"){ s.path="U"; return {out:[`You commit to an uptower repair and start lining up parts and a crew.`],
+     exp:[`Replacing high-speed bearings in the nacelle is established practice. Damage in the planetary stage would normally mean the gearbox has to come down.`,
+          `The decision is only as good as the diagnosis behind it. Ask what you would find hardest to cope with if it turned up once the casing was open.`]}; }
+   if(k==="exchange"){ s.path="X"; return {out:[`You commit to a full gearbox exchange.`],
+     exp:[`An exchange removes uncertainty, at roughly ten times the cost of an uptower repair once the crane is counted.`,
+          `Whether that is proportionate depends on how much you actually know. Buying certainty with a crane is one way to compensate for a thin diagnosis; inspection is a cheaper one.`]}; }
+   s.path="X"; s.damage="secondary"; s.winterFail=true; s.lost+=1150; s.flags.push("In-service gearbox failure in January");
+   return {out:[`T2 runs at 50% through November and December. On 14 January, in a gale, it trips on red vibration alarm.`,
+     `The bearing has collapsed. Debris has gone through the gearbox and the intermediate gear has lost teeth. An uptower repair is no longer possible.`],
+     exp:[`A bearing that has started to spall has no dependable remaining life. Derating changes the rate of damage, and nobody can tell you by how much.`,
+          `Winter carries most of the year's yield, so a winter derate costs the most energy, and a winter failure leaves you needing a crane in the worst lifting weather of the year.`,
+          `Deferral can be a sound strategy for a stable defect under close monitoring. Ask whether this defect was stable.`]}; },
+  next:s=>s.path==="U"?"s4u":"s4x" },
+
+s4u:{ n:4, title:"Parts", when:"Monday 28 October",
+  brief:s=>[
+   s.seen&&s.damage==="advanced" ? `You need an HSS bearing kit and a replacement pinion shaft assembly. The shaft weighs 240 kg, so it cannot fly.`
+                                 : `You need an HSS bearing kit: about 85 kg with seals and fittings.`,
+   `T2 is 12 years old and out of warranty. The insurer requires manufacturer's parts or a documented equivalent. T2 is stopped, losing about £2,500 a day.`],
+  options:s=>{ const sh=s.seen&&s.damage==="advanced";
+   return [
+   {k:"oem", l:"Manufacturer's kit by road and ferry", d:`Three weeks from Denmark. £${sh?46:18}k.`},
+   {k:"stock", l:"UK stockist", d:`Same ISO designation from a premium bearing maker${sh?", with a refurbished shaft from a UK gearbox shop":""}. Five days. £${sh?40:14}k. Twelve-month warranty. You must document equivalence yourself.`},
+   {k:"air", l:sh?"Manufacturer's kit, expedited":"Manufacturer's kit, flown to Stornoway", d:sh?`Express road and ferry for the shaft. Twelve days. £${46+6}k.`:`Ten days. £${18+6}k.`}];},
+  resolve:(s,k)=>{ const sh=s.seen&&s.damage==="advanced";
+   const days={oem:21,stock:5,air:sh?12:10}[k]; s.kit=k;
+   s.cost+={oem:18,stock:14,air:24}[k]+(sh?28:0)-(sh&&k==="stock"?2:0); s.lost+=days*28;
+   return {out:[`Parts ordered. They reach the site store ${days} days later`+(k==="oem"?`, a day late after a cancelled sailing.`:`.`)],
+    exp:[`Put a number on delay. At about £2,500 a day, the price difference between the options is small beside the downtime difference.`,
+         `Equivalence is more than an ISO number. Internal clearance class, cage design, surface treatment, and whether the generator-side bearing should be electrically insulated all matter, and the last of those may bear on why this bearing failed.`,
+         `Every crossing is a risk in winter. Think about what else should travel on the same shipment: seals, oil, filters, alignment shims, a flushing rig. A missing £30 seal can stop a job for a week on an island.`]}; },
+  next:s=>"s5u" },
+
+s4x:{ n:4, title:"A gearbox and a crane", when:s=>s.winterFail?"Thursday 16 January":"Monday 28 October",
+  brief:s=>[
+   (s.winterFail||s.seen&&s.damage==="secondary") ? `The gearbox cannot be repaired in the nacelle. It has to come down.` : `You have chosen to exchange the gearbox.`,
+   `The gearbox weighs about 18 tonnes. The lift needs a 500 tonne class crane from the mainland: several ferry loads of ballast and rigging, a route survey for the peat road and the bridge, and gusts no higher than 8 m/s at hook height.`,
+   `The trust's reserves are about £400k.`],
+  options:s=>[
+   {k:"new", l:"New gearbox from the manufacturer", d:"£350k, ten weeks, five-year warranty. Crane £120k."},
+   {k:"refurb", l:"Refurbished exchange unit", d:"£220k, three weeks, two-year warranty, upgraded bearings. Crane £120k."},
+   {k:"april", l:"Refurbished unit, fitted in April", d:"Share the crane mobilisation with another island wind farm's planned blade work: crane share £60k. T2 stays down until then."}],
+  resolve:(s,k)=>{ s.unit=k;
+   s.cost+={new:470,refurb:340,april:280}[k]; s.lost+={new:70,refurb:21,april:s.winterFail?75:160}[k]*28;
+   return {out:[{new:`The order is placed. Ten weeks is a long time to look at a stopped turbine.`,
+                 refurb:`The exchange unit is allocated and the crane booked.`,
+                 april:`The crane share is agreed. T2 will stand idle until spring.`}[k],
+                `Total commitment so far exceeds anything the trust has spent on the site since it was built.`],
+    exp:[`Match the warranty to the remaining life of the asset. The turbine is 12 years into a 20 to 25 year life.`,
+         `Winter months carry most of the yield. Count the megawatt-hours each option gives up, at £90 each, and set that beside the capital saving.`,
+         `Sharing a crane mobilisation is a real island strategy and can halve the largest logistics cost. It ties your programme to somebody else's.`,
+         `Check the trust's cash position. A technically ideal option that the owner cannot fund is not an option.`]}; },
+  next:s=>"s5x" },
+
+s5u:{ n:5, title:"The weather window", when:"Crew and parts on site",
+  enter:s=>{ if(!s.seen&&s.damage==="advanced"&&!s.surprised){ s.surprised=true; s.cost+=37; s.lost+=12*28; } },
+  brief:s=>[
+   s.surprised ? `<strong>A setback first.</strong> When the crew opened the casing they found the HSS pinion teeth scuffed by debris. Nobody had inspected the gears, and you ordered bearings only. A shaft assembly had to be ordered and the crew stood down and brought back: £37k and 12 more days.` : ``,
+   `The job is three working days. Day 1: lock the rotor, drain, remove the coupling and brake disc, draw the high-speed shaft. Day 2: fit the new parts, using the nacelle crane. Day 3: reassemble, laser-align generator to gearbox, flush, test.`,
+   `With the high-speed shaft out, the mechanical brake is out too. The rotor is held only by the rotor lock.`,
+   `Forecast: day 1, 8 m/s. Day 2, 11 m/s rising to 16 by evening. Day 3, 20 to 24 m/s with gusts to 30. Then five unsettled days. Daylight is about eight hours.`].filter(Boolean),
+  options:s=>[
+   {k:"push", l:"Start now and finish in two long days", d:"Work on after dark both days and be closed up before day 3."},
+   {k:"split", l:"Start now, pause for the storm, finish afterwards", d:"Strip down and fit parts on days 1 and 2, secure the turbine, and do alignment and testing when the wind drops."},
+   {k:"wait", l:"Stand the crew down and wait for three clear days", d:"Forecasters suggest eight to ten days. Standby is £2.5k a day."}],
+  resolve:(s,k)=>{
+   if(k==="push"){ s.rushed=true; s.cost+=14;
+    return {out:[`The crew work until ten at night on both days. The turbine is closed up as the wind rises on the second evening. Alignment was done by torchlight in under an hour.`],
+     exp:[`It worked. Ask what you were relying on: fatigued people working at height in the dark, and no slack if a seized fastener had cost you three hours.`,
+          `Shaft alignment is the precision task in this job, and misalignment is a leading suspect for why the bearing failed. It was the task done last, fastest and most tired.`]}; }
+   if(k==="split"){ s.cost+=10.5+25+12; s.lost+=10*28; s.flags.push("Dangerous occurrence: rotor lock overloaded in storm");
+    return {out:[`By the second evening the new parts are in but the brake is not yet back in service. The storm arrives with the rotor held only by its lock.`,
+      `At the peak, mean wind passes 23 m/s, above the lock's 20 m/s limit. Nobody is hurt. Afterwards the lock pin and hub flange are found damaged. The occurrence is investigated, and repair and inspection cost £25k and ten days.`],
+     exp:[`Never start a task whose unsafe intermediate state you cannot close out inside the window. The brake sits on the high-speed shaft: removing the shaft removes the brake.`,
+          `Splitting work around weather is a sound idea in general. The skill is choosing a split point where the machine is safe to leave. Ground preparation and tooling can wait out a storm. A half-built drivetrain cannot.`]}; }
+   s.cost+=10.5+22.5; s.lost+=9*28;
+   return {out:[`The crew wait nine days in Stornoway. Then they get three clear days and the job runs to plan, in daylight, with a full alignment check.`],
+    exp:[`The cost of waiting is visible and certain: standby and lost generation. The cost of not waiting is uncertain and could be much larger. That asymmetry is typical of weather decisions.`,
+         `Could the standby days have been used? Pre-staging tools, checking the kit against the parts list, toolbox talks, or a look at T1 and T3.`]}; },
+  next:s=>"s6" },
+
+s5x:{ n:5, title:"The lifting window", when:"Crane and gearbox on site",
+  brief:s=>[
+   `The crane is rigged. The exchange needs about ten hours of lifting across two days: rotor down, gearbox out, gearbox in, rotor up. The limit is gusts of 8 m/s at hook height.`,
+   `Forecast at 10 m: day 1, mean 7 m/s gusting 11. Day 2, mean 6 m/s. Day 3, 9 to 10 m/s. Then a gale. The crane costs £8k for every day it stands.`],
+  options:s=>[
+   {k:"go", l:"Lift on days 1 and 2 as forecast", d:"Start the rotor lift on day 1 and stop if the gusts exceed the limit."},
+   {k:"hold", l:"Hold for a steadier window with the crane on standby", d:"Forecasters suggest about six days."},
+   {k:"demob", l:"Send the crane home and bring it back for a settled spell", d:"A second mobilisation costs another £120k. Perhaps three weeks."}],
+  resolve:(s,k)=>{
+   if(k==="go"){ s.cost+=16; s.lost+=2*28; s.flags.push("Lift suspended with rotor on the hook");
+    return {out:[`The rotor is twenty metres off the hub when gusts reach 12 m/s at hook height. The lift is suspended with a 40 tonne rotor on the hook and tag-line crews struggling to hold it. It is set down after forty minutes. Nobody is hurt.`,
+      `The exchange is completed on day 2 and in a short lull early on day 3.`],
+     exp:[`The limit applies at hook height and to gusts. Wind speed rises with height, so a 10 m forecast understates what the load will see at 80 m.`,
+          `A rotor is a very large sail. The hazardous moment is the one you cannot pause: the load between the ground and the hub.`,
+          `A go decision with clear abort criteria is legitimate. Check whether the abort left you in a safe state, and who had the authority to call it.`]}; }
+   if(k==="hold"){ s.cost+=48; s.lost+=6*28;
+    return {out:[`Six days of standby. Then two still mornings, and the exchange is done without incident.`],
+     exp:[`Standby is the price of an option to lift safely. Compare it with the cost of a second mobilisation, and with the cost of a dropped rotor.`,
+          `Forecast confidence falls quickly beyond three to five days. A plan that depends on a six-day forecast needs a fallback.`]}; }
+   s.cost+=120; s.lost+=21*28;
+   return {out:[`The crane leaves on the next sailing. It returns three weeks later for a settled spell and the exchange goes smoothly.`],
+    exp:[`Demobilising makes sense when the wait is long and uncertain. Six days of standby would have cost £48k against £120k for the return trip.`,
+         `There is also the ferry to consider: every crossing with heavy plant is another exposure to cancellation.`]}; },
+  next:s=>"s6" },
+
+s6:{ n:6, title:"Back into service", when:"T2 mechanically complete",
+  brief:s=>[
+   `The trust's chair is on the phone: "When is it earning again?"`,
+   `T1 and T3 are the same age and the same design as T2. Their alarms are normal.`],
+  options:s=>[
+   {k:"full", l:"Return T2 to full power today", d:"Start recovering the lost income at once."},
+   {k:"staged", l:"Staged run-in over 72 hours", d:"Step through 25, 50, 75 and 100% load, watching temperatures and vibration, record a new baseline, and re-check alignment with the drivetrain hot."},
+   {k:"fleet", l:"Staged run-in, and inspect T1 and T3", d:"As above, and stop each of the other turbines for half a day for a borescope and alignment check."}],
+  resolve:(s,k)=>{
+   if(k==="full"){ if(s.rushed){ s.cost+=8; s.lost+=3*28; s.flags.push("Repeat vibration alarm after repair");
+      return {out:[`T2 runs well for nine days. Then the HSS vibration alarm returns. The generator is found misaligned beyond tolerance. T2 is stopped for three days and realigned.`],
+       exp:[`Failures cluster just after an intervention. A run-in exists to catch them while they are cheap.`,
+            `The alignment was rushed, and nothing afterwards was designed to find that out.`,
+            `Nobody has yet asked why the original bearing failed, or whether T1 and T3 share the cause.`]}; }
+     return {out:[`T2 goes straight to full power and runs without alarms.`],
+      exp:[`It worked. You have no post-repair baseline, so the condition monitoring system is comparing the new parts against the old machine's history.`,
+           `Nobody has yet asked why the original bearing failed, or whether T1 and T3 share the cause.`]}; }
+   s.lost+=30; if(s.rushed) s.cost+=1;
+   const al = s.rushed?`The hot alignment check finds the generator offset out of tolerance. It is corrected the same afternoon.`:`The hot alignment check is within tolerance.`;
+   if(k==="staged") return {out:[`T2 steps up to full load over three days. `+al+` A new vibration baseline is recorded.`],
+     exp:[`Thermal growth moves a drivetrain as it warms, which is why alignment is checked hot as well as cold.`,
+          `One failure in a fleet of three identical machines is information about the other two. They have not been looked at.`]};
+   s.fleet=true; s.lost+=50; s.cost+=4;
+   return {out:[`T2 steps up to full load over three days. `+al,
+     `T1 is clean. On T3 the generator is found misaligned beyond tolerance, with early discolouration on the same bearing that failed on T2. It is realigned for £4k.`],
+    exp:[`You paid about a day's generation across two turbines to find a second failure before it happened.`,
+         `This is the difference between fixing a fault and finding its cause. The cause appears to be alignment, and it was common to the fleet.`]}; },
+  next:s=>"s7" },
+
+s7:{ n:7, title:"What should change", when:"Report to the trust board",
+  brief:s=>[
+   `The board has a one-off budget of £60k and wants a single priority recommendation from you. They are not engineers. They will ask why.`],
+  options:s=>[
+   {k:"spares", l:"Hold critical spares on the island", d:"HSS bearing kits, seals, oil and filters in a dry store at the site."},
+   {k:"cms", l:"Upgrade condition monitoring on all three turbines", d:"Online oil debris sensors, tighter alarm bands, and an annual borescope and alignment check."},
+   {k:"share", l:"Set up a shared framework with other island wind farms", d:"Pooled spares, shared crane mobilisations and a call-off specialist crew."}],
+  resolve:(s,k)=>({out:[`Your recommendation goes to the board with your justification attached.`],
+    exp:[`Each option attacks a different part of the problem: monitoring buys warning time, spares cut logistics lead time, and a shared framework cuts the cost of heavy intervention.`,
+         `A good recommendation follows from your own event. Look back through your log and ask which of the three would have changed your outcome most.`,
+         `Remember who you are writing for. The board needs the reasoning in terms of risk to community income.`]}),
+  next:s=>"debrief" }
+};
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+const fresh=()=>({name:"",stage:"intro",phase:"intro",op:"",damage:"early",seen:false,path:"",cost:0,lost:0,flags:[],log:[],last:null});
+let S=fresh();
+const $=id=>document.getElementById(id);
+const view=$("view");
+function save(){ try{ localStorage.setItem("ang_state",JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem("ang_state"); if(r){ const o=JSON.parse(r); if(o&&o.stage) S=Object.assign(fresh(),o); } }catch(e){} }
+const words=t=>(t.trim().match(/\S+/g)||[]).length;
+const el=(tag,props={},html)=>{ const e=document.createElement(tag); Object.assign(e,props); if(html!==undefined) e.innerHTML=html; return e; };
+const fnv=v=>typeof v==="function"?v(S):v;
+
+function meter(){
+  $("meter").hidden = S.phase==="intro"; $("datasheet").hidden = S.phase==="intro";
+  $("m_cost").textContent="£"+Math.round(S.cost)+"k";
+  $("m_lost").textContent=Math.round(S.lost).toLocaleString()+" MWh";
+  $("m_flag").textContent=S.flags.length;
+}
+function render(){
+  meter(); view.innerHTML="";
+  if(S.phase==="intro") return intro();
+  if(S.phase==="debrief") return debrief();
+  const st=STAGES[S.stage];
+  if(S.phase==="decide" && st.enter){ st.enter(S); meter(); save(); }
+  view.append(el("div",{className:"stage"},`Stage ${st.n} of 7`), el("h1",{textContent:st.title}), el("div",{className:"when",textContent:fnv(st.when)}));
+  if(S.phase==="decide"){
+    st.brief(S).forEach(h=>view.append(h.startsWith("<ul")?el("div",{},h):el("p",{},h)));
+    view.append(el("h2",{textContent:"Your decision"}));
+    const opts=st.options(S);
+    opts.forEach(o=>{ const lab=el("label",{className:"opt"}); const r=el("input",{type:"radio",name:"opt",value:o.k}); r.onchange=check;
+      lab.append(r, el("strong",{textContent:o.l}), el("small",{textContent:o.d})); view.append(lab); });
+    view.append(el("h2",{textContent:"Justify it"}),
+      el("p",{className:"note",textContent:"Explain why this is the right call. Use engineering reasoning and the local factors: weather, access, supply chain, cost and the people affected. Say what you are uncertain about and what would change your mind."}));
+    const ta=el("textarea",{id:"just"}); ta.setAttribute("aria-label","Your justification"); ta.oninput=check;
+    const cnt=el("div",{className:"count",id:"cnt"});
+    view.append(ta,cnt, el("p",{className:"note",textContent:"Which factors did you weigh? Tick all that apply."}));
+    const chips=el("div",{className:"chips"}); FACTORS.forEach(f=>{ const l=el("label"); l.append(el("input",{type:"checkbox",value:f}), document.createTextNode(f)); chips.append(l); }); view.append(chips);
+    const b=el("button",{id:"commit",textContent:"Commit decision",disabled:true}); view.append(b);
+    function check(){ const n=words(ta.value); const sel=view.querySelector("input[name=opt]:checked");
+      cnt.textContent=n+" words (minimum "+MIN_WORDS+")"; b.disabled=!(sel&&n>=MIN_WORDS); }
+    check();
+    b.onclick=()=>{ const k=view.querySelector("input[name=opt]:checked").value; const o=opts.find(x=>x.k===k);
+      const factors=[...chips.querySelectorAll("input:checked")].map(i=>i.value);
+      const brief=st.brief(S).map(h=>h.replace(/<li>/g,"- ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim()).filter(Boolean).join(" ");
+      const res=st.resolve(S,k);
+      S.log.push({n:st.n,title:st.title,when:fnv(st.when),situation:brief,choice:o.l,rejected:opts.filter(x=>x.k!==k).map(x=>x.l),just:ta.value.trim(),factors,out:res.out,cost:Math.round(S.cost),lost:Math.round(S.lost)});
+      S.last=res; S.phase="result"; save(); render(); window.scrollTo(0,0); };
+  } else {
+    const L=S.log[S.log.length-1];
+    view.append(el("p",{},`<strong>You chose:</strong> `), );
+    view.lastChild.append(document.createTextNode(L.choice));
+    const o=el("div",{className:"box"}); o.append(el("h2",{textContent:"What happened"})); S.last.out.forEach(t=>o.append(el("p",{textContent:t}))); view.append(o);
+    const x=el("div",{className:"box exp"}); x.append(el("h2",{textContent:"What an experienced engineer would weigh"})); const ul=el("ul"); S.last.exp.forEach(t=>ul.append(el("li",{textContent:t}))); x.append(ul); view.append(x);
+    view.append(el("p",{className:"note",textContent:"This commentary is not a mark. Your tutor will assess the quality of your justification, whichever option you chose."}));
+    const b=el("button",{textContent:"Continue"}); b.onclick=()=>{ const nx=st.next(S); if(nx==="debrief"){S.phase="debrief";} else {S.stage=nx;S.phase="decide";} save(); render(); window.scrollTo(0,0); }; view.append(b);
+  }
+}
+function intro(){
+  view.append(el("h1",{textContent:"The T2 gearbox alarm"}),
+    el("p",{textContent:"Over seven stages you will manage a developing fault on one of three turbines at a community-owned wind farm on the west side of Lewis. Your choices change what happens next, and different students will see different stages."}),
+    el("p",{textContent:"At every decision you must justify your choice in writing before you can go on. After you commit, you will see the consequence and the considerations an experienced engineer would have weighed. There is rarely one right answer. You are assessed on your reasoning."}),
+    el("p",{textContent:"Use the site data sheet, which appears below once you start. It contains the figures you will need: wind limits, costs, lead times and how things reach the island."}),
+    el("h2",{textContent:"Your name or student number"}));
+  const inp=el("input",{type:"text",value:S.name}); inp.setAttribute("aria-label","Your name or student number"); view.append(inp);
+  const b=el("button",{textContent:"Begin"}); b.onclick=()=>{ S.name=inp.value.trim(); S.stage="s1"; S.phase="decide"; save(); render(); window.scrollTo(0,0); }; view.append(b);
+  view.append(el("p",{className:"note",textContent:"Your progress is kept in this browser only. The site, people and figures are fictional and simplified for teaching."}));
+}
+function report(){
+  const rev=Math.round(S.lost*PRICE/1000);
+  let m=`# Àird na Gaoithe: T2 gearbox alarm\n\n**Student:** ${S.name||"(not given)"}\n\n## Outcome\n\n- Direct cost: £${Math.round(S.cost)}k\n- Generation lost: ${Math.round(S.lost)} MWh (about £${rev}k at £${PRICE}/MWh)\n- Total cost to the community: about £${Math.round(S.cost)+rev}k\n- Safety or integrity flags: ${S.flags.length?S.flags.join("; "):"none"}\n\n## Decision log\n`;
+  S.log.forEach(L=>{ m+=`\n### Stage ${L.n}: ${L.title} (${L.when})\n\n**Situation:** ${L.situation}\n\n**Decision:** ${L.choice}\n\n**Options rejected:** ${L.rejected.join("; ")}\n\n**Justification:**\n\n${L.just}\n\n**Factors ticked:** ${L.factors.join(", ")||"none"}\n\n**What happened:** ${L.out.join(" ")}\n\n**Running totals:** £${L.cost}k direct cost, ${L.lost} MWh lost\n`; });
+  if(S.reflect) m+=`\n## Reflection\n\n${S.reflect}\n`;
+  return m;
+}
+async function debrief(){
+  const rev=Math.round(S.lost*PRICE/1000);
+  view.append(el("div",{className:"stage"},"Debrief"), el("h1",{textContent:"How it went"}));
+  const ul=el("ul");
+  [`Direct cost: £${Math.round(S.cost)}k`,`Generation lost: ${Math.round(S.lost).toLocaleString()} MWh, about £${rev}k of community income`,`Total cost to the community: about £${Math.round(S.cost)+rev}k`,
+   S.flags.length?`Safety or integrity flags: ${S.flags.join("; ")}`:`No safety or integrity flags`,
+   S.fleet?`You found and corrected the same fault developing on T3.`:`T1 and T3 were not inspected. Whether they share T2's fault is unknown.`].forEach(t=>ul.append(el("li",{textContent:t}))); view.append(ul);
+  view.append(el("p",{className:"note",textContent:"Routes through this scenario range from about £60k to nearly £1m in total cost to the community. A low figure does not by itself mean good decisions, and a high one does not mean poor ones. Some good decisions are expensive, and some cheap ones were lucky."}));
+  view.append(el("h2",{textContent:"Reflection"}), el("p",{textContent:"Before you submit, answer in a short paragraph: which one decision would you change, and what did you not know at the time that you know now? Where did a local factor outweigh the textbook engineering answer?"}));
+  const ta=el("textarea",{value:S.reflect||""}); ta.setAttribute("aria-label","Your reflection"); ta.oninput=()=>{S.reflect=ta.value.trim();save();}; view.append(ta);
+  view.append(el("h2",{textContent:"Your decision log"}));
+  S.log.forEach(L=>{ const d=el("div",{className:"logitem"}); d.append(el("strong",{textContent:`Stage ${L.n}: ${L.title}`}), el("div",{textContent:"Decision: "+L.choice}), el("q",{textContent:L.just}), el("div",{className:"note",textContent:"Factors: "+(L.factors.join(", ")||"none ticked")})); view.append(d); });
+  const dl=await (window.claude&&claude.use?claude.use("downloads"):Promise.resolve(null)).catch(()=>null);
+  const msg=el("p",{className:"note"});
+  if(dl){ const b=el("button",{textContent:"Save log to submit"}); b.onclick=async()=>{ try{ await dl.save({filename:"aird-na-gaoithe-decision-log.md",data:report()}); msg.textContent="Saved."; }catch(e){ msg.textContent = e&&e.code==="declined" ? "Save cancelled." : "Could not save here. Copy the text below instead."; show(); } }; view.append(b," "); }
+  const c=el("button",{className:"ghost",textContent:"Show log as text to copy"}); view.append(c); view.append(msg);
+  const out=el("textarea",{readOnly:true,hidden:true}); out.setAttribute("aria-label","Decision log as text"); view.append(out);
+  function show(){ out.hidden=false; out.value=report(); out.focus(); out.select(); }
+  c.onclick=show;
+  const r=el("button",{className:"ghost",textContent:"Start again (clears this attempt)"}); r.style.display="block";
+  r.onclick=()=>{ if(r.dataset.sure){ S=fresh(); save(); render(); window.scrollTo(0,0); } else { r.dataset.sure=1; r.textContent="Press again to confirm: your log will be erased"; } }; view.append(r);
+}
+$("sheet").innerHTML=SHEET;
+load(); render();
+</script>
+</body>
+</html>

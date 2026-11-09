@@ -1,0 +1,115 @@
+/* =========================================================
+   Multi-page edition: sequential page navigation and
+   chapter jump list (mobile first).
+   ========================================================= */
+
+.page-sequence {
+    margin: 0 0 2rem;
+    padding: 1rem;
+    background: var(--book-paper);
+    border: 1px solid #e6dfd8;
+    border-radius: .75rem;
+}
+.page-sequence-bottom { margin: 3rem 0 0; }
+
+/* Previous / next */
+.seq-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .75rem;
+}
+.seq-link {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-height: 44px;
+    padding: .75rem 1rem;
+    border-radius: .6rem;
+    background: #fff;
+    border: 1px solid #e6dfd8;
+    color: var(--book-ink);
+    text-decoration: none;
+    font-family: "Merriweather Sans", sans-serif;
+}
+.seq-link:hover { border-color: var(--book-accent); color: var(--book-accent-dark); }
+.seq-link i { color: var(--book-accent); flex: none; }
+.seq-next { justify-content: space-between; text-align: right; }
+.seq-label {
+    display: block;
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--book-muted);
+}
+.seq-title { display: block; font-weight: 700; line-height: 1.3; }
+.seq-next > span { margin-left: auto; }
+@media (min-width: 576px) {
+    .seq-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Jump-to list */
+.jump {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem .75rem;
+    margin-top: 1rem;
+}
+.jump-heading {
+    margin: 0;
+    font: 700 .75rem/1 "Merriweather Sans", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--book-muted);
+}
+.jump-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: 0;
+    padding: 0;
+}
+.jump-link {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--book-accent);
+    background: #fff;
+    color: var(--book-accent);
+    font: 700 1rem/1 "Merriweather Sans", sans-serif;
+    text-decoration: none;
+}
+.jump-link:hover { background: #fbe9e3; color: var(--book-accent-dark); }
+.jump-link.is-current { background: var(--book-accent); color: #fff; }
+
+/* Chapter pages: the chapter title is now the page's h1 */
+.chapter-banner h1.chapter-title { font-size: 2rem; }
+@media (min-width: 992px) {
+    .chapter-banner h1.chapter-title { font-size: 3rem; }
+}
+.reading h2.section-heading { font-size: 1.5rem; }
+.reading h3.sub-heading { font-size: 1.2rem; }
+@media (min-width: 992px) {
+    .reading h2.section-heading { font-size: 1.85rem; }
+    .reading h3.sub-heading { font-size: 1.3rem; }
+}
+.chapter-notes h2.notes-heading { font-size: 1.15rem; }
+
+/* Current page in the navbar dropdown */
+.dropdown-item[aria-current="page"] { font-weight: 700; background: #fbe9e3; color: var(--book-accent-dark); }
+
+@media print {
+    .page-sequence { display: none !important; }
+}
+
+/* Keep the "Jump to" label in the sans-serif UI font inside the reading column */
+.reading p.jump-heading { font: 700 .75rem/1 "Merriweather Sans", sans-serif; margin: 0; }
+
+/* Cover page: line up the "Read chapter" buttons at the foot of each card */
+.toc-card { display: flex; flex-direction: column; }
+.toc-card > p:last-child { margin-top: auto !important; padding-top: 1rem; }
